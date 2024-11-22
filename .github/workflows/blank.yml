@@ -1,314 +1,316 @@
-# # This is a basic workflow to help you get started with Actions
+# This is a basic workflow to help you get started with Actions
 
-# name: CI
+name: CI
 
-# # Controls when the workflow will run
-# on:
-#   # Triggers the workflow on push or pull request events but only for the "master" branch
-#   push:
-#     branches: [ "master" ]
-#   pull_request:
-#     branches: [ "master" ]
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
-#   # Allows you to run this workflow manually from the Actions tab
-#   # workflow_dispatch:
+  # Allows you to run this workflow manually from the Actions tab
+  # workflow_dispatch:
 
-# # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-# jobs:
-#   web-deploy:
-#     name: 🎉 Deploy
-#     runs-on: ubuntu-latest
-#     steps:
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
 
-#       # Check if the source branch is master
+      # Check if the source branch is master
       
-#       # Runs a single command using the runners shell
-#       - name: Ls
-#         run: ls -la
+      # Runs a single command using the runners shell
+      - name: Ls
+        run: ls -la
 
-#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can have access to it
-#       - name: Git Clone
-#         uses: actions/checkout@v4
-#         with:
-#           ref: "master"
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can have access to it
+      - name: Git Clone
+        uses: actions/checkout@v4
+        with:
+          ref: "master"
 
-#       # Runs a single command using the runners shell
-#       - name: Ls
-#         run: ls -la
+      # Runs a single command using the runners shell
+      - name: Ls
+        run: ls -la
 
-#       # configure php
-#       - name: Setup PHP Action
-#         uses: shivammathur/setup-php@2.30.4
-#         with:
-#           php-version: "8.3"
-#           extensions: imagick, swoole, openssl
+      # configure php
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@2.30.4
+        with:
+          php-version: "8.3"
+          extensions: imagick, swoole, openssl
 
-#       # Install composer
-#       - name: Install composer dependencies
-#         run: composer install --no-dev --optimize-autoloader
+      # Install composer
+      - name: Install composer dependencies
+        run: composer install --no-dev --optimize-autoloader
 
-#       # PHPUnit tests
-#       # - name: PHPUnit tests
-#       #   run: php artisan test
+      # PHPUnit tests
+      # - name: PHPUnit tests
+      #   run: php artisan test
 
-#       #   setup node.js
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: "21.7.2"
+      #   setup node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "21.7.2"
 
-#       - name: Check Node.js Version
-#         run: node -v
+      - name: Check Node.js Version
+        run: node -v
 
-#       - name: Install Node.js Dependencies
-#         run: npm install
+      - name: Install Node.js Dependencies
+        run: npm install
 
-#       - name: Build Assets
-#         run: npm run build
+      - name: Build Assets
+        run: npm run build
 
-#       - name: Create Deployment Archive
-#         env:
-#           GITHUB_SHA: ${{ github.sha }}
-#           # first deployments
-#         run: tar -czf "${GITHUB_SHA}".tar.gz --exclude=*.git --exclude=node_modules public *
+      - name: Create Deployment Archive
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          # first deployments
+        run: tar -czf "${GITHUB_SHA}".tar.gz --exclude=*.git --exclude=node_modules public *
 
-#       # store artifacts for distributio
-#       - name: store artifacts for distribution
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: app-build
-#           path: ${{ github.sha }}.tar.gz
+      # store artifacts for distributio
+      - name: store artifacts for distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: ${{ github.sha }}.tar.gz
 
-#   # Prepairing release on server
-#   ssh-release:
-#     name: ssh-release
-#     runs-on: ubuntu-latest
-#     needs: [web-deploy]
-#     steps:
-#       - uses: actions/download-artifact@v4
-#         with:
-#           name: app-build
+  # Prepairing release on server
+  ssh-release:
+    name: ssh-release
+    runs-on: ubuntu-latest
+    needs: [web-deploy]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-build
           
-#       - name: Debug build
-#         run: ls -la
+      - name: Debug build
+        run: ls -la
 
-#       - name: upload
-#         uses: appleboy/scp-action@v0.1.7
-#         with:
-#           host: ${{ secrets.SSH_SITES_IP }}
-#           username: ${{ secrets.FTP_SITES_USER }}
-#           password: ${{ secrets.FTP_SITES_PASSWORD }}
-#           port: ${{ secrets.SSH_SITES_PORT }}
-#           source: ${{ github.sha}}.tar.gz
-#           target: /home/printsh1/printshopeld/artifacts
-#       - name: extract archive and create directory
-#         uses: appleboy/ssh-action@master
-#         env:
-#           GITHUB_SHA: ${{ github.sha }}
+      - name: upload
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_SITES_IP }}
+          username: ${{ secrets.FTP_SITES_USER }}
+          password: ${{ secrets.FTP_SITES_PASSWORD }}
+          port: ${{ secrets.SSH_SITES_PORT }}
+          source: ${{ github.sha}}.tar.gz
+          target: /home/printsh1/printshopeld/artifacts
+      - name: extract archive and create directory
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
 
-#           SOURCE_ASSET_DIR: /home/printsh1/printshopeld/release/${{github.sha}}/public/assets
-#           SOURCE_ADMIN_DIR: /home/printsh1/printshopeld/release/${{github.sha}}/public/admin
+          SOURCE_CSS_DIR: /home/printsh1/printshopeld/release/${{github.sha}}/public/css
+          SOURCE_JS_DIR: /home/printsh1/printshopeld/release/${{github.sha}}/public/js
 
-#           DEST_ASSET_DIR: /home/printsh1/public_html/assets
-#           DEST_ADMIN_DIR: /home/printsh1/public_html/admin
+          DEST_CSS_DIR: /home/printsh1/public_html/css
+          DEST_JS_DIR: /home/printsh1/public_html/js
 
-#           DEST_PARENT_DIR: /home/printsh1/public_html
-#         with:
-#           host: ${{ secrets.SSH_SITES_IP }}
-#           username: ${{ secrets.FTP_SITES_USER }}
-#           password: ${{ secrets.FTP_SITES_PASSWORD }}
-#           port: ${{ secrets.SSH_SITES_PORT }}
-#           envs: GITHUB_SHA,SOURCE_ASSET_DIR,SOURCE_ADMIN_DIR,SOURCE_BUILD_DIR,DEST_ASSET_DIR,DEST_ADMIN_DIR,DEST_BUILD_DIR,DEST_PARENT_DIR
-#           script: |
-#             mkdir -p "/home/printsh1/printshopeld/release/${GITHUB_SHA}"
-#             tar xzf /home/printsh1/printshopeld/artifacts/${GITHUB_SHA}.tar.gz -C "/home/printsh1/printshopeld/release/${GITHUB_SHA}"
-#             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#             rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/storage
-#             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#             if [ ! -d "/home/printsh1/printshopeld/storage" ]; then
-#             mkdir -p /home/printsh1/printshopeld/storage/{app,public,framework,logs}
-#             mkdir -p /home/printsh1/printshopeld/storage/framework/{cache,sessions,testing,views}
-#             mkdir -p /home/printsh1/printshopeld/storage/framework/cache/data
-#             chmod -R 0777 /home/printsh1/printshopeld/storage
-#             fi
-#             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#             if [ -d "$SOURCE_ASSET_DIR" ]; then
-#                 if [ -d "$DEST_ASSET_DIR" ]; then
-#                     rm -rf "$DEST_ASSET_DIR"
-#                     if [ $? -ne 0 ]; then
-#                         echo "Failed to remove the destination asset directory."
-#                         exit 1
-#                     fi
-#                 else
-#                     echo "asset directory does not exist in the destination."
-#                 fi
-#                 mv "$SOURCE_ASSET_DIR" "$DEST_PARENT_DIR"
-#                 if [ $? -ne 0 ]; then
-#                     echo "Failed to move the asset directory from source to destination."
-#                     exit 1
-#                 fi
-#             else
-#                 echo "asset directory does not exist in the source."
-#             fi
-#             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#             if [ -d "$SOURCE_ADMIN_DIR" ]; then
-#                 if [ -d "$DEST_ADMIN_DIR" ]; then
-#                     rm -rf "$DEST_ADMIN_DIR"
-#                     if [ $? -ne 0 ]; then
-#                         echo "Failed to remove the destination admin directory."
-#                         exit 1
-#                     fi
-#                 else
-#                     echo "admin directory does not exist in the destination."
-#                 fi
-#                 mv "$SOURCE_ADMIN_DIR" "$DEST_PARENT_DIR"
-#                 if [ $? -ne 0 ]; then
-#                     echo "Failed to move the admin directory from source to destination."
-#                     exit 1
-#                 fi
-#             else
-#                 echo "admin directory does not exist in the source."
-#             fi
-#             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#             # ++++++++++++++++++++++++++++++++++++++++++++++First time++++++++++++++++++++++++++++++++++++++++++++++
-#             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#             mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/.htaccess" "/home/printsh1/public_html"
-#             mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/favicon.ico" "/home/printsh1/public_html"
-#             mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/index.php" "/home/printsh1/public_html"
-#             mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/robots.txt" "/home/printsh1/public_html"
-#             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#             # ++++++++++++++++++++++++++++++++++++++++++++++later time++++++++++++++++++++++++++++++++++++++++++++++
-#             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#             # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/.htaccess
-#             # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/favicon.ico
-#             # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/index.php
-#             # rm -rf /home/psrintsh1/printshopeld/release/${GITHUB_SHA}/public/robots.txt
-#             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#             # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/
-#             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          DEST_PARENT_DIR: /home/printsh1/public_html
+        with:
+          host: ${{ secrets.SSH_SITES_IP }}
+          username: ${{ secrets.FTP_SITES_USER }}
+          password: ${{ secrets.FTP_SITES_PASSWORD }}
+          port: ${{ secrets.SSH_SITES_PORT }}
+          envs: GITHUB_SHA,SOURCE_CSS_DIR,SOURCE_JS_DIR,SOURCE_BUILD_DIR,DEST_CSS_DIR,DEST_JS_DIR,DEST_BUILD_DIR,DEST_PARENT_DIR
+          script: |
+            mkdir -p "/home/printsh1/printshopeld/release/${GITHUB_SHA}"
+            tar xzf /home/printsh1/printshopeld/artifacts/${GITHUB_SHA}.tar.gz -C "/home/printsh1/printshopeld/release/${GITHUB_SHA}"
+            # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/storage
+            # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            if [ ! -d "/home/printsh1/printshopeld/storage" ]; then
+            mkdir -p /home/printsh1/printshopeld/storage/{app,public,framework,logs}
+            mkdir -p /home/printsh1/printshopeld/storage/framework/{cache,sessions,testing,views}
+            mkdir -p /home/printsh1/printshopeld/storage/framework/cache/data
+            chmod -R 0777 /home/printsh1/printshopeld/storage
+            fi
+            # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            if [ -d "$SOURCE_CSS_DIR" ]; then
+                if [ -d "$DEST_CSS_DIR" ]; then
+                    rm -rf "$DEST_CSS_DIR"
+                    if [ $? -ne 0 ]; then
+                        echo "Failed to remove the destination css directory."
+                        exit 1
+                    fi
+                else
+                    echo "css directory does not exist in the destination."
+                fi
+                mv "$SOURCE_CSS_DIR" "$DEST_PARENT_DIR"
+                if [ $? -ne 0 ]; then
+                    echo "Failed to move the css directory from source to destination."
+                    exit 1
+                fi
+            else
+                echo "css directory does not exist in the source."
+            fi
+            # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            if [ -d "$SOURCE_JS_DIR" ]; then
+                if [ -d "$DEST_JS_DIR" ]; then
+                    rm -rf "$DEST_JS_DIR"
+                    if [ $? -ne 0 ]; then
+                        echo "Failed to remove the destination js directory."
+                        exit 1
+                    fi
+                else
+                    echo "js directory does not exist in the destination."
+                fi
+                mv "$SOURCE_JS_DIR" "$DEST_PARENT_DIR"
+                if [ $? -ne 0 ]; then
+                    echo "Failed to move the js directory from source to destination."
+                    exit 1
+                fi
+            else
+                echo "js directory does not exist in the source."
+            fi
+            # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            # ++++++++++++++++++++++++++++++++++++++++++++++First time++++++++++++++++++++++++++++++++++++++++++++++
+            # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/.htaccess" "/home/printsh1/public_html"
+            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/favicon.ico" "/home/printsh1/public_html"
+            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/index.php" "/home/printsh1/public_html"
+            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/robots.txt" "/home/printsh1/public_html"
+            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/mix-manifest.json" "/home/printsh1/public_html"
+            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/web.config" "/home/printsh1/public_html"
+            # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            # ++++++++++++++++++++++++++++++++++++++++++++++later time++++++++++++++++++++++++++++++++++++++++++++++
+            # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/.htaccess
+            # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/favicon.ico
+            # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/index.php
+            # rm -rf /home/psrintsh1/printshopeld/release/${GITHUB_SHA}/public/robots.txt
+            # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/
+            # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#   # Run befor-hook
-#   run-befor-hook:
-#     name: befor-hook
-#     runs-on: ubuntu-latest
-#     needs: [web-deploy, ssh-release]
-#     steps:
-#       - name: run-befor-hooks
-#         uses: appleboy/ssh-action@master
-#         env:
-#           GITHUB_SHA: ${{ github.sha }}
-#           RELEASE_PATH: /home/printsh1/printshopeld/release/${{github.sha}}
-#           ACTIVE_RELEASE_PATH: /home/printsh1/printshopeld/current
-#           STORAGE_PATH: /home/printsh1/printshopeld/storage
-#           BASE_PATH: /home/printsh1/printshopeld
-#         with:
-#           host: ${{ secrets.SSH_SITES_IP }}
-#           username: ${{ secrets.FTP_SITES_USER }}
-#           password: ${{ secrets.FTP_SITES_PASSWORD }}
-#           port: ${{ secrets.SSH_SITES_PORT }}
-#           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
-#           script: |
-#               echo "${GITHUB_SHA}"
+  # Run befor-hook
+  run-befor-hook:
+    name: befor-hook
+    runs-on: ubuntu-latest
+    needs: [web-deploy, ssh-release]
+    steps:
+      - name: run-befor-hooks
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: /home/printsh1/printshopeld/release/${{github.sha}}
+          ACTIVE_RELEASE_PATH: /home/printsh1/printshopeld/current
+          STORAGE_PATH: /home/printsh1/printshopeld/storage
+          BASE_PATH: /home/printsh1/printshopeld
+        with:
+          host: ${{ secrets.SSH_SITES_IP }}
+          username: ${{ secrets.FTP_SITES_USER }}
+          password: ${{ secrets.FTP_SITES_PASSWORD }}
+          port: ${{ secrets.SSH_SITES_PORT }}
+          envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
+          script: |
+              echo "${GITHUB_SHA}"
   
-#   # Run activate release
-#   activate-release:
-#     name: activate-release
-#     runs-on: ubuntu-latest
-#     needs: [web-deploy, ssh-release, run-befor-hook]
-#     steps:
-#       - name: run-activate-release
-#         uses: appleboy/ssh-action@master
-#         env:
-#           GITHUB_SHA: ${{ github.sha }}
-#           RELEASE_PATH: /home/printsh1/printshopeld/release/${{github.sha}}
-#           LINK_RELEASE_PATH: /home/printsh1/public_html
-#           ACTIVE_RELEASE_PATH: /home/printsh1/printshopeld/current
-#           STORAGE_PATH: /home/printsh1/printshopeld/storage
-#           BASE_PATH: /home/printsh1/printshopeld
-#           LARAVEL_ENV: ${{ secrets.LARAVEL_ENV }}
-#         with:
-#           host: ${{ secrets.SSH_SITES_IP }}
-#           username: ${{ secrets.FTP_SITES_USER }}
-#           password: ${{ secrets.FTP_SITES_PASSWORD }}
-#           port: ${{ secrets.SSH_SITES_PORT }}
-#           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH,LARAVEL_ENV,LINK_RELEASE_PATH
-#           # in the event of trouble recognizing the changes after the link find a solytion to refresh
-#           script: |
-#             printf "%s" "$LARAVEL_ENV" > "${BASE_PATH}/.env"
-#             ln -s -n -f ${BASE_PATH}/.env $RELEASE_PATH
-#             ln -s -n -f $STORAGE_PATH $RELEASE_PATH
-#             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
-#             ln -s -n -f $STORAGE_PATH $LINK_RELEASE_PATH
+  # Run activate release
+  activate-release:
+    name: activate-release
+    runs-on: ubuntu-latest
+    needs: [web-deploy, ssh-release, run-befor-hook]
+    steps:
+      - name: run-activate-release
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: /home/printsh1/printshopeld/release/${{github.sha}}
+          LINK_RELEASE_PATH: /home/printsh1/public_html
+          ACTIVE_RELEASE_PATH: /home/printsh1/printshopeld/current
+          STORAGE_PATH: /home/printsh1/printshopeld/storage
+          BASE_PATH: /home/printsh1/printshopeld
+          LARAVEL_ENV: ${{ secrets.LARAVEL_ENV }}
+        with:
+          host: ${{ secrets.SSH_SITES_IP }}
+          username: ${{ secrets.FTP_SITES_USER }}
+          password: ${{ secrets.FTP_SITES_PASSWORD }}
+          port: ${{ secrets.SSH_SITES_PORT }}
+          envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH,LARAVEL_ENV,LINK_RELEASE_PATH
+          # in the event of trouble recognizing the changes after the link find a solytion to refresh
+          script: |
+            printf "%s" "$LARAVEL_ENV" > "${BASE_PATH}/.env"
+            ln -s -n -f ${BASE_PATH}/.env $RELEASE_PATH
+            ln -s -n -f $STORAGE_PATH $RELEASE_PATH
+            ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
+            ln -s -n -f $STORAGE_PATH $LINK_RELEASE_PATH
   
-#   # Run Migrations release
-#   migrations-run:
-#     name: migrations-run
-#     runs-on: ubuntu-latest
-#     needs: [web-deploy, ssh-release, run-befor-hook, activate-release]
-#     steps:
-#       - name: run-migrations
-#         uses: appleboy/ssh-action@master
-#         env:
-#           GITHUB_SHA: ${{ github.sha }}
-#           RELEASE_PATH: /home/printsh1/printshopeld/release/${{github.sha}}
-#           ACTIVE_RELEASE_PATH: /home/printsh1/printshopeld/current
-#           STORAGE_PATH: /home/printsh1/printshopeld/storage
-#           BASE_PATH: /home/printsh1/printshopeld
-#           LARAVEL_ENV: ${{ secrets.LARAVEL_ENV }}
-#         with:
-#           host: ${{ secrets.SSH_SITES_IP }}
-#           username: ${{ secrets.FTP_SITES_USER }}
-#           password: ${{ secrets.FTP_SITES_PASSWORD }}
-#           port: ${{ secrets.SSH_SITES_PORT }}
-#           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH,LARAVEL_ENV
-#           # in the event of trouble recognizing the changes after the link find a solution to refresh
-#           script: |
-#               cd $ACTIVE_RELEASE_PATH
-#               # php artisan migrate --force
-#               # php artisan db:seed --force
+  # Run Migrations release
+  migrations-run:
+    name: migrations-run
+    runs-on: ubuntu-latest
+    needs: [web-deploy, ssh-release, run-befor-hook, activate-release]
+    steps:
+      - name: run-migrations
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: /home/printsh1/printshopeld/release/${{github.sha}}
+          ACTIVE_RELEASE_PATH: /home/printsh1/printshopeld/current
+          STORAGE_PATH: /home/printsh1/printshopeld/storage
+          BASE_PATH: /home/printsh1/printshopeld
+          LARAVEL_ENV: ${{ secrets.LARAVEL_ENV }}
+        with:
+          host: ${{ secrets.SSH_SITES_IP }}
+          username: ${{ secrets.FTP_SITES_USER }}
+          password: ${{ secrets.FTP_SITES_PASSWORD }}
+          port: ${{ secrets.SSH_SITES_PORT }}
+          envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH,LARAVEL_ENV
+          # in the event of trouble recognizing the changes after the link find a solution to refresh
+          script: |
+              cd $ACTIVE_RELEASE_PATH
+              # php artisan migrate --force
+              # php artisan db:seed --force
         
-#   # Run activate release
-#   run-after-hook:
-#     name: after-hook
-#     runs-on: ubuntu-latest
-#     needs: [web-deploy, ssh-release, run-befor-hook, activate-release, migrations-run]
-#     steps:
-#       - name: run-after-hooks
-#         uses: appleboy/ssh-action@master
-#         env:
-#           GITHUB_SHA: ${{ github.sha }}
-#           RELEASE_PATH: /home/printsh1/printshopeld/release/${{github.sha}}
-#           ACTIVE_RELEASE_PATH: /home/printsh1/printshopeld/current
-#           STORAGE_PATH: /home/printsh1/printshopeld/storage
-#           BASE_PATH: /home/printsh1/printshopeld
-#         with:
-#           host: ${{ secrets.SSH_SITES_IP }}
-#           username: ${{ secrets.FTP_SITES_USER }}
-#           password: ${{ secrets.FTP_SITES_PASSWORD }}
-#           port: ${{ secrets.SSH_SITES_PORT }}
-#           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
-#           script: |
-#             echo "${GITHUB_SHA}"
+  # Run activate release
+  run-after-hook:
+    name: after-hook
+    runs-on: ubuntu-latest
+    needs: [web-deploy, ssh-release, run-befor-hook, activate-release, migrations-run]
+    steps:
+      - name: run-after-hooks
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          RELEASE_PATH: /home/printsh1/printshopeld/release/${{github.sha}}
+          ACTIVE_RELEASE_PATH: /home/printsh1/printshopeld/current
+          STORAGE_PATH: /home/printsh1/printshopeld/storage
+          BASE_PATH: /home/printsh1/printshopeld
+        with:
+          host: ${{ secrets.SSH_SITES_IP }}
+          username: ${{ secrets.FTP_SITES_USER }}
+          password: ${{ secrets.FTP_SITES_PASSWORD }}
+          port: ${{ secrets.SSH_SITES_PORT }}
+          envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
+          script: |
+            echo "${GITHUB_SHA}"
   
-#   # Runing cleanup
-#   clean-up:
-#     name: Clean-up
-#     runs-on: ubuntu-latest
-#     needs:
-#       [web-deploy, ssh-release, run-befor-hook, activate-release, migrations-run, run-after-hook, ]
-#     steps:
-#       - name: run-clean-up
-#         uses: appleboy/ssh-action@master
-#         env:
-#           RELEASE_PATH: /home/printsh1/printshopeld/release
-#           ARTIFACTS_PATH: /home/printsh1/printshopeld/artifacts
-#         with:
-#           host: ${{ secrets.SSH_SITES_IP }}
-#           username: ${{ secrets.FTP_SITES_USER }}
-#           password: ${{ secrets.FTP_SITES_PASSWORD }}
-#           port: ${{ secrets.SSH_SITES_PORT }}
-#           envs: RELEASE_PATH,ARTIFACTS_PATH
-#           script: |
-#             cd $RELEASE_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
-#             cd $ARTIFACTS_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
+  # Runing cleanup
+  clean-up:
+    name: Clean-up
+    runs-on: ubuntu-latest
+    needs:
+      [web-deploy, ssh-release, run-befor-hook, activate-release, migrations-run, run-after-hook, ]
+    steps:
+      - name: run-clean-up
+        uses: appleboy/ssh-action@master
+        env:
+          RELEASE_PATH: /home/printsh1/printshopeld/release
+          ARTIFACTS_PATH: /home/printsh1/printshopeld/artifacts
+        with:
+          host: ${{ secrets.SSH_SITES_IP }}
+          username: ${{ secrets.FTP_SITES_USER }}
+          password: ${{ secrets.FTP_SITES_PASSWORD }}
+          port: ${{ secrets.SSH_SITES_PORT }}
+          envs: RELEASE_PATH,ARTIFACTS_PATH
+          script: |
+            cd $RELEASE_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
+            cd $ARTIFACTS_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
 
