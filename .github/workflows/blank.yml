@@ -172,19 +172,21 @@ jobs:
             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             # ++++++++++++++++++++++++++++++++++++++++++++++First time++++++++++++++++++++++++++++++++++++++++++++++
             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/.htaccess" "/home/printsh1/public_html"
-            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/favicon.ico" "/home/printsh1/public_html"
-            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/index.php" "/home/printsh1/public_html"
-            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/robots.txt" "/home/printsh1/public_html"
-            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/mix-manifest.json" "/home/printsh1/public_html"
-            mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/web.config" "/home/printsh1/public_html"
+            # mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/.htaccess" "/home/printsh1/public_html"
+            # mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/favicon.ico" "/home/printsh1/public_html"
+            # mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/index.php" "/home/printsh1/public_html"
+            # mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/robots.txt" "/home/printsh1/public_html"
+            # mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/mix-manifest.json" "/home/printsh1/public_html"
+            # mv -f "/home/printsh1/printshopeld/release/${GITHUB_SHA}/public/web.config" "/home/printsh1/public_html"
             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             # ++++++++++++++++++++++++++++++++++++++++++++++later time++++++++++++++++++++++++++++++++++++++++++++++
             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/.htaccess
-            # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/favicon.ico
-            # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/index.php
-            # rm -rf /home/psrintsh1/printshopeld/release/${GITHUB_SHA}/public/robots.txt
+            rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/.htaccess
+            rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/favicon.ico
+            rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/index.php
+            rm -rf /home/psrintsh1/printshopeld/release/${GITHUB_SHA}/public/robots.txt
+            rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/mix-manifest.json
+            rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/web.config
             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             # rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/
             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -266,8 +268,8 @@ jobs:
           # in the event of trouble recognizing the changes after the link find a solution to refresh
           script: |
               cd $ACTIVE_RELEASE_PATH
-              php artisan migrate --force
-              # php artisan db:seed --force
+            #   php artisan migrate --force
+            #   php artisan db:seed --force
         
   # Run activate release
   run-after-hook:
