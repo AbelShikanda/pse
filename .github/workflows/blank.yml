@@ -266,7 +266,7 @@ jobs:
           # in the event of trouble recognizing the changes after the link find a solution to refresh
           script: |
               cd $ACTIVE_RELEASE_PATH
-              # php artisan migrate --force
+              php artisan migrate --force
               # php artisan db:seed --force
         
   # Run activate release
