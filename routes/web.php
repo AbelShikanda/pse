@@ -43,9 +43,27 @@ use App\Http\Controllers\UnderConstructionController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
 */
 Route::get('/under_construction', [UnderConstructionController::class, 'underConstruction'])->name('underConstruction');
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Route::get('/sitemap.xml', function () {

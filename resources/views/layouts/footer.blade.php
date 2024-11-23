@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="copyright-box">
-                        <p class="copyright">&copy; Copyright <strong>DevFolio</strong>. All Rights Reserved</p>
+                        <p class="copyright">&copy; Copyright <strong>PrintShopEld</strong>. All Rights Reserved</p>
                         <div class="credits">
                             <!--
                   All the links in the footer should remain intact.
@@ -14,7 +14,7 @@
                   Licensing information: https://bootstrapmade.com/license/
                   Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=DevFolio
                 -->
-                            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                            Designed by <a href="{{ route('underConstruction') }}">JK Solutions</a>
                         </div>
                     </div>
                 </div>
