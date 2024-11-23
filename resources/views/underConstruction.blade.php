@@ -33,7 +33,7 @@
         .warning-content {
             position: absolute;
             top: 25%;
-            width: 99%;
+            width: 97%;
             height: 300px;
             text-align: center;
             margin: 0;
