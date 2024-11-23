@@ -8,12 +8,13 @@
         "php": "^7.3|^8.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "intervention/image": "^3.9",
+        "intervention/image": "2.7",
         "laravel/framework": "^8.54",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "laravelcollective/html": "*",
         "spatie/laravel-permission": "^6.10",
+        "spatie/laravel-sitemap": "6.4.0",
         "spatie/laravel-sluggable": "^3.6"
     },
     "require-dev": {

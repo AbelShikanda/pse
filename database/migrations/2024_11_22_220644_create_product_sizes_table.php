@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductColorsTable extends Migration
+class CreateProductSizesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -28,6 +28,6 @@ class CreateProductColorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_colors');
+        Schema::dropIfExists('product_sizes');
     }
 }

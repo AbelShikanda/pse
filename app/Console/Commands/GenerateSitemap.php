@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Blogs;
+use App\Models\Blog;
 use App\Models\Products;
 use Illuminate\Console\Command;
 use Spatie\Sitemap\Sitemap;
@@ -42,7 +42,7 @@ class GenerateSitemap extends Command
         }
 
         // Add other dynamic URLs (e.g., blogs)
-        $blogs = Blogs::all();
+        $blogs = Blog::all();
         foreach ($blogs as $blog) {
             $sitemap->add(Url::create(route('blogSingle', $blog->id))
                 ->setLastModificationDate($blog->updated_at)
