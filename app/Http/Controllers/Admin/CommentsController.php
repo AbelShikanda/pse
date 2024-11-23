@@ -3,24 +3,30 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\newComment;
+use App\Models\Admin;
+use App\Models\Comments;
+use App\Models\Ratings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CommentsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $comments = Comments::with('user', 'blog')
+        ->orderBy('id', 'DESC')
+        ->get();
+        return view('admin.comments.index', with([
+            'comments' => $comments,
+        ]));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -29,56 +35,51 @@ class CommentsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'blog_id' => 'required|exists:blogs,id',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+    
+        Ratings::create([
+            'user_id' => auth()->id(),
+            'blog_id' => $request->blog_id,
+            'rating' => $request->rating,
+        ]);
+    
+        return back()->with('message', 'Thank you for your comment');
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(string $id)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(string $id)
     {
         //
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
         //
     }
