@@ -2,20 +2,21 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBlogsMirrorTriggerSeeder extends Seeder
+class CreateBlogMirrorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
-        Schema::create('Blogs_mirrors', function (Blueprint $table) {
+        Schema::create('Blog_mirrors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('thumbnail')->nullable();
             $table->string('full')->nullable();

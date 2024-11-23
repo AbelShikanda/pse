@@ -6,12 +6,14 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class UpdateProductPriceTriggerSeeder extends Seeder
+class CreatePriceUpdateTriggerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
         DB::unprepared('
         CREATE TRIGGER update_product_price_on_price_change
@@ -22,6 +24,6 @@ class UpdateProductPriceTriggerSeeder extends Seeder
             SET price = NEW.price
             WHERE type_id = NEW.id;
         END;
-    ');
+        ');
     }
 }

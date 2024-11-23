@@ -12,8 +12,10 @@ class CreateProductsMirrorTriggerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
         Schema::create('product_mirrors', function (Blueprint $table) {
             $table->bigIncrements('id');

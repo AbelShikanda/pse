@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -12,8 +11,10 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
         Schema::create('password_reset_tokens_mirrors', function (Blueprint $table) {
             $table->bigIncrements('id');

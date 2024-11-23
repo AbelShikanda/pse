@@ -12,8 +12,10 @@ class CreateWishlistMirrorTriggerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
         Schema::create('wish_lists_mirrors', function (Blueprint $table) {
             $table->bigIncrements('id');
