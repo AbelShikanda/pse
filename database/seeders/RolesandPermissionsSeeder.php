@@ -84,20 +84,15 @@ class RolesandPermissionsSeeder extends Seeder
             'deleteAttributes',
         ];
 
-        // Create permissions from the array
-        $permissions = collect($arrayOfPermissionNames)->map(function ($permission) {
-            return [
-                'name' => $permission,
-                'guard_name' => 'admin',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ];
-        });
+        // Insert or update permissions
+        foreach ($arrayOfPermissionNames as $permission) {
+            Permission::firstOrCreate(
+                ['name' => $permission, 'guard_name' => 'admin'], // Unique columns
+                ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()] // Values to update
+            );
+        }
 
-        // Insert permissions into the database
-        Permission::insert($permissions->toArray());
-
-        // Define permission names
+        // Define roles
         $arrayOfRolesNames = [
             'Staff',
             'Moderator',
@@ -112,27 +107,12 @@ class RolesandPermissionsSeeder extends Seeder
             'Sales',
         ];
 
-        // Create permissions from the array
-        $roles = collect($arrayOfRolesNames)->map(function ($role) {
-            return [
-                'name' => $role,
-                'guard_name' => 'admin',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ];
-        });
-
-        // Insert roles into the database
-        Role::insert($roles->toArray());
-
-        // Retrieve roles for assignment$roles = [];
-        $roles = [];
-        foreach ($arrayOfRolesNames as $roleName) {
-            // Dynamically create the variable name
-            $variableName = "{$roleName}Role";
-
-            // Fetch the role from the database
-            $roles[$variableName] = Role::where('name', $roleName)->first();
+        // Insert or update roles
+        foreach ($arrayOfRolesNames as $role) {
+            Role::firstOrCreate(
+                ['name' => $role, 'guard_name' => 'admin'], // Unique columns
+                ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()] // Values to update
+            );
         }
 
         // Retrieve permissions for assignment
@@ -145,6 +125,15 @@ class RolesandPermissionsSeeder extends Seeder
             $permissions[$variableName] = Permission::where('name', $permissionName)->first();
         }
 
+        // Retrieve roles for assignment
+        $roles = [];
+        foreach ($arrayOfRolesNames as $roleName) {
+            // Dynamically create the variable name
+            $variableName = "{$roleName}Role";
+
+            // Fetch the role from the database
+            $roles[$variableName] = Role::where('name', $roleName)->first();
+        }
         // Assign permissions to each role
         // Admin Role: Assign all permissions
         if ($roles['AdminRole']) {

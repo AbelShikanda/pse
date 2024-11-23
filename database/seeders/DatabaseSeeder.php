@@ -15,29 +15,49 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Blog seeders
-        BlogCategoriesSeeder::class;
-        CreateBlogMirrorSeeder::class;
+        $this->call([
+            BlogCategoriesSeeder::class,
+            CreateBlogMirrorSeeder::class,
+        ]);
+
         // Product seeders
-        CreateProductColorsSeeder::class;
-        CreateProductMaterialsSeeder::class;
-        CreateProductCategoriesSeeder::class;
-        CreateProductSizesSeeder::class;
-        CreateProductTypesSeeder::class;
-        CreateProductsMirrorTriggerSeeder::class;
+        $this->call([
+            CreateProductColorsSeeder::class,
+            CreateProductMaterialsSeeder::class,
+            CreateProductCategoriesSeeder::class,
+            CreateProductSizesSeeder::class,
+            CreateProductTypesSeeder::class,
+            CreateProductsMirrorTriggerSeeder::class,
+        ]);
+
         // Users and admins seeders
-        CreateAdminsSeeder::class;
-        CreateUsersMirrorTriggerSeeder::class;
+        $this->call([
+            CreateAdminsSeeder::class,
+            CreateUsersMirrorTriggerSeeder::class,
+        ]);
+
         // Checkout seeders
-        CreateOrdersMirrorTriggerSeeder::class;
-        CreateWishlistMirrorTriggerSeeder::class;
+        $this->call([
+            CreateOrdersMirrorTriggerSeeder::class,
+            CreateWishlistMirrorTriggerSeeder::class,
+        ]);
+
         // Prices seeders
-        PriceTypeSeeder::class;
-        CreatePriceTriggerSeeder::class;
-        CreatePriceUpdateTriggerSeeder::class;
+        $this->call([
+            PriceTypeSeeder::class,
+            CreatePriceTriggerSeeder::class,
+            CreatePriceUpdateTriggerSeeder::class,
+        ]);
+
         // Permissions seeders
-        RolesandPermissionsSeeder::class;
+        $this->call([
+            RolesandPermissionsSeeder::class,
+        ]);
+
         // Systems seeders
-        CreateFailedJobsMirrorSeeder::class;
-        CreatePasswordResetTokensMirrorTriggerSeeder::class;
+        $this->call([
+            CreateFailedJobsMirrorSeeder::class,
+            CreatePasswordResetTokensMirrorTriggerSeeder::class,
+        ]);
     }
 }

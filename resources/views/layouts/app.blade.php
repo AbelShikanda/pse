@@ -47,7 +47,8 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RBL70XY3HX"></script>
 
     <!-- Scripts -->
-    @vite(['resources/css/app.scss', 'resources/js/app.js'])
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
 </head>
 
 <body>

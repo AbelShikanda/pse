@@ -11,24 +11,24 @@
                 <li><a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
                 </li>
                 <li><a class="nav-link {{ request()->is('catalog') ? 'active' : '' }}"
-                        href="{{ url('/catalog') }}">Catalog</a></li>
-                <li><a class="nav-link {{ request()->is('blog') ? 'active' : '' }}" href="{{ url('/blog') }}">Stories</a>
+                        href="{{ url('/under_construction') }}">Catalog</a></li>
+                <li><a class="nav-link {{ request()->is('blog') ? 'active' : '' }}" href="{{ url('/under_construction') }}">Stories</a>
                 </li>
                 <li><a class="nav-link {{ request()->is('contacts') ? 'active' : '' }}"
-                        href="{{ url('/contacts') }}">Contact</a></li>
+                        href="{{ url('/under_construction') }}">Contact</a></li>
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('login') ? 'active' : '' }}"
-                                href="{{ route('login') }}">{{ __('Login') }}</a>
+                                href="{{ route('underConstruction') }}">{{ __('Login') }}</a>
                         </li>
                     @endif
 
                     @if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('register') ? 'active' : '' }}"
-                                href="{{ route('register') }}">{{ __('Register') }}</a>
+                                href="{{ route('underConstruction') }}">{{ __('Register') }}</a>
                         </li>
                     @endif
                 @else

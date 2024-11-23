@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>PrintShop</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -97,6 +97,9 @@
                     </p>
                     <p>
                         It's okay, we're excited too!
+                    </p>
+                    <p>
+                        <a href="https://wa.me/message/UFM7WYYHEIMRA1">In The Mean Time</a>
                     </p>
 
                 </div>

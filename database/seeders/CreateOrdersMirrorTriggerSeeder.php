@@ -20,7 +20,7 @@ class CreateOrdersMirrorTriggerSeeder extends Seeder
         Schema::create('order_mirrors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('order_id')->constrained('orders')->onUpdate('cascade')->onDelete('cascade')->nullable();
-            $table->foreignId('order_items_id')->constrained('order_items')->onUpdate('cascade')->onDelete('cascade')->nullable();
+            $table->foreignId('order_items_id')->constrained('order__items')->onUpdate('cascade')->onDelete('cascade')->nullable();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade')->nullable();
             $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade')->nullable();
             $table->string('quantity')->nullable();
@@ -56,7 +56,7 @@ class CreateOrdersMirrorTriggerSeeder extends Seeder
         DB::unprepared('DROP TRIGGER IF EXISTS trg_order_mirror_insert');
         DB::unprepared('
             CREATE TRIGGER trg_order_mirror_insert
-            AFTER INSERT ON order_items
+            AFTER INSERT ON order__items
             FOR EACH ROW
             BEGIN
                 DECLARE action_type VARCHAR(50);
@@ -97,7 +97,7 @@ class CreateOrdersMirrorTriggerSeeder extends Seeder
         DB::unprepared('DROP TRIGGER IF EXISTS trg_order_mirror_update');
         DB::unprepared('
             CREATE TRIGGER trg_order_mirror_update
-            AFTER UPDATE ON order_items
+            AFTER UPDATE ON order__items
             FOR EACH ROW
             BEGIN
                 DECLARE action_type VARCHAR(50);
@@ -136,7 +136,7 @@ class CreateOrdersMirrorTriggerSeeder extends Seeder
         DB::unprepared('DROP TRIGGER IF EXISTS trg_order_mirror_delete');
         DB::unprepared('
             CREATE TRIGGER trg_order_mirror_delete
-            AFTER DELETE ON order_items
+            AFTER DELETE ON order__items
             FOR EACH ROW
             BEGIN
                 DECLARE action_type VARCHAR(50);

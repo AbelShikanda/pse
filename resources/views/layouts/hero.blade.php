@@ -13,7 +13,7 @@
                     <div class="col"></div>
                     <div class="col">
                         <p class="pt-5">
-                            <a href="{{ route('catalog') }}" class="home_btn">
+                            <a href="{{ route('underConstruction') }}" class="home_btn">
                                 <span></span>
                                 <span></span>
                                 <span></span>

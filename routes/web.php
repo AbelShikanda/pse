@@ -37,6 +37,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PricesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingsController;
+use App\Http\Controllers\UnderConstructionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,52 +45,49 @@ use App\Http\Controllers\RatingsController;
 |--------------------------------------------------------------------------
 |
 */
-// Route::get('/', function () {
-//     return view('underConstruction');
+Route::get('/under_construction', [UnderConstructionController::class, 'underConstruction'])->name('underConstruction');
+
+
+// Route::get('/sitemap.xml', function () {
+//     return response()->file(public_path('sitemap.xml'));
 // });
 
+// Route::get('/admin_', function () {
+//     return redirect()->route('dashboard.index');
+// })
+//     ->middleware('adminauth');
 
+// Route::group(['prefix' => '/admin'], function () {
+//     Route::get('/login', [AdminAuthController::class, 'getLogin'])->name('getLogin');
+//     Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('postLogin');
+//     // Route::post('/register', [AdminAuthController::class, 'postLogin'])->name('postLogin');
+//     Route::post('/logout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
+//     Route::resource('dashboard', DashboardController::class)->middleware('adminauth');
+//     Route::get('/schedules', [DashboardController::class, 'schedules'])->name('schedules');
+// });
 
-Route::get('/sitemap.xml', function () {
-    return response()->file(public_path('sitemap.xml'));
-});
+// Route::group(['middleware' => 'adminauth'], function () {
+//     Route::resource('colors', ProductColorController::class);
+//     Route::resource('sizes', ProductSizeController::class);
+//     Route::resource('types', ProductTypeController::class);
+//     Route::resource('materials', ProductMaterialController::class);
+//     Route::resource('product_categories', ProductCategoryController::class);
+//     Route::resource('products', ProductsController::class);
+//     Route::resource('product_images', ProductImageController::class);
+//     Route::resource('orders', OrdersController::class);
+//     Route::resource('order_items', OrderItemsController::class);
+//     Route::resource('admins', AdminController::class);
+//     Route::resource('users', UserController::class);
+//     Route::resource('blogs', BlogController::class);
+//     Route::resource('blog_categories', BlogCategoryController::class);
+//     Route::resource('blog_images', BlogImageController::class);
+//     Route::resource('contact', ContactsController::class);
+//     Route::resource('prices', PricesController::class);
+//     Route::resource('comment', CommentsController::class);
 
-Route::get('/admin_', function () {
-    return redirect()->route('dashboard.index');
-})
-    ->middleware('adminauth');
-
-Route::group(['prefix' => '/admin'], function () {
-    Route::get('/login', [AdminAuthController::class, 'getLogin'])->name('getLogin');
-    Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('postLogin');
-    // Route::post('/register', [AdminAuthController::class, 'postLogin'])->name('postLogin');
-    Route::post('/logout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
-    Route::resource('dashboard', DashboardController::class)->middleware('adminauth');
-    Route::get('/schedules', [DashboardController::class, 'schedules'])->name('schedules');
-});
-
-Route::group(['middleware' => 'adminauth'], function () {
-    Route::resource('colors', ProductColorController::class);
-    Route::resource('sizes', ProductSizeController::class);
-    Route::resource('types', ProductTypeController::class);
-    Route::resource('materials', ProductMaterialController::class);
-    Route::resource('product_categories', ProductCategoryController::class);
-    Route::resource('products', ProductsController::class);
-    Route::resource('product_images', ProductImageController::class);
-    Route::resource('orders', OrdersController::class);
-    Route::resource('order_items', OrderItemsController::class);
-    Route::resource('admins', AdminController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('blogs', BlogController::class);
-    Route::resource('blog_categories', BlogCategoryController::class);
-    Route::resource('blog_images', BlogImageController::class);
-    Route::resource('contact', ContactsController::class);
-    Route::resource('prices', PricesController::class);
-    Route::resource('comment', CommentsController::class);
-
-    Route::resource('permissions', PermissionsController::class);
-    Route::resource('roles', RolesController::class);
-});
+//     Route::resource('permissions', PermissionsController::class);
+//     Route::resource('roles', RolesController::class);
+// });
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Auth::routes(['verify' => true]);

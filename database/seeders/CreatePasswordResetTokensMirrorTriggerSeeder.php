@@ -16,7 +16,7 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
      */
     public function run()
     {
-        Schema::create('password_reset_tokens_mirrors', function (Blueprint $table) {
+        Schema::create('password_resets_mirrors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('email')->unique();
             $table->string('token');
@@ -25,10 +25,10 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
             $table->timestamp('changed_at')->nullable();
         });
 
-        DB::unprepared('DROP TRIGGER IF EXISTS trg_password_reset_tokens_mirror_insert');
+        DB::unprepared('DROP TRIGGER IF EXISTS trg_password_resets_mirror_insert');
         DB::unprepared('
-            CREATE TRIGGER trg_password_reset_tokens_mirror_insert
-            AFTER INSERT ON password_reset_tokens
+            CREATE TRIGGER trg_password_resets_mirror_insert
+            AFTER INSERT ON password_resets
             FOR EACH ROW
             BEGIN
                 DECLARE action_payload TEXT;
@@ -37,7 +37,7 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
                 SET action_payload = CONCAT("Inserted token for email: ", NEW.email);
                 SET action_exception = "";
 
-                INSERT INTO password_reset_tokens_mirrors (
+                INSERT INTO password_resets_mirrors (
                     email, token, updated_by, change_type, changed_at
                 ) VALUES (
                     NEW.email, NEW.token, user(), action_type, NOW()
@@ -45,10 +45,10 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
             END;
         ');
 
-        DB::unprepared('DROP TRIGGER IF EXISTS trg_password_reset_tokens_mirror_update');
+        DB::unprepared('DROP TRIGGER IF EXISTS trg_password_resets_mirror_update');
         DB::unprepared('
-            CREATE TRIGGER trg_password_reset_tokens_mirror_update
-            AFTER UPDATE ON password_reset_tokens
+            CREATE TRIGGER trg_password_resets_mirror_update
+            AFTER UPDATE ON password_resets
             FOR EACH ROW
             BEGIN
                 DECLARE action_payload TEXT;
@@ -57,7 +57,7 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
                 SET action_payload = CONCAT("Updated token for email: ", NEW.email);
                 SET action_exception = "";
 
-                INSERT INTO password_reset_tokens_mirrors (
+                INSERT INTO password_resets_mirrors (
                     email, token, updated_by, change_type, changed_at
                 ) VALUES (
                     NEW.email, NEW.token, user(), action_type, NOW()
@@ -65,10 +65,10 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
             END;
         ');
 
-        DB::unprepared('DROP TRIGGER IF EXISTS trg_password_reset_tokens_mirror_delete');
+        DB::unprepared('DROP TRIGGER IF EXISTS trg_password_resets_mirror_delete');
         DB::unprepared('
-            CREATE TRIGGER trg_password_reset_tokens_mirror_delete
-            AFTER DELETE ON password_reset_tokens
+            CREATE TRIGGER trg_password_resets_mirror_delete
+            AFTER DELETE ON password_resets
             FOR EACH ROW
             BEGIN
                 DECLARE action_payload TEXT;
@@ -77,7 +77,7 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
                 SET action_payload = CONCAT("Deleted token for email: ", OLD.email);
                 SET action_exception = "";
 
-                INSERT INTO password_reset_tokens_mirrors (
+                INSERT INTO password_resets_mirrors (
                     email, token, updated_by, change_type, changed_at
                 ) VALUES (
                     OLD.email, OLD.token, OLD.created_at, user(), action_type, NOW()
