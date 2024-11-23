@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class ProductMaterials extends Model
+class ProductSizes extends Model
 {
     use HasFactory, HasSlug;
 
@@ -43,6 +43,6 @@ class ProductMaterials extends Model
      * @return Return type Description of the return value (optional)
      */
     public function products() {
-        return $this->belongsTo(Products::class, 'product_product_materials', 'product_materials_id', 'products_id');
+        return $this->belongsToMany(Products::class, 'product_product_sizes', 'product_sizes_id', 'products_id');
     }
 }

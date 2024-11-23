@@ -14,7 +14,11 @@ class CreateBlogBlogImagesTable extends Migration
     public function up()
     {
         Schema::create('blog_blog_images', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            
+            $table->foreignId('blogs_id')->constrained('blogs')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('blog_images_id')->constrained('blog_images')->onDelete('cascade')->onUpdate('cascade');
+
             $table->timestamps();
         });
     }

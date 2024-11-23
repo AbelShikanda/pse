@@ -14,7 +14,12 @@ class CreateRatingsTable extends Migration
     public function up()
     {
         Schema::create('ratings', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+
+            $table->foreignId('products_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('rating')->unsigned();
+            
             $table->timestamps();
         });
     }

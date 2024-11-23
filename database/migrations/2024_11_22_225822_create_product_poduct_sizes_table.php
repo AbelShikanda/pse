@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBlogImagesTable extends Migration
+class CreateProductPoductSizesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateBlogImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('blog_images', function (Blueprint $table) {
+        Schema::create('product_poduct_sizes', function (Blueprint $table) {
             $table->bigIncrements('id');
             
-            $table->string('thumbnail')->nullable();
-            $table->string('full')->nullable();
-            $table->foreignId('blogs_id')->constrained('blogs');
-            
+            $table->foreignId('products_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('product_sizes_id')->constrained('product_sizes')->onDelete('cascade')->onUpdate('cascade');
+
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateBlogImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blog_images');
+        Schema::dropIfExists('product_poduct_sizes');
     }
 }

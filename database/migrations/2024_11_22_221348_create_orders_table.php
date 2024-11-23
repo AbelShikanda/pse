@@ -15,6 +15,11 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('reference');
+            $table->mediumText('tracking_No');
+            $table->decimal('price', 10, 2);
+            $table->boolean('complete')->default(0);
             $table->timestamps();
         });
     }

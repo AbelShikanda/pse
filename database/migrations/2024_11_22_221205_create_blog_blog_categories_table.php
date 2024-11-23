@@ -14,7 +14,11 @@ class CreateBlogBlogCategoriesTable extends Migration
     public function up()
     {
         Schema::create('blog_blog_categories', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            
+            $table->foreignId('blogs_id')->constrained('blogs')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('blog_categories_id')->constrained('blog_categories')->onDelete('cascade')->onUpdate('cascade');
+
             $table->timestamps();
         });
     }

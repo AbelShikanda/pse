@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BlogBlogImages extends Model
+class ProductProductSizes extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class BlogBlogImages extends Model
      * @var array
      */
     protected $fillable = [
-        'blogs_id',
-        'blog_images_id',
+        'products_id',
+        'product_sizes_id',
     ];
 }

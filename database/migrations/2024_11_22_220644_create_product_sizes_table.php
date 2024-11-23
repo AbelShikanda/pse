@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCountryUsersTable extends Migration
+class CreateProductColorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateCountryUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('country_users', function (Blueprint $table) {
+        Schema::create('product_sizes', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('slug');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateCountryUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('country_users');
+        Schema::dropIfExists('product_colors');
     }
 }

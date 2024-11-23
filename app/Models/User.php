@@ -3,13 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->uuid = Str::uuid();
+        });
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -17,15 +28,21 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'uuid',
+        'first_name',
+        'last_name',
         'email',
+        'gender',
+        'phone',
+        'town',
+        'location',
         'password',
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be hidden for serialization.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -33,11 +50,35 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array
+     * @return array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
+    /**
+     * The attributes that should be cast.
+     *
+     *
+     */
+    public function order()
+    {
+        return $this->hasMany(Orders::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comments::class);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(Ratings::class);
+    }
 }

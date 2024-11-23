@@ -15,6 +15,10 @@ class CreateVisitorJourneysTable extends Migration
     {
         Schema::create('visitor_journeys', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('visitor_data_id')->constrained('visitor_data')->onDelete('cascade')->onUpdate('cascade');
+            $table->enum('event_type', ['page_visit', 'button_click'])->default('page_visit'); 
+            $table->mediumText('page_url')->nullable();       
+            $table->mediumText('button_clicked')->nullable(); 
             $table->timestamps();
         });
     }

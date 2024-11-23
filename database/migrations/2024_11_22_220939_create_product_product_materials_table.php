@@ -14,7 +14,11 @@ class CreateProductProductMaterialsTable extends Migration
     public function up()
     {
         Schema::create('product_product_materials', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            
+            $table->foreignId('products_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('product_materials_id')->constrained('product_materials')->onDelete('cascade')->onUpdate('cascade');
+
             $table->timestamps();
         });
     }
