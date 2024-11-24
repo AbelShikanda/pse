@@ -65,7 +65,8 @@
                             <p class="s-description text-center">
                                 Stay up-to date with trends.
                                 Place no limits on your designs.
-                                Be memorable through your logo, your colors and your brand.
+                                Be memorable through your logo, your colors and <br> 
+                                your brand.
                                 <br>
                                 #BeNoticed
                             </p>
