@@ -205,21 +205,23 @@
                                     <div id="radarChartWidget" width="400" height="400"></div>
                                 </div> <!-- .col --> --}}
                                 <div class="mx-auto">
-                                    <div class="row align-items-center my-2">
-                                        @foreach ($browsers as $browser)
+                                    @foreach ($browsers as $browser)
+                                        <div class="row align-items-center my-2">
                                             <div class="col-6 col-xl-3 my-3">
                                                 <span class="mb-0">{{ $browser->user_agent }}</span>
                                                 <div class="progress my-2" style="height: 4px;">
-                                                    <div class="progress-bar" role="progressbar" style="width: {{ $browser->percentage }}%"
-                                                        aria-valuenow="{{ $browser->percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width: {{ $browser->percentage }}%"
+                                                        aria-valuenow="{{ $browser->percentage }}" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
                                                 </div>
                                             </div>
                                             <div class="col-6 col-xl-3 my-3 text-right">
                                                 <span>{{ $browser->count }}</span><br />
                                                 <span class="my-0 text-muted small">{{ $browser->percentage }}%</span>
                                             </div>
-                                        @endforeach
-                                    </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div> <!-- .card-body -->
                         </div> <!-- .card -->
@@ -230,7 +232,7 @@
     </div> <!-- .container-fluid -->
     @include('admin.layouts.partials.modals')
 
-    
+
     <script>
         $(document).ready(function() {
             // Page Views Data (Line Chart)

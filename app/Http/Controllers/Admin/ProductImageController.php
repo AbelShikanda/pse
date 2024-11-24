@@ -59,17 +59,17 @@ class ProductImageController extends Controller
             $fileName = $currentDate . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
 
             // Create new ImageManager instance with desired driver
-            $manager = new ImageManager(Driver::class); // or ['driver' => 'gd']
+            $manager = new ImageManager([Driver::class]); // or ['driver' => 'gd']
 
             // Read the image
-            $image = $manager->read($file->getPathname());
+            $image = $manager->make($file->getPathname());
 
             // Resize and crop the image to a 2:3 aspect ratio (800x1200)
             $croppedImage = $image->resize(320, 370);
 
             // Save the resized and cropped image to storage
             $croppedImagePath = 'img/products/' . $fileName;
-            Storage::disk('public')->put($croppedImagePath, (string) $croppedImage->toJpeg());
+            Storage::disk('public')->put($croppedImagePath, (string) $croppedImage->encode('jpg', 90));
         } else {
             return response()->json(['error' => 'No file uploaded'], 400);
         }
@@ -156,7 +156,7 @@ class ProductImageController extends Controller
             $manager = new ImageManager(Driver::class); // or ['driver' => 'gd']
 
             // Read the image
-            $image = $manager->read($file->getPathname());
+            $image = $manager->make($file->getPathname());
 
             // Resize and crop the image to a 2:3 aspect ratio (800x1200)
             $croppedImage = $image->resize(853, 1280);
@@ -167,7 +167,7 @@ class ProductImageController extends Controller
             
             // Save the resized and cropped image to storage
             $croppedImagePath = 'img/products/' . $fileName;
-            Storage::disk('public')->put($croppedImagePath, (string) $croppedImage->toJpeg());
+            Storage::disk('public')->put($croppedImagePath, (string) $croppedImage->encode('jpg', 90));
         } else {
             $fileName = '';
         }

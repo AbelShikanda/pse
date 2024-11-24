@@ -134,10 +134,10 @@ class DashboardController extends Controller
             'products.id',
             'products.name',
             'products.meta_keywords',
-            DB::raw('SUM(order_items.quantity) as sales'),
-            DB::raw('(SUM(order_items.quantity) / (SELECT SUM(quantity) FROM order_items) * 100) as percentage_sold')
+            DB::raw('SUM(order__items.quantity) as sales'),
+            DB::raw('(SUM(order__items.quantity) / (SELECT SUM(quantity) FROM order__items) * 100) as percentage_sold')
         )
-            ->join('order_items', 'order_items.product_id', '=', 'products.id') // Join with order_items table
+            ->join('order__items', 'order__items.product_id', '=', 'products.id') // Join with order__items table
             ->groupBy('products.id', 'products.name', 'products.meta_keywords') // Group by product columns
             ->orderByDesc('sales')
             ->with('productImage') // Eager load the product images
@@ -151,10 +151,10 @@ class DashboardController extends Controller
         $regionData = Order_Items::select(
             'users.town', // Fetch town from the users table
             'users.location', // Fetch location from the users table
-            DB::raw('SUM(order_items.quantity) as total_sales'),
-            DB::raw('SUM(order_items.quantity) / (SELECT SUM(quantity) FROM order_items) * 100 as sales_percentage')
+            DB::raw('SUM(order__items.quantity) as total_sales'),
+            DB::raw('SUM(order__items.quantity) / (SELECT SUM(quantity) FROM order__items) * 100 as sales_percentage')
         )
-            ->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->join('orders', 'orders.id', '=', 'order__items.order_id')
             ->join('users', 'users.id', '=', 'orders.user_id') // Join with the users table
             ->groupBy('users.town', 'users.location') // Group by town and location
             ->orderByDesc('total_sales')

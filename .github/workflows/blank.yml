@@ -310,8 +310,8 @@ jobs:
           # in the event of trouble recognizing the changes after the link find a solution to refresh
           script: |
               cd $ACTIVE_RELEASE_PATH
-              # php artisan migrate --force
-              # php artisan db:seed --force
+              php artisan migrate --force
+              php artisan db:seed --force
         
   # Run activate release
   run-after-hook:
@@ -335,7 +335,10 @@ jobs:
           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
             echo "${GITHUB_SHA}"
-  
+            cd $ACTIVE_RELEASE_PATH
+            php artisan route:clear
+            php artisan route:cache
+
   # Runing cleanup
   clean-up:
     name: Clean-up

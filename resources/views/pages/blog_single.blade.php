@@ -142,7 +142,8 @@
                                     Leave a Comment
                                 </h3>
                             </div>
-                            <form class="form-mf" action="{{ route('comments') }}" method="POST" role="form">
+                            <form class="form-mf" action="{{ route('underConstruction') }}" method="POST" role="form">
+                            {{-- <form class="form-mf" action="{{ route('comments') }}" method="POST" role="form"> --}}
                                 @csrf
                                 @method('post')
                                 <div class="row">

@@ -44,8 +44,9 @@
                     </div>
                 </div>
                 <div class="footer">
-                    <a href="{{ route('addToCart', ['id' => $images->id]) }}" type="button">
-                        <img src="http://co0kie.github.io/codepen/nike-product-page/cart.png" alt="">
+                    {{-- <a href="{{ route('addToCart', ['id' => $images->id]) }}" type="button"> --}}
+                    <a href="{{ route('underConstruction') }}" type="button">
+                        <img src="http://co0kie.github.io/codepen/nike-product-page/cart.png" style="width:20px;" alt="">
                         <span>add to cart</span>
                     </a>
                     <a href="{{ route('catalog') }}" type="button">

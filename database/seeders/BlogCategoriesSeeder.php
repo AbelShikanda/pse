@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Carbon\Carbon;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class BlogCategoriesSeeder extends Seeder
 {
@@ -16,206 +16,35 @@ class BlogCategoriesSeeder extends Seeder
      */
     public function run()
     {
-        // Define permission names
-        $arrayOfPermissionNames = [
-            'viewUsers',
-            'createUsers',
-            'editUsers',
-            'deleteUsers',
-            'viewAdmins',
-            'createAdmins',
-            'editAdmins',
-            'deleteAdmins',
-            'viewRoles',
-            'createRoles',
-            'editRoles',
-            'deleteRoles',
-            'viewPermissions',
-            'createPermissions',
-            'editPermissions',
-            'deletePermissions',
-            'viewCategories',
-            'createCategories',
-            'editCategories',
-            'deleteCategories',
-            'viewSettings',
-            'createSettings',
-            'editSettings',
-            'deleteSettings',
-            'viewComments',
-            'createComments',
-            'editComments',
-            'deleteComments',
-            'viewNotifications',
-            'createNotifications',
-            'editNotifications',
-            'deleteNotifications',
-            'viewOrders',
-            'createOrders',
-            'editOrders',
-            'deleteOrders',
-            'viewContacts',
-            'createContacts',
-            'editContacts',
-            'deleteContacts',
-            'viewImages',
-            'createImages',
-            'editImages',
-            'deleteImages',
-            'viewBlogs',
-            'createBlogs',
-            'editBlogs',
-            'deleteBlogs',
-            'viewRatings',
-            'createRatings',
-            'editRatings',
-            'deleteRatings',
-            'viewPrices',
-            'createPrices',
-            'editPrices',
-            'deletePrices',
-            'viewProducts',
-            'createProducts',
-            'editProducts',
-            'deleteProducts',
-            'viewAttributes',
-            'createAttributes',
-            'editAttributes',
-            'deleteAttributes',
-        ];
-
-        // Create permissions from the array
-        $permissions = collect($arrayOfPermissionNames)->map(function ($permission) {
-            return [
-                'name' => $permission,
-                'guard_name' => 'admin',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ];
-        });
-
-        // Insert permissions into the database
-        Permission::insert($permissions->toArray());
-
-        // Define permission names
-        $arrayOfRolesNames = [
-            'Staff',
-            'Moderator',
-            'Supervisor',
-            'Manager',
-            'Admin',
-            'SuperAdmin',
-            'Auditor',
-            'Author',
-            'Support',
-            'Guest',
-            'Sales',
-        ];
-
-        // Create permissions from the array
-        $roles = collect($arrayOfRolesNames)->map(function ($role) {
-            return [
-                'name' => $role,
-                'guard_name' => 'admin',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ];
-        });
-
-        // Insert roles into the database
-        Role::insert($roles->toArray());
-
-        // Retrieve roles for assignment$roles = [];
-        $roles = [];
-        foreach ($arrayOfRolesNames as $roleName) {
-            // Dynamically create the variable name
-            $variableName = "{$roleName}Role";
-
-            // Fetch the role from the database
-            $roles[$variableName] = Role::where('name', $roleName)->first();
-        }
-
-        // Retrieve permissions for assignment
-        $permissions = [];
-        foreach ($arrayOfPermissionNames as $permissionName) {
-            // Dynamically create the variable name
-            $variableName = "{$permissionName}Permission";
-
-            // Fetch the permission from the database
-            $permissions[$variableName] = Permission::where('name', $permissionName)->first();
-        }
-
-        // Assign permissions to each role
-        // Admin Role: Assign all permissions
-        if ($roles['AdminRole']) {
-            $roles['AdminRole']->givePermissionTo(Permission::all());
-        }
-        if ($roles['SuperAdminRole']) {
-            $roles['SuperAdminRole']->givePermissionTo(Permission::all());
-        }
-
-        if ($roles['StaffRole']) {
-            $roles['StaffRole']->givePermissionTo([
-                $permissions['viewProductsPermission'],
-                $permissions['viewAttributesPermission'],
-            ]);
-        }
-
-        if ($roles['ModeratorRole']) {
-            $roles['ModeratorRole']->givePermissionTo([
-                $permissions['viewProductsPermission'],
-                $permissions['viewAttributesPermission'],
-            ]);
-        }
-
-        if ($roles['SupervisorRole']) {
-            $roles['SupervisorRole']->givePermissionTo([
-                $permissions['viewProductsPermission'],
-                $permissions['viewAttributesPermission'],
-            ]);
-        }
-
-        if ($roles['ManagerRole']) {
-            $roles['ManagerRole']->givePermissionTo([
-                $permissions['viewProductsPermission'],
-                $permissions['viewAttributesPermission'],
-            ]);
-        }
-
-        if ($roles['AuditorRole']) {
-            $roles['AuditorRole']->givePermissionTo([
-                $permissions['viewProductsPermission'],
-                $permissions['viewAttributesPermission'],
-            ]);
-        }
-        
-        if ($roles['AuthorRole']) {
-            $roles['AuthorRole']->givePermissionTo([
-                $permissions['viewProductsPermission'],
-                $permissions['viewAttributesPermission'],
-            ]);
-        }
-
-        
-        if ($roles['SupportRole']) {
-            $roles['SupportRole']->givePermissionTo([
-                $permissions['viewProductsPermission'],
-                $permissions['viewAttributesPermission'],
-            ]);
-        }
-
-        if ($roles['GuestRole']) {
-            $roles['GuestRole']->givePermissionTo([
-                $permissions['viewProductsPermission'],
-                $permissions['viewAttributesPermission'],
-            ]);
-        }
-
-        if ($roles['SalesRole']) {
-            $roles['SalesRole']->givePermissionTo([
-                $permissions['viewProductsPermission'],
-                $permissions['viewAttributesPermission'],
-            ]);
-        }
+        DB::table('blog_categories')->insert([
+            [
+                'id' => 1,
+                'name' => 'Inspiring',
+                'slug' => 'inspiring',
+                'created_at' => Carbon::create('2023', '01', '27', '15', '53', '02'),
+                'updated_at' => Carbon::create('2023', '01', '27', '15', '53', '02'),
+            ],
+            [
+                'id' => 2,
+                'name' => 'Fashion',
+                'slug' => 'fashion',
+                'created_at' => Carbon::create('2023', '01', '27', '15', '56', '58'),
+                'updated_at' => Carbon::create('2023', '01', '27', '15', '56', '58'),
+            ],
+            [
+                'id' => 3,
+                'name' => 'Parenting',
+                'slug' => 'parenting',
+                'created_at' => Carbon::create('2023', '01', '27', '15', '58', '22'),
+                'updated_at' => Carbon::create('2023', '01', '27', '15', '58', '22'),
+            ],
+            [
+                'id' => 4,
+                'name' => 'Sports',
+                'slug' => 'sports',
+                'created_at' => Carbon::create('2023', '01', '27', '15', '58', '59'),
+                'updated_at' => Carbon::create('2023', '01', '27', '15', '58', '59'),
+            ],
+        ]);
     }
 }

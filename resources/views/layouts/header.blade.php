@@ -11,11 +11,11 @@
                 <li><a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
                 </li>
                 <li><a class="nav-link {{ request()->is('catalog') ? 'active' : '' }}"
-                        href="{{ url('/under_construction') }}">Catalog</a></li>
-                <li><a class="nav-link {{ request()->is('blog') ? 'active' : '' }}" href="{{ url('/under_construction') }}">Stories</a>
+                        href="{{ url('/catalog') }}">Catalog</a></li>
+                <li><a class="nav-link {{ request()->is('blog') ? 'active' : '' }}" href="{{ url('/blog') }}">Stories</a>
                 </li>
                 <li><a class="nav-link {{ request()->is('contacts') ? 'active' : '' }}"
-                        href="{{ url('/under_construction') }}">Contact</a></li>
+                        href="{{ url('/contacts') }}">Contact</a></li>
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))

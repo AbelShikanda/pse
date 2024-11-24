@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductPoductSizesTable extends Migration
+class CreatePersonalAccessTokensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateProductPoductSizesTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_poduct_sizes', function (Blueprint $table) {
+        Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->bigIncrements('id');
-            
-            $table->foreignId('products_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('product_sizes_id')->constrained('product_sizes')->onDelete('cascade')->onUpdate('cascade');
-
+            $table->morphs('tokenable');
+            $table->string('name');
+            $table->string('token', 64)->unique();
+            $table->text('abilities')->nullable();
+            $table->timestamp('last_used_at')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateProductPoductSizesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_poduct_sizes');
+        Schema::dropIfExists('personal_access_tokens');
     }
 }
