@@ -16,7 +16,7 @@
                                 <div class="col-md-6">
                                     <div class="title-box-2">
                                         <h5 class="title-left">
-                                            Send Message Us
+                                            Send Message
                                         </h5>
                                         @if (count($errors) > 0)
                                             <div class="alert alert-danger col-md-8 offset-md-3">

@@ -142,7 +142,7 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     // Route::post('/postCheckout/{id}', [CheckoutController::class, 'postCheckout'])->name('postCheckout');
     Route::post('/postCheckout/{id}', [UnderConstructionController::class, 'underConstruction']);
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Route::resource('ratings', RatingsController::class);
+    Route::resource('ratings', RatingsController::class);
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::group(['middleware' => ['auth', 'verified']], function () {
         // Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
