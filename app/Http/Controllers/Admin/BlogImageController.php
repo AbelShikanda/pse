@@ -39,7 +39,7 @@ class BlogImageController extends Controller
         // $blogs = Blog::all();
         $blogIdsWithImages = BlogImages::pluck('blogs_id')->toArray();
         $blogs = Blog::whereNotIn('id', $blogIdsWithImages)->get();
-        return view('admin.images.BlogImages.create', with([
+        return view('admin.images.blogImages.create', with([
             'blogs' => $blogs,
         ]));
     }
@@ -136,7 +136,7 @@ class BlogImageController extends Controller
         $image = BlogImages::find($id);
         $blog = Blog::where('id', $image->blogs_id)->first();
         $blogs = Blog::all();
-        return view('admin.images.BlogImages.edit')->with([
+        return view('admin.images.blogImages.edit')->with([
             'blog' => $blog,
             'blogs' => $blogs,
             'image' => $image,

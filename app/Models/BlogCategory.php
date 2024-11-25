@@ -47,7 +47,7 @@ class BlogCategory extends Model
     */
     public function blog()
     {
-        return $this->belongsToMany(BLog::class, 'Blog_Blog_categories', 'blog_categories_id', 'blogs_id');
+        return $this->belongsToMany(BLog::class, 'blog_blog_categories', 'blog_categories_id', 'blogs_id');
         // return $this->belongsToMany(BLog::class);
     }
 }

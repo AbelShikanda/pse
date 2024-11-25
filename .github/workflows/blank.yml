@@ -338,6 +338,7 @@ jobs:
             cd $ACTIVE_RELEASE_PATH
             php artisan route:clear
             php artisan route:cache
+            php artisan blade:update
 
   # Runing cleanup
   clean-up:

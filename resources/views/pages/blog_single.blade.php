@@ -99,7 +99,7 @@
                                 </section>
                                 <section>
                                     <blockquote class="blockquote">
-                                        <p>{{ $b->title }}</p>
+                                        <p>{{ $b->sub_title }}</p>
                                     </blockquote>
                                 </section>
                                 <section>

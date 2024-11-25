@@ -36,7 +36,7 @@ class CreateBlogMirrorSeeder extends Seeder
                 DECLARE action_type VARCHAR(50);
                 SET action_type = "insert";
 
-                INSERT INTO blog_mirrors (
+                INSERT INTO Blog_mirrors (
                     thumbnail, full, blogs_id, updated_by, change_type, changed_at
                 ) VALUES (
                     NEW.thumbnail, NEW.full, NEW.blogs_id, USER(), action_type, NOW()
@@ -53,7 +53,7 @@ class CreateBlogMirrorSeeder extends Seeder
                 DECLARE action_type VARCHAR(50);
                 SET action_type = "update";
 
-                INSERT INTO blog_mirrors (
+                INSERT INTO Blog_mirrors (
                     thumbnail, full, blogs_id, updated_by, change_type, changed_at
                 ) VALUES (
                     NEW.thumbnail, NEW.full, NEW.blogs_id, USER(), action_type, NOW()
@@ -70,7 +70,7 @@ class CreateBlogMirrorSeeder extends Seeder
                 DECLARE action_type VARCHAR(50);
                 SET action_type = "delete";
 
-                INSERT INTO blog_mirrors (
+                INSERT INTO Blog_mirrors (
                     thumbnail, full, blogs_id, updated_by, change_type, changed_at
                 ) VALUES (
                     OLD.thumbnail, OLD.full, OLD.blogs_id, USER(), action_type, NOW()
