@@ -26,7 +26,7 @@
 
             </section>
 
-            <section class="playlist">
+            {{-- <section class="playlist">
 
                 <a href="#">
 
@@ -36,7 +36,7 @@
 
                 </a>
 
-            </section>
+            </section> --}}
 
         </div>
 
@@ -229,7 +229,7 @@
 
                                     </div>
 
-                                    <button class="show-more button-light">Show 5 More</button>
+                                    {{-- <button class="show-more button-light">Show 5 More</button> --}}
                                     <!-- / -->
 
                                 </div>

@@ -15,8 +15,7 @@
             <a href="{{ route('catalogDetail', $item->id) }}"><span>VIEW</span></a>
             <br><br>
             <i class="bi bi-cart"></i>
-            <a href="{{ route('underConstruction') }}"><span>ADD TO CART</span></a>
-            {{-- <a href="{{ route('addToCart', $item->id) }}"><span>ADD TO CART</span></a> --}}
+            <a href="{{ route('addToCart', $item->id) }}"><span>ADD TO CART</span></a>
         </div>
     </div>
 </div>

@@ -5,30 +5,22 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
-use App\Http\Controllers\Admin\BlogCategoriesController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BlogImageController;
-use App\Http\Controllers\Admin\BlogsController;
 use App\Http\Controllers\Admin\CommentsController;
-use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ContactsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderItemsController;
 use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\PermissionsController;
-use App\Http\Controllers\Admin\ProductCategoriesController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductColorController;
-use App\Http\Controllers\Admin\ProductColorsController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductMaterialController;
-use App\Http\Controllers\Admin\ProductMaterialsController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\ProductSizeController;
-use App\Http\Controllers\Admin\ProductSizesController;
 use App\Http\Controllers\Admin\ProductTypeController;
-use App\Http\Controllers\Admin\ProductTypesController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CheckoutController;
@@ -50,20 +42,6 @@ Route::get('/under_construction', [UnderConstructionController::class, 'underCon
 | Web Routes
 |--------------------------------------------------------------------------
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 Route::get('/sitemap.xml', function () {
@@ -112,6 +90,7 @@ Auth::routes(['verify' => true]);
 Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::redirect('/home', '/');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::get('/catalog', [PagesController::class, 'catalog'])->name('catalog');
     Route::get('/catalog/show/{id}', [PagesController::class, 'catalog_detail'])->name('catalogDetail');
@@ -124,35 +103,23 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::post('/comments', [PagesController::class, 'comments'])->name('comments');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Route::post('/wishlist/{id}', [ProfileController::class, 'wishlist'])->name('wishlist');
-    // Route::post('/deleteWish/{id}', [ProfileController::class, 'deleteWish'])->name('deleteWish');
-    // Route::get('/cart', [PagesController::class, 'getCart'])->name('cart');
-    // Route::get('/cart/add/{id}', [PagesController::class, 'add_to_cart'])->name('addToCart');
-    // Route::get('/deleteCart/{id}', [PagesController::class, 'deleteCart'])->name('deleteCart');
-    // Route::post('/updateCart/{id}', [PagesController::class, 'updateCart'])->name('updateCart');
-    // Route::get('/reduceCart/{id}', [PagesController::class, 'getReduceCart'])->name('reduceCart');
-    Route::post('/wishlist/{id}', [UnderConstructionController::class, 'underConstruction']);
-    Route::post('/deleteWish/{id}', [UnderConstructionController::class, 'underConstruction']);
-    Route::get('/cart', [UnderConstructionController::class, 'underConstruction']);
-    Route::get('/cart/add/{id}', [UnderConstructionController::class, 'underConstruction']);
-    Route::get('/deleteCart/{id}', [UnderConstructionController::class, 'underConstruction']);
-    Route::post('/updateCart/{id}', [UnderConstructionController::class, 'underConstruction']);
-    Route::get('/reduceCart/{id}', [UnderConstructionController::class, 'underConstruction']);
+    Route::post('/wishlist/{id}', [ProfileController::class, 'wishlist'])->name('wishlist');
+    Route::post('/deleteWish/{id}', [ProfileController::class, 'deleteWish'])->name('deleteWish');
+    Route::get('/cart', [PagesController::class, 'getCart'])->name('cart');
+    Route::get('/cart/add/{id}', [PagesController::class, 'add_to_cart'])->name('addToCart');
+    Route::get('/deleteCart/{id}', [PagesController::class, 'deleteCart'])->name('deleteCart');
+    Route::post('/updateCart/{id}', [PagesController::class, 'updateCart'])->name('updateCart');
+    Route::get('/reduceCart/{id}', [PagesController::class, 'getReduceCart'])->name('reduceCart');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Route::post('/postCheckout/{id}', [CheckoutController::class, 'postCheckout'])->name('postCheckout');
-    Route::post('/postCheckout/{id}', [UnderConstructionController::class, 'underConstruction']);
+    Route::post('/postCheckout/{id}', [CheckoutController::class, 'postCheckout'])->name('postCheckout');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::resource('ratings', RatingsController::class);
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::group(['middleware' => ['auth', 'verified']], function () {
-        // Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-        // Route::get('/profile/show/{id}', [ProfileController::class, 'show'])->name('profileShow');
-        // Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profileEdit');
-        // Route::get('/profile/update/{id}', [ProfileController::class, 'update'])->name('profileUpdate');
-        Route::get('/profile', [UnderConstructionController::class, 'underConstruction']);
-        Route::get('/profile/show/{id}', [UnderConstructionController::class, 'underConstruction']);
-        Route::get('/profile/edit/{id}', [UnderConstructionController::class, 'underConstruction']);
-        Route::get('/profile/update/{id}', [UnderConstructionController::class, 'underConstruction']);
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+        Route::get('/profile/show/{id}', [ProfileController::class, 'show'])->name('profileShow');
+        Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profileEdit');
+        Route::get('/profile/update/{id}', [ProfileController::class, 'update'])->name('profileUpdate');
     });
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 });

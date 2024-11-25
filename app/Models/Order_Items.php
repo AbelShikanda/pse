@@ -14,8 +14,7 @@ class Order_Items extends Model
     */
     public function orders()
     {
-        return $this->belongsTo(Orders::class);
-        // return $this->belongsTo(Orders::class, 'order_id');
+        return $this->belongsTo(Orders::class, 'order_id');
     }
     
     /**
@@ -23,8 +22,7 @@ class Order_Items extends Model
     */
     public function products()
     {
-        return $this->belongsTo(Products::class);
-        // return $this->belongsTo(Products::class, 'product_id');
+        return $this->belongsTo(Products::class, 'product_id');
     }
     
     /**
