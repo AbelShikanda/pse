@@ -12,6 +12,7 @@ use App\Models\Contact;
 use App\Models\Contacts;
 use App\Models\ProductColors;
 use App\Models\ProductImages;
+use App\Models\Products;
 use App\Models\ProductSizes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -75,6 +76,9 @@ class PagesController extends Controller
         $images = ProductImages::with('products')->find($id);
         $colors = ProductColors::find($id);
         $sizes = ProductSizes::find($id);
+        $productId = $images->products[0]->id;
+        $product = Products::with('ratings')->findOrFail($productId);
+        $averageRating = $product->ratings->avg('rating') ?? 0;
 
         return view('pages.catalog_detail', with([
             'pageTitle' => $pageTitle,
@@ -87,6 +91,7 @@ class PagesController extends Controller
             'metaKeywords' => $images->products[0]->meta_keywords,
             'metaImage' => $images->thumbnail ? asset('storage/img/products/' . $images->thumbnail) : asset('default-meta-image.jpg'),
             'metaUrl' => route('catalogDetail', $images->id),
+            'averageRating' => $averageRating,
         ]));
     }
 
@@ -267,11 +272,11 @@ class PagesController extends Controller
             ['url' => '', 'label' => 'blog single'],
         ];
 
-        $blog = BlogImages::with(
+        $blog = BlogImages::with([
             'blogs',
             'blogs.blogCategories',
             'blogs.comments',
-        )
+        ])
             ->where('id', $id)
             ->orderBy('id', 'DESC')
             ->first();

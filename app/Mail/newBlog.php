@@ -3,7 +3,7 @@
 namespace App\Mail;
 
 use App\Models\BlogImages;
-use App\Models\Blogs;
+use App\Models\Blog;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,7 +16,7 @@ class newBlog extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public Blogs $blog;
+    public Blog $blog;
     public BlogImages $blogImages;
     public $user;
 
@@ -30,45 +30,17 @@ class newBlog extends Mailable
         $this->blogImages = $blogImages;
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Story Update',
-            from: 'info@printshopeld.com',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'emails.newBlog',
-            with: [
+        $email = $this->subject('Story Update')
+            ->from('info@printshopeld.com')
+            ->view('emails.newPost')
+            ->with([
                 'user' => $this->user,
                 'blog' => $this->blog,
                 'blogImages' => $this->blogImages,
-            ]
-        );
-    }
+            ]);
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [
-            // new Attachment(
-            //     path: storage_path('app/public/yourfile.pdf'),
-            //     as: 'Job_Approval_Document.pdf',
-            //     mime: 'application/pdf',
-            // ),
-            ];
+        return $email;
     }
 }

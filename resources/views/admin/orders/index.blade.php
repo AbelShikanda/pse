@@ -45,7 +45,7 @@
                                                         <small class="text-muted">Paid</small>
                                                     @else
                                                         <span class="badge badge-pill badge-danger mr-2">X</span>
-                                                        <small class="text-muted">Unconformed</small>
+                                                        <small class="text-muted">Unconfirmed</small>
                                                     @endif
                                                 </td>
                                                 <td>Ksh {{ $order->price }}</td>

@@ -32,7 +32,7 @@
 
                     <i class="ion-ios-plus-outline"></i>
 
-                    New Playlist
+                    Edit Profile
 
                 </a>
 
@@ -116,7 +116,7 @@
 
                         <div class="artist__navigation__friends">
 
-                            <div class="artist__listeners__label">Monthly</div>
+                            <div class="artist__listeners__label">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</div>
 
                             {{-- <a href="#">
                                 <img src="http://zblogged.com/wp-content/uploads/2015/11/17.jpg" alt="" />
@@ -229,7 +229,7 @@
 
                                     </div>
 
-                                    <button class="show-more button-light">Show 5 More</button>
+                                    {{-- <button class="show-more button-light">Show 5 More</button> --}}
                                     <!-- / -->
 
                                 </div>

@@ -26,7 +26,6 @@
 
     <!-- Favicons -->
     <link href="{{ asset('assets/img/logo.png') }}" rel="icon">
-    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.js"></script>
     <!-- Vendor CSS Files -->
@@ -45,6 +44,16 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RBL70XY3HX"></script>
+
+    {{-- <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "url": "https://www.printshopeld.com",
+          "name": "Print Shop ELd",
+          "logo": "https://www.printshopeld.com/assets/img/logo.png"
+        }
+    </script> --}}
 
     <!-- Scripts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

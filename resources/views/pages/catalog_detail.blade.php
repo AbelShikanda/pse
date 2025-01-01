@@ -14,15 +14,17 @@
                     <h1 class="title">{{ $images->products[0]->name }}</h1>
                     <span class="colorCat">{{ $images->products[0]->color[0]->name }}</span>
                     <div class="prices">
-                        <span class="before">{{ $images->products[0]->price * 1.1 }}</span>
-                        <span class="current">{{ $images->products[0]->price }}</span>
+                        <span class="before">{{ $images->products[0]->price }}</span>
+                        <span class="current">{{ $images->products[0]->price * 0.9 }}</span>
                     </div>
                     <div class="rate">
-                        <a href="#!" class="active">★</a>
-                        <a href="#!" class="active">★</a>
-                        <a href="#!" class="active">★</a>
-                        <a href="#!" class="active">★</a>
-                        <a href="#!">★</a>
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= floor($averageRating))
+                                <a href="#!" class="active">★</a>
+                            @else
+                                <a href="#!">★</a>
+                            @endif
+                        @endfor
                     </div>
                 </header>
                 <article>
@@ -44,8 +46,7 @@
                     </div>
                 </div>
                 <div class="footer">
-                    {{-- <a href="{{ route('addToCart', ['id' => $images->id]) }}" type="button"> --}}
-                    <a href="{{ route('underConstruction') }}" type="button">
+                    <a href="{{ route('addToCart', ['id' => $images->id]) }}" type="button">
                         <img src="http://co0kie.github.io/codepen/nike-product-page/cart.png" style="width:20px;" alt="">
                         <span>add to cart</span>
                     </a>

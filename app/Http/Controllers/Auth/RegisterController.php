@@ -85,9 +85,9 @@ class RegisterController extends Controller
         
         $email = Admin::where('is_admin', 1)->pluck('email');
     
-        Mail::to('printshopeld@gmail.com')
-        ->bcc($email)
-        ->send(new newAccount($user));
+        // Mail::to('printshopeld@gmail.com')
+        // ->bcc($email)
+        // ->send(new newAccount($user));
 
         return $user;
     }

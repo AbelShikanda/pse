@@ -131,7 +131,7 @@
                             <span class="ico-circle"><i class="bi bi-check"></i></span>
                         </div>
                         <div class="counter-num">
-                            <p data-purecounter-start="0" data-purecounter-end="450" data-purecounter-duration="1"
+                            <p data-purecounter-start="0" data-purecounter-end="14000" data-purecounter-duration="1"
                                 class="counter purecounter"></p>
                             <span class="counter-text">WORKS COMPLETED</span>
                         </div>
@@ -143,7 +143,7 @@
                             <span class="ico-circle"><i class="bi bi-journal-richtext"></i></span>
                         </div>
                         <div class="counter-num">
-                            <p data-purecounter-start="0" data-purecounter-end="25" data-purecounter-duration="1"
+                            <p data-purecounter-start="0" data-purecounter-end="7" data-purecounter-duration="1"
                                 class="counter purecounter"></p>
                             <span class="counter-text">YEARS OF EXPERIENCE</span>
                         </div>
@@ -155,7 +155,7 @@
                             <span class="ico-circle"><i class="bi bi-people"></i></span>
                         </div>
                         <div class="counter-num">
-                            <p data-purecounter-start="0" data-purecounter-end="550" data-purecounter-duration="1"
+                            <p data-purecounter-start="0" data-purecounter-end="1125" data-purecounter-duration="1"
                                 class="counter purecounter"></p>
                             <span class="counter-text">TOTAL CLIENTS</span>
                         </div>
@@ -167,7 +167,7 @@
                             <span class="ico-circle"><i class="bi bi-geo-alt"></i></span>
                         </div>
                         <div class="counter-num">
-                            <p data-purecounter-start="0" data-purecounter-end="48" data-purecounter-duration="1"
+                            <p data-purecounter-start="0" data-purecounter-end="14" data-purecounter-duration="1"
                                 class="counter purecounter"></p>
                             <span class="counter-text">COUNTIES</span>
                         </div>

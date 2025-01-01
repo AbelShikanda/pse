@@ -168,7 +168,7 @@ class BlogImageController extends Controller
             $image = $manager->make($file->getPathname());
 
             // Resize and crop the image to a 2:3 aspect ratio (800x1200)
-            $croppedImage = $image->resize(1001, 667);
+            $croppedImage = $image->resize(1011, 667);
 
             if (!Storage::disk('public')->exists('img/blogs')) {
                 Storage::disk('public')->makeDirectory('img/blogs');

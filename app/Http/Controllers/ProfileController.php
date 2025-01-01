@@ -43,7 +43,7 @@ class ProfileController extends Controller
         $related_product_ids = $related_products->pluck('id');
         $related = ProductImages::whereIn('products_id', $related_product_ids)->take(6)->get();
 
-        $orders = Orders::with('orderItems', 'orderItems.products')->where('user_id', $user->id)->get();
+        $orders = Orders::with('orderItems', 'orderItems.products')->where('user_id', $user->id)->latest()->get();
         $orders->transform(function ($order, $key) {
             $order->cart = unserialize($order->tracking_No);
             return $order;
@@ -106,96 +106,4 @@ class ProfileController extends Controller
 
         return redirect()->route('profile')->with('message', 'The item has been deleted Successfully.');
     }
-
-    // public function profileEdit(Request $request, $id)
-    // {
-    //     $user = $request->validate([
-    //         'user_name' => 'string|max:255',
-    //         'first_name' => 'string|max:255',
-    //         'last_name' => 'string|max:255',
-    //         'email' => 'string|email|max:255',
-    //         'phone' => 'string|max:255',
-    //         'town' => 'string|max:255',
-    //         'estate' => 'string|max:255',
-    //         'landmark' => 'string|max:255',
-    //         'house_no' => 'string|max:255',
-    //     ]);
-
-    //     try {
-    //         DB::beginTransaction();
-
-    //         $user = User::where('id', $id)->update([
-
-    //             'user_name' => $request->input('user_name'),
-    //             'first_name' => $request->input('first_name'),
-    //             'last_name' => $request->input('last_name'),
-    //             'email' => $request->input('email'),
-    //             'phone' => $request->input('phone'),
-    //             'town' => $request->input('town'),
-    //             'estate' => $request->input('estate'),
-    //             'landmark' => $request->input('landmark'),
-    //             'house_no' => $request->input('house_no'),
-    //         ]);
-
-    //         if (!$user) {
-    //             DB::rollBack();
-
-    //             return back()->with('message', 'Something went wrong while saving user data');
-    //         }
-
-    //         DB::commit();
-    //         return redirect()->route('profile')->with('message', 'Your information has been updatad Successfully.');
-    //     } catch (\Throwable $th) {
-    //         DB::rollBack();
-    //         throw $th;
-    //     }
-    // }
-
-    // /**
-    //  * Show the form for creating a new resource.
-    //  */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Display the specified resource.
-    //  */
-    // public function show($id)
-    // {
-    //     return view('profile.show');
-    // }
-
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  */
-    // public function edit($id)
-    // {
-    //     return view('profile.edit');
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, string $id)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(string $id)
-    // {
-    //     //
-    // }
 }

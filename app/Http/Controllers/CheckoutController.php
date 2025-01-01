@@ -25,51 +25,6 @@ class CheckoutController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    // public function checkout()
-    // {
-    //     $user = Auth::user();
-    //     $user_name = Auth::user()->user_name;
-    //     $first_name = Auth::user()->first_name;
-    //     $last_name = Auth::user()->last_name;
-    //     $email = Auth::user()->email;
-    //     $phone = Auth::user()->phone;
-    //     $landmark = Auth::user()->landmark;
-    //     $house_no = Auth::user()->house_no;
-    //     $town = Auth::user()->town;
-    //     $estate = Auth::user()->estate;
-    //     $order = Auth::user()->orders;
-    //     $order->transform(function($orders, $key) {
-    //         $orders->cart = unserialize($orders->tracking_No);
-    //         return $orders;
-    //     });
-
-    //     // $pid = Wishlist::where('user_id', $user->id)->pluck('products_id');
-    //     // $wish = Products::with(['ProductImage', 'Size', 'Color'])
-    //     // ->whereIn('id', $pid)
-    //     // ->get();
-
-    //     if(!Session::has('cart')) {
-    //         return View('users/pages/cart');
-    //     }
-    //     $oldCart = Session::get('cart');
-    //     $cart = new Cart($oldCart);
-    //     $total = $cart->totalPrice;
-    //     $products = $cart->items;
-    //     $totalPrice = $cart->totalPrice;
-    //     $shipping = 300;
-
-    //     return view('users/pages/checkout', compact('total', 'products', 'totalPrice', 'shipping', 'user', 
-    //                                                 'order', 'town', 'estate', 'wish', 'user_name', 'first_name', 
-    //                                                 'last_name', 'email', 'phone', 'landmark', 'house_no'
-    //                                             )
-    //                 );
-    // }
-
     public function postCheckout(Request $request, $id)
     {
         if (!Session::has('cart')) {
@@ -81,8 +36,7 @@ class CheckoutController extends Controller
         $cart = new Cart($oldCart);
 
         $request->validate([
-            // 'mpesa_ref' => 'alpha_num|unique:orders|max:10|min:10',
-            'mpesa_ref' => '',
+            'mpesa_ref' => 'alpha_num|unique:orders,reference|max:10|min:10',
             'total' => '',
             'first_name' => '',
             'last_name' => '',
@@ -96,7 +50,7 @@ class CheckoutController extends Controller
         $order = new Orders();
         $order->tracking_No = serialize($cart);
         $order->price = $request->total;
-        $order->reference = 'SJ48VKFUQQ';
+        $order->reference = $request->total; //'SJ48VKFUQQ';
         $order->user_id = Auth::user()->uuid;
 
         Auth::user()->order()->save($order);

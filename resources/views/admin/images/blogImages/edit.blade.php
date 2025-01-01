@@ -51,8 +51,7 @@
                                                 <label for="validationCustom01">Image</label>
                                                 <div class="input-group">
                                                     <input class="file-path validate form-control" id="validationCustom01"
-                                                        name="filepath" type="file" placeholder="Select file to upload"
-                                                        required>
+                                                        name="filepath" type="file" placeholder="Select file to upload">
                                                 </div>
                                                 <div class="valid-feedback"> Looks good! </div>
                                             </div>
