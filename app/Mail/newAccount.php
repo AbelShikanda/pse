@@ -15,20 +15,12 @@ use Illuminate\Queue\SerializesModels;
 class newAccount extends Mailable
 {
     use Queueable, SerializesModels;
-
-<<<<<<< HEAD
     public $user;
 
     /**
      * Create a new message instance.
      */
     public function __construct(User $user)
-=======
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(public User $user)
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
     {
         $this->user = $user;
     }
@@ -37,11 +29,7 @@ class newAccount extends Mailable
     {
         $email = $this->subject('Welcome to PrintShopEld')
             ->from('info@printshopeld.com')
-<<<<<<< HEAD
             ->markdown('emails.newAccount') 
-=======
-            ->view('emails.newPost')
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
             ->with([
                 'first_name' => $this->user->first_name,
                 'last_name' => $this->user->last_name,

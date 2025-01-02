@@ -26,10 +26,6 @@
 
     <!-- Favicons -->
     <link href="{{ asset('assets/img/logo.png') }}" rel="icon">
-<<<<<<< HEAD
-=======
-    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
 
     <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.js"></script>
     <!-- Vendor CSS Files -->
@@ -48,8 +44,6 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RBL70XY3HX"></script>
-
-<<<<<<< HEAD
     {{-- <script type="application/ld+json">
         {
           "@context": "https://schema.org",
@@ -60,8 +54,6 @@
         }
     </script> --}}
 
-=======
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
     <!-- Scripts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     

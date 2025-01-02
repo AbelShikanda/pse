@@ -142,12 +142,7 @@
                                     Leave a Comment
                                 </h3>
                             </div>
-<<<<<<< HEAD
                             <form class="form-mf" action="#" method="POST" role="form">
-=======
-                            <form class="form-mf" action="{{ route('underConstruction') }}" method="POST" role="form">
-                            {{-- <form class="form-mf" action="{{ route('comments') }}" method="POST" role="form"> --}}
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
                                 @csrf
                                 @method('post')
                                 <div class="row">
@@ -162,16 +157,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-<<<<<<< HEAD
                                         {{-- <button type="submit" class="button button-a button-big button-rouded">Send
                                             Message</button> --}}
 
                                         <a class="button button-a button-big button-rouded"
                                             href="{{ route('underConstruction') }}"></a>
-=======
-                                        <button type="submit" class="button button-a button-big button-rouded">Send
-                                            Message</button>
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
                                     </div>
                                 </div>
                             </form>

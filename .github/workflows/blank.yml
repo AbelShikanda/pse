@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 
-=======
-# This is a basic workflow to help you get started with Actions
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
 
 name: CI
 
@@ -349,11 +345,7 @@ jobs:
     name: Clean-up
     runs-on: ubuntu-latest
     needs:
-<<<<<<< HEAD
       [web-deploy, ssh-release, run-befor-hook, activate-release, migrations-run, run-after-hook]
-=======
-      [web-deploy, ssh-release, run-befor-hook, activate-release, migrations-run, run-after-hook, ]
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
     steps:
       - name: run-clean-up
         uses: appleboy/ssh-action@master

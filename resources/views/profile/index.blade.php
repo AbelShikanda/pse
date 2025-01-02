@@ -25,30 +25,16 @@
                 <!-- / -->
 
             </section>
-
-<<<<<<< HEAD
             <section class="playlist">
-=======
-            {{-- <section class="playlist">
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
 
                 <a href="#">
 
                     <i class="ion-ios-plus-outline"></i>
-
-<<<<<<< HEAD
                     Edit Profile
 
                 </a>
 
             </section>
-=======
-                    New Playlist
-
-                </a>
-
-            </section> --}}
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
 
         </div>
 
@@ -127,12 +113,7 @@
                         </div>
 
                         <div class="artist__navigation__friends">
-
-<<<<<<< HEAD
                             <div class="artist__listeners__label">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</div>
-=======
-                            <div class="artist__listeners__label">Monthly</div>
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
 
                             {{-- <a href="#">
                                 <img src="http://zblogged.com/wp-content/uploads/2015/11/17.jpg" alt="" />

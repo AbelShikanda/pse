@@ -2,10 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
 use App\Http\Controllers\Api\ScheduleController;
-=======
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +15,6 @@ use App\Http\Controllers\Api\ScheduleController;
 |
 */
 
-<<<<<<< HEAD
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
@@ -29,8 +25,3 @@ use App\Http\Controllers\Api\ScheduleController;
 // Route::get('/test', function () {
 //     return response()->json(['message' => 'API routes are working!']);
 // });
-=======
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
->>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
