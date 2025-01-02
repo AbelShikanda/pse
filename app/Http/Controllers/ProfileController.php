@@ -43,7 +43,11 @@ class ProfileController extends Controller
         $related_product_ids = $related_products->pluck('id');
         $related = ProductImages::whereIn('products_id', $related_product_ids)->take(6)->get();
 
+<<<<<<< HEAD
         $orders = Orders::with('orderItems', 'orderItems.products')->where('user_id', $user->id)->latest()->get();
+=======
+        $orders = Orders::with('orderItems', 'orderItems.products')->where('user_id', $user->id)->get();
+>>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
         $orders->transform(function ($order, $key) {
             $order->cart = unserialize($order->tracking_No);
             return $order;

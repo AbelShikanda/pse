@@ -95,7 +95,11 @@
                                             <small class="text-muted">Paid</small>
                                         @else
                                             <span class="badge badge-pill badge-danger mr-2">X</span>
+<<<<<<< HEAD
                                             <small class="text-muted">Unconfirmed</small>
+=======
+                                            <small class="text-muted">Unconformed</small>
+>>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
                                         @endif
                                     </td>
                                     <td>{{ $orders->created_at }}</td>

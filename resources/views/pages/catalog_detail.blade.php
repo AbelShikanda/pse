@@ -14,6 +14,7 @@
                     <h1 class="title">{{ $images->products[0]->name }}</h1>
                     <span class="colorCat">{{ $images->products[0]->color[0]->name }}</span>
                     <div class="prices">
+<<<<<<< HEAD
                         <span class="before">{{ $images->products[0]->price }}</span>
                         <span class="current">{{ $images->products[0]->price * 0.9 }}</span>
                     </div>
@@ -25,6 +26,17 @@
                                 <a href="#!">★</a>
                             @endif
                         @endfor
+=======
+                        <span class="before">{{ $images->products[0]->price * 1.1 }}</span>
+                        <span class="current">{{ $images->products[0]->price }}</span>
+                    </div>
+                    <div class="rate">
+                        <a href="#!" class="active">★</a>
+                        <a href="#!" class="active">★</a>
+                        <a href="#!" class="active">★</a>
+                        <a href="#!" class="active">★</a>
+                        <a href="#!">★</a>
+>>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
                     </div>
                 </header>
                 <article>

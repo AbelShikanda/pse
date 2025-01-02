@@ -7,8 +7,13 @@
             <hr>
         </div>
         <div class = "items price">
+<<<<<<< HEAD
             <p class="old">Ksh {{ $item->products[0]->price}}</p>
             <p class="new">Ksh {{ $item->products[0]->price * 0.9 }}</p>
+=======
+            <p class="old">Ksh {{ $item->products[0]->price * 1.15}}</p>
+            <p class="new">Ksh {{ $item->products[0]->price }}</p>
+>>>>>>> 13b75d815679ffd73381c0dfde26250cc365014e
         </div>
         <div class="items cart">
             <i class="bi bi-view-list"></i>
