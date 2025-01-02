@@ -58,7 +58,6 @@ Route::group(['prefix' => '/admin'], function () {
     Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('postLogin');
     Route::post('/logout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
     Route::resource('dashboard', DashboardController::class)->middleware('adminauth');
-    Route::get('/schedules', [DashboardController::class, 'schedules'])->name('schedules');
 });
 
 Route::group(['middleware' => 'adminauth'], function () {

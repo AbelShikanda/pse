@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +16,4 @@ use App\Http\Controllers\Api\ScheduleController;
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
-// });
-
-// Route::get('/schedules/{type}', [ScheduleController::class, 'fetchSchedulesByType']); // Fetch all schedules
-// Route::post('/update_schedule', [ScheduleController::class, 'update']); // Update a schedule
-
-// Route::get('/test', function () {
-//     return response()->json(['message' => 'API routes are working!']);
 // });
