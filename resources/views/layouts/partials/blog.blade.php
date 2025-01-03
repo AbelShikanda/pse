@@ -15,7 +15,7 @@
             @foreach ($blog->blogs as $item)
                 <li class="date">{{ $item->created_at }}</li>
             @endforeach
-            <li><a href="{{ route('blogSingle', $blog->id) }}"><i class="bi bi-arrow-right-circle-fill px-2"></i>More</a></li>
+            <li><a href="{{ route('blogSingle', $blog->blogs[0]->slug) }}"><i class="bi bi-arrow-right-circle-fill px-2"></i>More</a></li>
         </ul>
     </div><!--/.utility-info-->
     <!--overlays-->

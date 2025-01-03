@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\newComment;
 use App\Mail\newContact;
 use App\Models\Admin;
+use App\Models\Blog;
 use App\Models\BlogImages;
 use App\Models\Cart;
 use App\Models\Comments;
@@ -65,32 +66,33 @@ class PagesController extends Controller
      * @param  Parameter type  Parameter name Description of the parameter (optional)
      * @return Return type Description of the return value (optional)
      */
-    public function catalog_detail($id)
+    public function catalog_detail($slug)
     {
         $pageTitle = 'Catalog Detail';
         $breadcrumbLinks = [
             ['url' => '/', 'label' => 'Home'],
             ['url' => '', 'label' => 'catalog detail'],
         ];
-
-        $images = ProductImages::with('products')->find($id);
-        $colors = ProductColors::find($id);
-        $sizes = ProductSizes::find($id);
-        $productId = $images->products[0]->id;
-        $product = Products::with('ratings')->findOrFail($productId);
+        
+        $product = Products::with(['ProductImage', 'ratings', 'Color', 'Size'])->where('slug', $slug)->firstOrFail();
+    
+        $images = $product->ProductImage;
+        $colors = $product->Color; 
+        $sizes = $product->Size;  
         $averageRating = $product->ratings->avg('rating') ?? 0;
+        // dd($product);
 
         return view('pages.catalog_detail', with([
             'pageTitle' => $pageTitle,
             'breadcrumbLinks' => $breadcrumbLinks,
-            'images' => $images,
+            'product' => $product,
             'colors' => $colors,
             'sizes' => $sizes,
-            'metaTitle' => $images->products[0]->meta_title,
-            'metaDescription' => $images->products[0]->meta_description,
-            'metaKeywords' => $images->products[0]->meta_keywords,
-            'metaImage' => $images->thumbnail ? asset('storage/img/products/' . $images->thumbnail) : asset('default-meta-image.jpg'),
-            'metaUrl' => route('catalogDetail', $images->id),
+            'metaTitle' => $product->meta_title,
+            'metaDescription' => $product->meta_description,
+            'metaKeywords' => $product->meta_keywords,
+            'metaImage' => $product->ProductImage[0]->thumbnail ? asset('storage/img/products/' . $product->ProductImage[0]->thumbnail) : asset('default-meta-image.jpg'),
+            'metaUrl' => route('catalogDetail', $product->slug),
             'averageRating' => $averageRating,
         ]));
     }
@@ -244,6 +246,7 @@ class PagesController extends Controller
             ['url' => '/', 'label' => 'Home'],
             ['url' => '', 'label' => 'blog'],
         ];
+        
         $blogs = BlogImages::with('blogs')->orderBy('id', 'DESC')->get();
         // dd($blogs);
 
@@ -264,37 +267,26 @@ class PagesController extends Controller
      * @param  Parameter type  Parameter name Description of the parameter (optional)
      * @return Return type Description of the return value (optional)
      */
-    public function blog_single($id)
+    public function blog_single($slug)
     {
         $pageTitle = 'Single Stories';
         $breadcrumbLinks = [
             ['url' => '/', 'label' => 'Home'],
             ['url' => '', 'label' => 'blog single'],
         ];
-
-        $blog = BlogImages::with([
-            'blogs',
-            'blogs.blogCategories',
-            'blogs.comments',
-        ])
-            ->where('id', $id)
-            ->orderBy('id', 'DESC')
-            ->first();
-            
-        $comments = Comments::with('blog', 'user')->where('blog_id', $id)
-            ->orderBy('id', 'DESC')
-            ->get();
+        
+        $blog = Blog::with(['BlogImage', 'blogCategories', 'comments'])->where('slug', $slug)->firstOrFail();
+        // dd($blog);
 
         return view('pages.blog_single', with([
             'pageTitle' => $pageTitle,
             'breadcrumbLinks' => $breadcrumbLinks,
             'blog' => $blog,
-            'comments' => $comments,
-            'metaTitle' => $blog->blogs[0]->meta_title,
-            'metaDescription' => $blog->blogs[0]->meta_description,
-            'metaKeywords' => $blog->blogs[0]->meta_keywords,
-            'metaImage' => $blog->thumbnail ? asset('storage/img/blogs/' . $blog->thumbnail) : asset('default-meta-image.jpg'),
-            'metaUrl' => route('blogSingle', $blog->id),
+            'metaTitle' => $blog->meta_title,
+            'metaDescription' => $blog->meta_description,
+            'metaKeywords' => $blog->meta_keywords,
+            'metaImage' => $blog->BlogImage[0]->thumbnail ? asset('storage/img/blogs/' . $blog->BlogImage[0]->thumbnail) : asset('default-meta-image.jpg'),
+            'metaUrl' => route('blogSingle', $blog->slug),
         ]));
     }
 

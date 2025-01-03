@@ -12,7 +12,7 @@
         </div>
         <div class="items cart">
             <i class="bi bi-view-list"></i>
-            <a href="{{ route('catalogDetail', $item->id) }}"><span>VIEW</span></a>
+            <a href="{{ route('catalogDetail', $item->products[0]->slug) }}"><span>VIEW</span></a>
             <br><br>
             <i class="bi bi-cart"></i>
             <a href="{{ route('addToCart', $item->id) }}"><span>ADD TO CART</span></a>

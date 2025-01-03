@@ -92,10 +92,10 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     Route::redirect('/home', '/');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::get('/catalog', [PagesController::class, 'catalog'])->name('catalog');
-    Route::get('/catalog/show/{id}', [PagesController::class, 'catalog_detail'])->name('catalogDetail');
+    Route::get('/catalog/show/{slug}', [PagesController::class, 'catalog_detail'])->name('catalogDetail');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::get('/blog', [PagesController::class, 'blog'])->name('blog');
-    Route::get('/blog/single/{id}', [PagesController::class, 'blog_single'])->name('blogSingle');
+    Route::get('/blog/single/{slug}', [PagesController::class, 'blog_single'])->name('blogSingle');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::get('/contacts', [PagesController::class, 'contacts'])->name('contacts');
     Route::post('/contact/store', [PagesController::class, 'contactStore'])->name('contactStore');

@@ -7,15 +7,15 @@
     <section id="portfolio-details" class="portfolio-details">
         <div class="container-blog mt-5 mb-5">
             <div class="product-image">
-                <img src="{{ asset('storage/img/products/' . $images->thumbnail) }}" alt="" class="product-pic">
+                <img src="{{ asset('storage/img/products/' . $product->ProductImage[0]->thumbnail) }}" alt="" class="product-pic">
             </div>
             <div class="product-details">
                 <header>
-                    <h1 class="title">{{ $images->products[0]->name }}</h1>
-                    <span class="colorCat">{{ $images->products[0]->color[0]->name }}</span>
+                    <h1 class="title">{{ $product->name }}</h1>
+                    <span class="colorCat">{{ $product->color[0]->name }}</span>
                     <div class="prices">
-                        <span class="before">{{ $images->products[0]->price }}</span>
-                        <span class="current">{{ $images->products[0]->price * 0.9 }}</span>
+                        <span class="before">{{ $product->price }}</span>
+                        <span class="current">{{ $product->price * 0.9 }}</span>
                     </div>
                     <div class="rate">
                         @for ($i = 1; $i <= 5; $i++)
@@ -29,16 +29,16 @@
                 </header>
                 <article>
                     <h5>Description</h5>
-                    <p>{{ $images->products[0]->description }}</p>
+                    <p>{{ $product->description }}</p>
                 </article>
                 <div class="controls">
                     <div class="color">
                         <h5>color</h5>
-                        <a href="#!">{{ $images->products[0]->color[0]->name }}</a>
+                        <a href="#!">{{ $product->color[0]->name }}</a>
                     </div>
                     <div class="size">
                         <h5>size</h5>
-                        <a href="#!">{{ $images->products[0]->size[0]->name }}</a>
+                        <a href="#!">{{ $product->size[0]->name }}</a>
                     </div>
                     <div class="qty">
                         <h5>qty</h5>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="footer">
-                    <a href="{{ route('addToCart', ['id' => $images->id]) }}" type="button">
+                    <a href="{{ route('addToCart', ['id' => $product->ProductImage[0]->id]) }}" type="button">
                         <img src="http://co0kie.github.io/codepen/nike-product-page/cart.png" style="width:20px;" alt="">
                         <span>add to cart</span>
                     </a>
