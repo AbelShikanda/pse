@@ -44,6 +44,7 @@ class UpdateBladeFile extends Command
                 'files' => [
                     resource_path('views/admin/images/productImages/index.blade.php'),
                     resource_path('views/admin/images/productImages/edit.blade.php'),
+                    resource_path('views/admin/dashboard/dashboard.blade.php'),
                     resource_path('views/layouts/partials/catalog.blade.php'),
                     resource_path('views/pages/catalog_detail.blade.php'),
                     resource_path('views/pages/cart.blade.php'),

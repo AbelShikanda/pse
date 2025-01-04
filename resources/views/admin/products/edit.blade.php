@@ -111,7 +111,7 @@
                                         <div
                                             class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                             <input name="whatsapp" type="checkbox" class="custom-control-input" id="customSwitch1"
-                                            @checked(old('whatsapp', $products->whatsapp))>
+                                            {{ old('whatsapp', $products->whatsapp) ? 'checked' : '' }}>
                                             <label class="custom-control-label" for="customSwitch1">posted on whatsapp</label>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@
                                         <div
                                             class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                             <input name="telegram" type="checkbox" class="custom-control-input" id="customSwitch2"
-                                            @checked(old('whatsapp', $products->telegram))>
+                                            {{ old('whatsapp', $products->whatsapp) ? 'checked' : '' }}>
                                             <label class="custom-control-label" for="customSwitch2">Posted on Telegram</label>
                                         </div>
                                     </div>
@@ -127,7 +127,7 @@
                                         <div
                                             class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                             <input name="website" type="checkbox" class="custom-control-input" id="customSwitch3"
-                                            @checked(old('whatsapp', $products->website))>
+                                            {{ old('whatsapp', $products->whatsapp) ? 'checked' : '' }}>
                                             <label class="custom-control-label" for="customSwitch3">posted on the Site</label>
                                         </div>
                                     </div>
@@ -135,7 +135,7 @@
                                         <div
                                             class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                             <input name="promotion" type="checkbox" class="custom-control-input" id="customSwitch4"
-                                            @checked(old('whatsapp', $products->promotion))>
+                                            {{ old('whatsapp', $products->whatsapp) ? 'checked' : '' }}>
                                             <label class="custom-control-label" for="customSwitch4">Has Promotion</label>
                                         </div>
                                     </div>

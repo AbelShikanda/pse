@@ -88,18 +88,11 @@
                                                 <tr id="collap-{{ $orderId }}" class="collapse in p-3 bg-light">
                                                     <td colspan="8">
                                                         <dl class="row mb-0 mt-1">
-                                                            <dt class="col-sm-3">
-                                                                {{ Str::words($item->products->name, 3, '...') }}</dt>
-                                                            @foreach ($item->products->producttype as $type)
-                                                                <dt class="col-sm-3">
-                                                                    {{ Str::words($type->name, 3, '...') }}</dt>
-                                                            @endforeach
-                                                            @foreach ($item->products->color as $colors)
-                                                                <dt class="col-sm-2">{{ $colors->name }}</dt>
-                                                            @endforeach
-                                                            @foreach ($item->products->size as $sizes)
-                                                                <dt class="col-sm-2">{{ $sizes->name }}</dt>
-                                                            @endforeach
+                                                            <dt class="col-sm-2"><img src="{{ asset('storage/img/products/'.$item->products->ProductImage[0]->thumbnail) }}" style="width:40px;" alt="image"></dt>
+                                                            <dt class="col-sm-2">{{ Str::words($item->products->name, 3, '...') }}</dt>
+                                                            <dt class="col-sm-2">{{ Str::words($item->products->producttype[0]->name, 3, '...') }}</dt>
+                                                            <dt class="col-sm-2">{{ $item->products->color[0]->name }}</dt>
+                                                            <dt class="col-sm-2">{{ $item->products->size[0]->name }}</dt>
                                                             <dt class="col-sm-2">{{ $item->quantity }}</dt>
                                                         </dl>
                                                     </td>

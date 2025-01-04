@@ -23,6 +23,7 @@ class OrdersController extends Controller
             'orderItems.products.producttype',
             'orderItems.products.color',
             'orderItems.products.size',
+            'orderItems.products.ProductImage',
         ])
         ->orderBy('created_at', 'DESC')
         ->get();
@@ -30,18 +31,17 @@ class OrdersController extends Controller
         // $users = User::latest()->get();
 
         // foreach ($orders as $order) {
-        //     foreach ($order->orderItems as $items) {
-        //             dump($items->products->producttype);
-        //         foreach ($items->products as $prods) {
-        //                 // dump($prods->name);
-        //         }
-        //     }
+        //     dump($order);
+            // foreach ($order->orderItems as $items) {
+            //         dump($items->products->producttype);
+            //     foreach ($items->products as $prods) {
+            //             dump($prods->name);
+            //     }
+            // }
         // }
 
         return view('admin.orders.index', with([
             'orders' => $orders,
-            // 'ordersItems' => $ordersItems,
-            // 'users' => $users,
         ]));
     }
 

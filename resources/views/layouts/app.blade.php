@@ -44,7 +44,7 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RBL70XY3HX"></script>
-    {{-- <script type="application/ld+json">
+    <script type="application/ld+json">
         {
           "@context": "https://schema.org",
           "@type": "Organization",
@@ -52,7 +52,7 @@
           "name": "Print Shop ELd",
           "logo": "https://www.printshopeld.com/assets/img/logo.png"
         }
-    </script> --}}
+    </script>
 
     <!-- Scripts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

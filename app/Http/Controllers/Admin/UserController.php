@@ -13,10 +13,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->get();
-        return view('admin.users.index', with([
+        $users = User::orderBy('updated_at', 'desc')->get();
+        return view('admin.users.index', [
             'users' => $users,
-        ]));
+        ]);
     }
 
     /**

@@ -1,5 +1,5 @@
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<p align="center"><a href="https://printshopeld.com" target="_blank"><img src="https://printshopeld.com/assets/img/logo.png" width="400"></a></p>
 
 <p align="center">
 
@@ -8,8 +8,8 @@
 ## **Clothing Retail Web Application**
 
 <p align="center">
-<img src="https://github.com/valentinovaletta/finnish/actions/workflows/CICD.yml/badge.svg?branch=master">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<img src="https://github.com/valentinovaletta/finnish/actions/workflows/main.yml/badge.svg?branch=master" alt="GitHub Actions Status">
+<a href="https://github.com/valentinovaletta/finnish"><img src="https://img.shields.io/github/actions/workflow/status/valentinovaletta/finnish/CI.yml?branch=master" alt="CI Status"><a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
