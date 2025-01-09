@@ -16,8 +16,6 @@
 <body>
     <h1>A new user is enquiring</h1>
 
-    <p>Hi Printshopeld, you have a new contact reaching out.</p>
-
     <div style="padding: 10px; border: 1px solid #ddd;">
         <table width="100%" cellpadding="10" cellspacing="0" style="border-collapse: collapse; border: 1px solid #ddd;">
             <thead>

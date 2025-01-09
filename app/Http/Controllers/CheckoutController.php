@@ -82,9 +82,9 @@ class CheckoutController extends Controller
         $user = User::where('id', $order->user_id)->first();
         // dd($image);
 
-        // Mail::to($email)
-        //     ->bcc('printshopeld@gmail.com')
-        //     ->send(new newCheckout($order, $image, $user));
+        Mail::to($email)
+            ->bcc('printshopeld@gmail.com')
+            ->send(new newCheckout($order, $image, $user));
 
 
 

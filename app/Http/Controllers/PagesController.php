@@ -356,9 +356,9 @@ class PagesController extends Controller
             $email = Admin::where('is_admin', 1)->pluck('email');
             $contacts = Contacts::where('id', $contacts->id)->first();
 
-            // Mail::to('printshopeld@gmail.com')
-            //     ->bcc($email)
-            //     ->send(new newContact($contacts));
+            Mail::to('printshopeld@gmail.com')
+                ->bcc($email)
+                ->send(new newContact($contacts));
 
             DB::commit();
             return redirect()->back()->with([

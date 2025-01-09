@@ -1,8 +1,6 @@
 
 @component('mail::message')
-    # Hello, {{ $first_name }} {{ $last_name }}
-
-    Thank you for signing up!
+    # New user just signed up!
 
     @component('mail::button', ['url' => url('/users/' . $user_id)])
         View Profile

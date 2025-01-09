@@ -55,13 +55,19 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\-]+$/'],
+            'last_name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\-]+$/'],
             'phone' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'town' => ['required', 'string', 'max:255'],
-            'location' => ['required', 'string', 'max:255'],
+            'town' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\-]+$/'],
+            'location' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z0-9\s\-]+$/'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ], [
+            'first_name.regex' => 'The first name may only contain letters, spaces, and hyphens.',
+            'last_name.regex' => 'The last name may only contain letters, spaces, and hyphens.',
+            'phone.regex' => 'The phone number must be a valid international number (e.g., +1234567890).',
+            'town.regex' => 'The town may only contain letters, spaces, and hyphens.',
+            'location.regex' => 'The location may only contain letters, numbers, spaces, and hyphens.',
         ]);
     }
 
@@ -83,10 +89,10 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
         
-        $email = Admin::where('is_admin', 1)->pluck('email');
-        // Mail::to('printshopeld@gmail.com')
-        // ->bcc($email)
-        // ->send(new newAccount($user));
+        $admin = Admin::where('is_admin', 1)->pluck('email');
+        Mail::to('printshopeld@gmail.com')
+        ->bcc($admin)
+        ->send(new newAccount($user));
 
         return $user;
     }

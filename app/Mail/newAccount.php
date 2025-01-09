@@ -27,14 +27,10 @@ class newAccount extends Mailable
 
     public function build()
     {
-        $email = $this->subject('Welcome to PrintShopEld')
+        $email = $this->subject('New Account Created')
             ->from('info@printshopeld.com')
             ->markdown('emails.newAccount') 
             ->with([
-                'first_name' => $this->user->first_name,
-                'last_name' => $this->user->last_name,
-                'gender' => $this->user->gender,
-                'location' => $this->user->location,
                 'user_id' => $this->user->id,
             ]);
 

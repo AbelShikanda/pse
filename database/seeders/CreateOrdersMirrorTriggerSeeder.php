@@ -83,34 +83,35 @@ class CreateOrdersMirrorTriggerSeeder extends Seeder
             BEGIN
                 DECLARE action_type VARCHAR(50);
                 SET action_type = "update";
-                INSERT INTO order_mirrors (
-                    id, order_items_id, user_id, product_id, quantity, price, reference,
-                    complete, updated_by, change_type, changed_at
-                )
-                VALUES (
-                    NEW.id, NULL, NEW.user_id, NULL, NULL, NEW.price, NEW.reference,
-                    NEW.complete, user(), action_type, NOW()
-                );
+                
+                UPDATE order_mirrors
+                SET 
+                    complete = NEW.complete,
+                    updated_by = user(),
+                    change_type = action_type,
+                    changed_at = NOW()
+                WHERE order_id = NEW.id;
             END;
         ');
 
-        DB::unprepared('DROP TRIGGER IF EXISTS trg_order_mirror_update');
+        DB::unprepared('DROP TRIGGER IF EXISTS trg_order_mirror_update_items');
         DB::unprepared('
-            CREATE TRIGGER trg_order_mirror_update
+            CREATE TRIGGER trg_order_mirror_update_items
             AFTER UPDATE ON order__items
             FOR EACH ROW
             BEGIN
                 DECLARE action_type VARCHAR(50);
                 SET action_type = "update";
-                INSERT INTO order_mirrors (
-                    order_id, order_items_id, user_id, product_id, quantity, price, reference,
-                    complete, updated_by, change_type, changed_at
-                )
-                VALUES (
-                    NEW.order_id, NEW.id, (SELECT user_id FROM orders WHERE id = NEW.order_id), NEW.product_id, 
-                    NEW.quantity, NEW.price, (SELECT reference FROM orders WHERE id = NEW.order_id), 
-                    (SELECT complete FROM orders WHERE id = NEW.order_id), user(), action_type, NOW()
-                );
+                
+                UPDATE order_mirrors
+                SET 
+                    quantity = NEW.quantity,
+                    price = NEW.price,
+                    product_id = NEW.product_id,
+                    updated_by = user(),
+                    change_type = action_type,
+                    changed_at = NOW()
+                WHERE order_items_id = NEW.id;
             END;
         ');
 

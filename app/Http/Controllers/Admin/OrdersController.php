@@ -89,8 +89,8 @@ class OrdersController extends Controller
             
             $email = User::where('id', $order->user->id)->pluck('email')->first();
             
-            // Mail::to($email)
-            //     ->send(new orderApproval($order));
+            Mail::to($email)
+                ->send(new orderApproval($order));
 
             if (!$order) {
                 DB::rollBack();

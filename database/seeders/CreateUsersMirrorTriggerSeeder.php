@@ -66,15 +66,21 @@ class CreateUsersMirrorTriggerSeeder extends Seeder
                 DECLARE action_type VARCHAR(50);
                 SET action_type = "update";
 
-                INSERT INTO user_mirrors (
-                    uuid, first_name, last_name, email, gender, phone, town, location, 
-                    email_verified_at, password, updated_by, change_type, changed_at
-                )
-                VALUES (
-                    NEW.uuid, NEW.first_name, NEW.last_name, NEW.email, NEW.gender, NEW.phone, 
-                    NEW.town, NEW.location, NEW.email_verified_at, NEW.password, 
-                    user(), action_type, NOW()
-                );
+                UPDATE user_mirrors
+                SET 
+                    first_name = NEW.first_name,
+                    last_name = NEW.last_name,
+                    email = NEW.email,
+                    gender = NEW.gender,
+                    phone = NEW.phone,
+                    town = NEW.town,
+                    location = NEW.location,
+                    email_verified_at = NEW.email_verified_at,
+                    password = NEW.password,
+                    updated_by = user(),
+                    change_type = action_type,
+                    changed_at = NOW()
+                WHERE uuid = NEW.uuid;
             END;
         ');
 
