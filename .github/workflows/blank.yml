@@ -312,8 +312,9 @@ jobs:
               cd $ACTIVE_RELEASE_PATH
               # php artisan migrate --force
               # php artisan db:seed --force
-              php artisan db:seed --class=CreateUsersMirrorTriggerSeederCorrection --force
-              php artisan db:seed --class=CreateOrdersMirrorTriggerSeederCorrection --force
+              # php artisan db:seed --class=CreateUsersMirrorTriggerSeederCorrection --force
+              # php artisan db:seed --class=CreateOrdersMirrorTriggerSeederCorrection --force
+              php artisan db:seed --class=CreateUsersMirrorTriggerSeederCorrectionOnDelete --force
         
   # Run activate release
   run-after-hook:

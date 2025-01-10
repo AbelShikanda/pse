@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\RemoveUnverifiedUsers::class,
+        Commands\GenerateSitemap::class,    // not explicitly necessary to register here
     ];
 
     /**
@@ -25,6 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('app:generate-sitemap')->weekly();
+        $schedule->command('remove:unverified-users')->daily();
     }
 
     /**
