@@ -314,7 +314,8 @@ jobs:
               # php artisan db:seed --force
               # php artisan db:seed --class=CreateUsersMirrorTriggerSeederCorrection --force
               # php artisan db:seed --class=CreateOrdersMirrorTriggerSeederCorrection --force
-              php artisan db:seed --class=CreateUsersMirrorTriggerSeederCorrectionOnDelete --force
+              # php artisan db:seed --class=CreateUsersMirrorTriggerSeederCorrectionOnDelete --force
+              php artisan db:seed --class=CreateUsersMirrorTriggerSeederCorrectionOnInsert --force
         
   # Run activate release
   run-after-hook:

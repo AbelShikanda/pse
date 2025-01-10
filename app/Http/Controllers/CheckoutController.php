@@ -27,6 +27,10 @@ class CheckoutController extends Controller
 
     public function postCheckout(Request $request, $id)
     {
+        if (Auth::user()->email_verified_at === null) {
+            return redirect()->route('profile');
+        }
+
         if (!Session::has('cart')) {
             return redirect()->route('catalog');
         }

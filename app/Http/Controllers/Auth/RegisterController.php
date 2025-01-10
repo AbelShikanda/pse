@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -57,8 +59,33 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'first_name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\-]+$/'],
             'last_name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\-]+$/'],
-            'phone' => ['required', 'string', 'max:255', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => [
+                'required', 'string', 'max:255',
+                Rule::unique('users'),  // Check for uniqueness in the users table
+                function ($attribute, $value, $fail) {
+                    // Ensure the phone number does not exist in user_mirrors with change_type != 'delete'
+                    $existing = DB::table('user_mirrors')
+                        ->where('phone', $value)
+                        ->where('change_type', '!=', 'delete')
+                        ->count();
+                    if ($existing > 0) {
+                        $fail('The phone number is already taken.');
+                    }
+                }
+            ],
+            'email' => [
+                'required', 'string', 'email', 'max:255',
+                Rule::unique('users'),  // Check for uniqueness in the users table
+                function ($attribute, $value, $fail) {
+                    $existing = DB::table('user_mirrors')
+                    ->where('email', $value)
+                    ->where('change_type', '!=', 'delete')
+                    ->count();
+                    if ($existing > 0) {
+                        $fail('The email is already taken.');
+                    }
+                }
+            ],
             'town' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\-]+$/'],
             'location' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z0-9\s\-]+$/'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
