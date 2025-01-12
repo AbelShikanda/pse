@@ -116,9 +116,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
         
-        $admin = Admin::where('is_admin', 1)->pluck('email');
         Mail::to('printshopeld@gmail.com')
-        ->bcc($admin)
         ->send(new newAccount($user));
 
         return $user;

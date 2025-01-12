@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
-class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
+class CreatePasswordResetTokensMirrorTriggerSeederCorrection extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,14 +14,6 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
      */
     public function run()
     {
-        Schema::create('password_resets_mirrors', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('email')->unique();
-            $table->string('token');
-            $table->string('updated_by')->nullable();
-            $table->string('change_type')->nullable();
-            $table->timestamp('changed_at')->nullable();
-        });
 
         DB::unprepared('DROP TRIGGER IF EXISTS trg_password_resets_mirror_insert');
         DB::unprepared('
@@ -67,7 +57,7 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
                         token = OLD.token,
                         updated_by = user(),
                         change_type = "delete",
-                        changed_at = NOW(),
+                        changed_at = NOW()
                     WHERE email = OLD.email;
                 END IF;
             END;
