@@ -2,7 +2,7 @@
 <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center justify-content-between">
 
-        <a href="{{ url('/') }}" class="logo"><img src="{{ asset('assets/img/logo.png') }}" alt=""
+        <a href="{{ url('/') }}" class="logo"><img src="{{ asset('assets/img/logo.png') }}" alt="logo"
                 class="img-fluid"></a>
         <h1 class="logo"><a href="{{ url('/') }}">PrintShop</a></h1>
 

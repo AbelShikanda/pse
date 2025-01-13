@@ -88,7 +88,7 @@
                                                 <tr id="collap-{{ $orderId }}" class="collapse in p-3 bg-light">
                                                     <td colspan="8">
                                                         <dl class="row mb-0 mt-1">
-                                                            <dt class="col-sm-2"><img src="{{ asset('storage/img/products/'.$item->products->ProductImage[0]->thumbnail) }}" style="width:40px;" alt="image"></dt>
+                                                            <dt class="col-sm-2"><img src="{{ asset('storage/img/products/'.$item->products->ProductImage[0]->thumbnail) }}" style="width:40px;" alt="{{$item->products->ProductImage[0]->full}}"></dt>
                                                             <dt class="col-sm-2">{{ Str::words($item->products->name, 3, '...') }}</dt>
                                                             <dt class="col-sm-2">{{ Str::words($item->products->producttype[0]->name, 3, '...') }}</dt>
                                                             <dt class="col-sm-2">{{ $item->products->color[0]->name }}</dt>

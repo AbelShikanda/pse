@@ -37,7 +37,7 @@
                                     <div class="tr_item">
                                         <div class="td_item item_img">
                                             <img src="{{ asset('storage/img/products/' . $product['item']['thumbnail']) }}"
-                                                alt="" />
+                                                alt="{{$product['item']['full']}}" />
                                         </div>
                                         @foreach ($product['item']['products'] as $prod)
                                             <div class="td_item item_name">

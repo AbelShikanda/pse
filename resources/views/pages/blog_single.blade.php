@@ -37,91 +37,106 @@
                                 <li>
                                     <span class="bi bi-tag"></span>
                                     @foreach ($blog->blogCategories as $b)
-                                            <a href="#">{{ $b->name }}</a>
+                                        <a href="#">{{ $b->name }}</a>
                                     @endforeach
                                 </li>
                                 <li>
                                     <span class="bi bi-chat-left-text"></span>
-                                        <a href="#">{{ $blog->created_at }}</a>
+                                    <a href="#">
+                                        @php
+                                            $createdDate = $blog->created_at;
+                                            $now = \Carbon\Carbon::now();
+                                            $diffInDays = $createdDate->diffInDays($now);
+                                            $diffInYears = $createdDate->diffInYears($now);
+                                        @endphp
+
+                                        @if ($diffInDays < 7)
+                                            {{ $createdDate->diffForHumans() }}
+                                        @elseif ($diffInYears < 1)
+                                            {{ $createdDate->format('d M, H:i') }}
+                                        @else
+                                            {{ $createdDate->format('d M Y, H:i') }}
+                                        @endif
+                                    </a>
                                 </li>
                             </ul>
                         </div>
                         <div class="post-thumb">
                             <img src="{{ asset('storage/img/blogs/' . $blog->BlogImage[0]->thumbnail) }}" class="img-fluid"
-                                alt="">
+                                alt="{{ $blog->BlogImage[0]->full }}">
                         </div><br><br>
                         <div class="article-content">
-                                @php
-                                    // Define the total length of the content
-                                    $totalLength = mb_strlen($blog->body, 'UTF-8');
+                            @php
+                                // Define the total length of the content
+                                $totalLength = mb_strlen($blog->body, 'UTF-8');
 
-                                    // Define percentage portions (e.g., 25%, 25%, 10%, 40%)
-                                    $firstPortionLength = intval($totalLength * 0.25); // 25%
-                                    $secondPortionLength = intval($totalLength * 0.25); // 25%
-                                    $thirdPortionLength = intval($totalLength * 0.1); // 10%
-                                    $fourthPortionLength = intval($totalLength * 0.4); // 40%
+                                // Define percentage portions (e.g., 25%, 25%, 10%, 40%)
+                                $firstPortionLength = intval($totalLength * 0.25); // 25%
+                                $secondPortionLength = intval($totalLength * 0.25); // 25%
+                                $thirdPortionLength = intval($totalLength * 0.1); // 10%
+                                $fourthPortionLength = intval($totalLength * 0.4); // 40%
 
-                                    // Extract each portion
-                                    $firstPortion = mb_substr($blog->body, 0, $firstPortionLength, 'UTF-8');
-                                    $secondPortion = mb_substr(
-                                        $blog->body,
-                                        $firstPortionLength,
-                                        $secondPortionLength,
-                                        'UTF-8',
-                                    );
-                                    $thirdPortion = mb_substr(
-                                        $blog->body,
-                                        $firstPortionLength + $secondPortionLength,
-                                        $thirdPortionLength,
-                                        'UTF-8',
-                                    );
-                                    $fourthPortion = mb_substr(
-                                        $blog->body,
-                                        $firstPortionLength + $secondPortionLength + $thirdPortionLength,
-                                        $fourthPortionLength,
-                                        'UTF-8',
-                                    );
-                                @endphp
+                                // Extract each portion
+                                $firstPortion = mb_substr($blog->body, 0, $firstPortionLength, 'UTF-8');
+                                $secondPortion = mb_substr(
+                                    $blog->body,
+                                    $firstPortionLength,
+                                    $secondPortionLength,
+                                    'UTF-8',
+                                );
+                                $thirdPortion = mb_substr(
+                                    $blog->body,
+                                    $firstPortionLength + $secondPortionLength,
+                                    $thirdPortionLength,
+                                    'UTF-8',
+                                );
+                                $fourthPortion = mb_substr(
+                                    $blog->body,
+                                    $firstPortionLength + $secondPortionLength + $thirdPortionLength,
+                                    $fourthPortionLength,
+                                    'UTF-8',
+                                );
+                            @endphp
 
-                                <section>
-                                    <p>{{ $firstPortion }}</p>
-                                </section>
-                                <section>
-                                    <p>{{ $secondPortion }}</p>
-                                </section>
-                                <section>
-                                    <p>{{ $thirdPortion }}</p>
-                                </section>
-                                <section>
-                                    <blockquote class="blockquote">
-                                        <p>{{ $blog->sub_title }}</p>
-                                    </blockquote>
-                                </section>
-                                <section>
-                                    <p>{{ $fourthPortion }}</p>
-                                </section>
+                            <section>
+                                <p>{{ $firstPortion }}</p>
+                            </section>
+                            <section>
+                                <p>{{ $secondPortion }}</p>
+                            </section>
+                            <section>
+                                <p>{{ $thirdPortion }}</p>
+                            </section>
+                            <section>
+                                <blockquote class="blockquote">
+                                    <p>{{ $blog->sub_title }}</p>
+                                </blockquote>
+                            </section>
+                            <section>
+                                <p>{{ $fourthPortion }}</p>
+                            </section>
                         </div>
                     </div>
                     <div class="box-comments">
                         <hr>
                         <div class="title-box-2">
-                                <h4 class="title-comments title-left">comments ({{ $blog->comments->count() }})</h4>
+                            <h4 class="title-comments title-left">comments ({{ $blog->comments->count() }})</h4>
                         </div>
                         <ul class="list-comments">
                             @foreach ($blog->comments as $comment)
-                                    <li>
-                                        <div class="comment-avatar">
-                                            <img src="{{ asset('assets/img/testimonial-4.jpg') }}" alt="">
-                                        </div>
-                                        <div class="comment-details">
-                                            <h4 class="comment-author">{{ $comment->user->first_name }}</h4>
-                                            <span>{{ $comment->created_at }}</span>
-                                            <p>
-                                                {{ $comment->content }}
-                                            </p>
-                                            {{-- <a href="3">Reply</a> --}}
-                                        </div>
-                                    </li>
+                                <li>
+                                    <div class="comment-avatar">
+                                        <img src="{{ asset('assets/img/testimonial-4.jpg') }}" alt="image">
+                                    </div>
+                                    <div class="comment-details">
+                                        <h4 class="comment-author">{{ $comment->user->first_name }}</h4>
+                                        <span>{{ $comment->created_at }}</span>
+                                        <p>
+                                            {{ $comment->content }}
+                                        </p>
+                                        {{-- <a href="3">Reply</a> --}}
+                                    </div>
+                                </li>
                             @endforeach
                         </ul>
                     </div>

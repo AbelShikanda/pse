@@ -316,8 +316,8 @@ jobs:
               # php artisan db:seed --class=CreateOrdersMirrorTriggerSeederCorrection --force
               # php artisan db:seed --class=CreateUsersMirrorTriggerSeederCorrectionOnDelete --force
               # php artisan db:seed --class=CreateUsersMirrorTriggerSeederCorrectionOnInsert --force
-              php artisan db:seed --class=CreatePasswordResetTokensMirrorTriggerSeederCorrection --force
-              php artisan migrate --path=/database/migrations/2025_01_11_164116_add_terms_and_conditions_to_users_table.php --force
+              # php artisan db:seed --class=CreatePasswordResetTokensMirrorTriggerSeederCorrection --force
+              # php artisan migrate --path=/database/migrations/2025_01_11_164116_add_terms_and_conditions_to_users_table.php --force
         
   # Run activate release
   run-after-hook:

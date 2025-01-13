@@ -7,7 +7,7 @@
     <section id="portfolio-details" class="portfolio-details">
         <div class="container-blog mt-5 mb-5">
             <div class="product-image">
-                <img src="{{ asset('storage/img/products/' . $product->ProductImage[0]->thumbnail) }}" alt="" class="product-pic">
+                <img src="{{ asset('storage/img/products/' . $product->ProductImage[0]->thumbnail) }}" alt="{{$product->ProductImage[0]->full}}" class="product-pic">
             </div>
             <div class="product-details">
                 <header>

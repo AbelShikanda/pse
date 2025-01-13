@@ -40,7 +40,7 @@
                                                 <div class="col-md-12 mb-3">
                                                     @if ($image->thumbnail)
                                                         <img src="{{ asset('storage/img/blogs/' . $image->thumbnail) }}"
-                                                            alt="Current Image" style="max-width: 200px; margin-right: 10px;">
+                                                            alt="{{$image->full}}" style="max-width: 200px; margin-right: 10px;">
                                                     @endif
                                                     <div class="valid-feedback"> Looks good! </div>
                                                 </div>

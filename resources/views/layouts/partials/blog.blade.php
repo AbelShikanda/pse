@@ -13,9 +13,25 @@
     <div class="utility-info">
         <ul class="utility-list">
             @foreach ($blog->blogs as $item)
-                <li class="date">{{ $item->created_at }}</li>
+                <li class="date">
+                    @php
+                        $createdDate = $item->created_at;
+                        $now = \Carbon\Carbon::now();
+                        $diffInDays = $createdDate->diffInDays($now);
+                        $diffInYears = $createdDate->diffInYears($now);
+                    @endphp
+
+                    @if ($diffInDays < 7)
+                        {{ $createdDate->diffForHumans() }}
+                    @elseif ($diffInYears < 1)
+                        {{ $createdDate->format('d M, H:i') }}
+                    @else
+                        {{ $createdDate->format('d M Y, H:i') }}
+                    @endif
+                </li>
             @endforeach
-            <li><a href="{{ route('blogSingle', $blog->blogs[0]->slug) }}"><i class="bi bi-arrow-right-circle-fill px-2"></i>More</a></li>
+            <li><a href="{{ route('blogSingle', $blog->blogs[0]->slug) }}"><i
+                        class="bi bi-arrow-right-circle-fill px-2"></i>More</a></li>
         </ul>
     </div><!--/.utility-info-->
     <!--overlays-->

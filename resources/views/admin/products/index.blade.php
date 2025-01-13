@@ -60,18 +60,27 @@
                                                             href="{{ route('products.show', $p->id) }}">view</a>
                                                         <a class="dropdown-item"
                                                             href="{{ route('products.edit', $p->id) }}">Edit</a>
-
-                                                        <a class="dropdown-item" href="{{ route('products.destroy', $p->id) }}"
-                                                            onclick="event.preventDefault();
+                                                        @if ($p->ProductImage->isEmpty())
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('product_images.create') }}">Add Image</a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('products.destroy', $p->id) }}"
+                                                                onclick="event.preventDefault();
                                                             document.getElementById('destroy-product').submit();">
-                                                            {{ __('Remove') }}
-                                                        </a>
+                                                                {{ __('Remove') }}
+                                                            </a>
 
-                                                        <form id="destroy-product" action="{{ route('products.destroy', $p->id) }}"
-                                                            method="POST" class="d-none">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                        </form>
+                                                            <form id="destroy-product"
+                                                                action="{{ route('products.destroy', $p->id) }}"
+                                                                method="POST" class="d-none">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
+                                                        @else
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('product_images.index') }}">Remove image
+                                                                first</a>
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>

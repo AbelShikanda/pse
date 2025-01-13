@@ -108,7 +108,7 @@
                                             <div class="row align-items-center">
                                                 <div class="col-3 col-md-2">
                                                     <img src="{{ asset('storage/img/products/' . $products->productImage->first()->thumbnail) }}"
-                                                        alt="..." class="thumbnail-sm">
+                                                        alt="{{$products->productImage->first()->full}}" class="thumbnail-sm">
                                                 </div>
                                                 <div class="col">
                                                     <strong>{{ $products->name }}</strong>

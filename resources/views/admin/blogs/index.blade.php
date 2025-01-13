@@ -8,11 +8,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         <p class="card-text">
-                            blogs / stories 
+                            blogs / stories
                         </p>
                     </div>
                     <div class="col-md-6">
-                        <a href="{{ route('blogs.create')}}" type="button" class=" float-right btn mb-2 btn-outline-primary">Add blog</a>
+                        <a href="{{ route('blogs.create') }}" type="button"
+                            class=" float-right btn mb-2 btn-outline-primary">Add blog</a>
                     </div>
                 </div>
                 <p class="card-text">
@@ -68,17 +69,27 @@
                                                         <a class="dropdown-item"
                                                             href="{{ route('blogs.edit', $blog->id) }}">Edit</a>
 
-                                                        <a class="dropdown-item" href="{{ route('blogs.destroy', $blog->id) }}"
-                                                            onclick="event.preventDefault();
-                                                            document.getElementById('destroy-blog-{{ $blog->id }}').submit();">
-                                                            {{ __('Remove') }}
-                                                        </a>
+                                                        @if ($blog->BlogImage->isEmpty())
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('blog_images.create') }}">Add Image</a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('blogs.destroy', $blog->id) }}"
+                                                                onclick="event.preventDefault();
+                                                                document.getElementById('destroy-blog-{{ $blog->id }}').submit();">
+                                                                {{ __('Remove') }}
+                                                            </a>
 
-                                                        <form id="destroy-blog-{{ $blog->id }}" action="{{ route('blogs.destroy', $blog->id) }}"
-                                                            method="post" class="d-none">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                        </form>
+                                                            <form id="destroy-blog-{{ $blog->id }}"
+                                                                action="{{ route('blogs.destroy', $blog->id) }}"
+                                                                method="post" class="d-none">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
+                                                            @else
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('blog_images.index') }}">Remove image first</a>
+                                                        @endif
+
                                                     </div>
                                                 </td>
                                             </tr>

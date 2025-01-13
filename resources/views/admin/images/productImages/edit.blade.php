@@ -35,7 +35,7 @@
                                                 <div class="col-md-12 mb-3">
                                                     @if ($image->thumbnail)
                                                         <img src="{{ asset('storage/img/products/' . $image->thumbnail) }}"
-                                                            alt="Current Image"
+                                                            alt="{{$image->full}}"
                                                             style="max-width: 200px; margin-right: 10px;">
                                                     @endif
                                                 </div>

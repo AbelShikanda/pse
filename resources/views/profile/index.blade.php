@@ -153,7 +153,7 @@
                                             <div class="latest-release__art">
 
                                                 <img src="{{ asset('storage/img/products/' . $product->thumbnail) }}"
-                                                    alt="When It's Dark Out" />
+                                                    alt="{{ $product->full }}" />
 
                                             </div>
 
@@ -183,7 +183,7 @@
                                                 <div class="track__art">
 
                                                     <img src="{{ asset('storage/img/products/' . $list->thumbnail) }}"
-                                                        alt="When It's Dark Out" />
+                                                        alt="{{ $list->full }}" />
 
                                                 </div>
 
@@ -243,7 +243,7 @@
                                                 <span class="related-artist__img">
 
                                                     <img src="{{ asset('storage/img/products/' . $prod->thumbnail) }}"
-                                                        alt="Hoodie Allen" />
+                                                        alt="{{ $prod->full }}" />
 
                                                 </span>
 
