@@ -352,12 +352,10 @@ class PagesController extends Controller
                     'message' => 'Something went wrong while saving user data.',
                 ]);
             }
-
-            $email = Admin::where('is_admin', 1)->pluck('email');
+            
             $contacts = Contacts::where('id', $contacts->id)->first();
 
             Mail::to('printshopeld@gmail.com')
-                ->bcc($email)
                 ->send(new newContact($contacts));
 
             DB::commit();
@@ -398,14 +396,11 @@ class PagesController extends Controller
                 return back()->with('message', 'Something went wrong while saving user data');
             }
 
-            $email = Admin::where('is_admin', 1)->pluck('email');
-
             $comments = Comments::with('blog')->where('id', $comments->id)->first();
 
             // dd($comments->blog->title);
 
             // Mail::to('printshopeld@gmail.com')
-            //     ->bcc($email)
             //     ->send(new newComment($comments));
 
             DB::commit();

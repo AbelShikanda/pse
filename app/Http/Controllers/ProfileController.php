@@ -86,12 +86,10 @@ class ProfileController extends Controller
             $wishlist->product_id = $product_id;
             $wishlist->user_id = Auth::id();
             $wishlist->save();
-        
-            $email = Admin::where('is_admin', 1)->pluck('email');
+            
             $product = Products::with('ProductImage')->find($product_id)->first();
         
             // Mail::to('printshopeld@gmail.com')
-            // ->bcc($email)
             // ->send(new newWishlist($product));
             
             return redirect()->back()->with('message', 'Your product has been successfully added to the wishlist');

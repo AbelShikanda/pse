@@ -65,12 +65,10 @@ class RatingsController extends Controller
                 ]);
         }
 
-        $email = Admin::where('is_admin', 1)->pluck('email');
         $rate = Ratings::with('user')->find($rate->id);
         $product = Products::with('ProductImage')->find($product_id)->first();
 
         // Mail::to('printshopeld@gmail.com')
-        //     ->bcc($email)
         //     ->send(new newRating($rate, $product));
 
         return redirect()->back()->with('success', 'Ratings submitted successfully!');
