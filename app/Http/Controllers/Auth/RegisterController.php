@@ -57,8 +57,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'first_name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\-]+$/'],
-            'last_name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\-]+$/'],
+            'first_name' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,})[a-zA-Z]+$/'],
+            'last_name' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,})[a-zA-Z]+$/'],
             'phone' => [
                 'required', 'string', 'max:255',
                 Rule::unique('users'),  // Check for uniqueness in the users table
@@ -86,15 +86,15 @@ class RegisterController extends Controller
                     }
                 }
             ],
-            'town' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\-]+$/'],
-            'location' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z0-9\s\-]+$/'],
+            'town' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,})[a-zA-Z]+$/'],
+            'location' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,})[a-zA-Z]+$/'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
-            'first_name.regex' => 'The first name may only contain letters, spaces, and hyphens.',
-            'last_name.regex' => 'The last name may only contain letters, spaces, and hyphens.',
-            'phone.regex' => 'The phone number must be a valid international number (e.g., +1234567890).',
-            'town.regex' => 'The town may only contain letters, spaces, and hyphens.',
-            'location.regex' => 'The location may only contain letters, numbers, spaces, and hyphens.',
+            'first_name.regex' => 'Enter proper first name.',
+            'last_name.regex' => 'Enter proper last name.',
+            'phone.regex' => 'The phone number must be a valid international number.',
+            'town.regex' => 'Enter proper town name.',
+            'location.regex' => 'Enter proper location name.',
         ]);
     }
 
