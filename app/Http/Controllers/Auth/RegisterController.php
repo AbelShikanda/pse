@@ -57,8 +57,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'first_name' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,})[a-zA-Z]+$/'],
-            'last_name' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,})[a-zA-Z]+$/'],
+            'first_name' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,}).*[a-zA-Z]+$/i'],
+            'last_name' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,}).*[a-zA-Z]+$/i'],
             'phone' => [
                 'required', 'string', 'max:255',
                 Rule::unique('users'),  // Check for uniqueness in the users table
@@ -86,8 +86,8 @@ class RegisterController extends Controller
                     }
                 }
             ],
-            'town' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,})[a-zA-Z]+$/'],
-            'location' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,})[a-zA-Z]+$/'],
+            'town' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,}).*[a-zA-Z]+$/i'],
+            'location' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,}).*[a-zA-Z]+$/i'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
             'first_name.regex' => 'Enter proper first name.',
