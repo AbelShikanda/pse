@@ -14,8 +14,8 @@
                     <h1 class="title">{{ $product->name }}</h1>
                     <span class="colorCat">{{ $product->color[0]->name }}</span>
                     <div class="prices">
-                        <span class="before">{{ $product->price }}</span>
-                        <span class="current">{{ $product->price * 0.9 }}</span>
+                        <span class="before">{{ $product->price * 1.1 }}</span>
+                        <span class="current">{{ $product->price }}</span>
                     </div>
                     <div class="rate">
                         @for ($i = 1; $i <= 5; $i++)
