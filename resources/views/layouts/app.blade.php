@@ -26,6 +26,7 @@
 
     <!-- Favicons -->
     <link href="{{ asset('assets/img/logo.png?v=2') }}" rel="icon">
+    <link href="{{ asset('assets/img/logo.png') }}" rel="apple-touch-icon">
 
     <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.js"></script>
     <!-- Vendor CSS Files -->
