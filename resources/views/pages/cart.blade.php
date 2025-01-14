@@ -63,9 +63,11 @@
                                                         <option selected>
                                                             {{ $size['name'] }}
                                                         </option>
-                                                        <option value="small">small</option>
-                                                        <option value="large">large</option>
-                                                        <option value="Xlarge">Xlarge</option>
+                                                        <option value="S">S</option>
+                                                        <option value="M">M</option>
+                                                        <option value="L">L</option>
+                                                        <option value="XL">XL</option>
+                                                        <option value="XXL">XXL</option>
                                                     </select>
                                                 </div>
                                             @endforeach

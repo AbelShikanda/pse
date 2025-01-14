@@ -32,6 +32,10 @@ class newAccount extends Mailable
             ->markdown('emails.newAccount') 
             ->with([
                 'user_id' => $this->user->id,
+                'user_id' => $this->user->first_name,
+                'user_id' => $this->user->last_name,
+                'user_id' => $this->user->location,
+                'user_id' => $this->user->created_at,
             ]);
 
         return $email;

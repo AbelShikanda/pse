@@ -49,12 +49,15 @@ class CheckoutController extends Controller
             'estate' => '',
             'phone' => '',
             'town' => '',
+            'size' => 'required|not_in:12',
+        ], [
+            'size.not_in' => 'Please select a valid size.',
         ]);
 
         $order = new Orders();
         $order->tracking_No = serialize($cart);
         $order->price = $request->total;
-        $order->reference = $request->total; //'SJ48VKFUQQ';
+        $order->reference = $request->mpesa_ref; //'SJ48VKFUQQ';
         $order->user_id = Auth::user()->uuid;
 
         Auth::user()->order()->save($order);
@@ -81,6 +84,7 @@ class CheckoutController extends Controller
             'orderItems.size',
             'orderItems.color',
         ])->find($order->id);
+
         $image = ProductImages::where('products_id', $id)->first();
         $email = User::where('uuid', Auth::user()->uuid)->pluck('email');
         $user = User::where('id', $order->user_id)->first();

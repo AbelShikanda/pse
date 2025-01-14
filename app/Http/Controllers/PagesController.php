@@ -111,6 +111,8 @@ class PagesController extends Controller
         }
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
+        // $sizes = ProductSizes::all();
+        // $colors = ProductColors::all();
         // dd($cart, $cart->items, $cart->items['6']['item']['products']);
         // dd($cart->items['item']['products']['0']['name']);
         // foreach ($cart->items as $item) {
@@ -126,6 +128,8 @@ class PagesController extends Controller
             'products' => $cart->items,
             'totalPrice' => $cart->totalPrice,
             'shipping' => 300,
+            // 'sizes' => $sizes,
+            // 'colors' => $colors,
         ]);
     }
 
@@ -145,11 +149,11 @@ class PagesController extends Controller
         // $images = ProductImages::with('products')->find($id);
         $images = ProductImages::with([
             'products' => function ($query) {
-                $query->with('color'); // example for product color
-                $query->with('size'); // example for product color
+                $query->with('color');
+                $query->with('size');
             }
         ])->find($id);
-        // dd($images);
+
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
         $cart->add($images, $images->id);
