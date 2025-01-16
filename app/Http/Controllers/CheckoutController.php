@@ -46,7 +46,6 @@ class CheckoutController extends Controller
 
             $request->validate([
                 'mpesa_ref' => 'alpha_num|unique:orders,reference|max:10|min:10',
-                'mpesa_ref' => '',
                 'total' => '',
                 'first_name' => '',
                 'last_name' => '',
@@ -62,7 +61,6 @@ class CheckoutController extends Controller
             $order->tracking_No = serialize($cart);
             $order->price = $request->total;
             $order->reference = $request->mpesa_ref;
-            // $order->reference = 'SJ48VKFUQQ';
             $order->user_id = Auth::user()->uuid;
 
             DB::beginTransaction();
@@ -141,7 +139,7 @@ class CheckoutController extends Controller
                 ->send(new newCheckout($order, $image, $user));
 
             return redirect()->route('home')->with('message', 'Your order has been placed Successfully.');
-            
+
         } catch (\Exception $e) {
             // Log the error for internal review
             \Log::error('Checkout error: ' . $e->getMessage());
