@@ -41,18 +41,17 @@ class newCheckout extends Mailable
                 'order' => $this->order,
                 'user' => $this->user,
             ]);
-
-        // Attach images inline with unique CIDs
+            
         foreach ($this->order->orderItems as $item) {
             foreach ($item->products->productImage as $image) {
                 $email->attachFromStorage(
-                    'public/img/products/' . $image->thumbnail,  // Path relative to the storage/app directory
-                    $image->thumbnail,                            // Filename for attachment
+                    'public/img/products/' . $image->thumbnail,  
+                    $image->thumbnail,                            
                     [
                         'as' => $image->thumbnail,
                         'mime' => 'image/jpeg',
-                        'Content-ID' => $image->thumbnail,        // Unique CID for referencing in HTML
-                        'disposition' => 'inline',                // Set as inline for inline display
+                        'Content-ID' => $image->thumbnail,        
+                        'disposition' => 'inline',                
                     ]
                 );
             }

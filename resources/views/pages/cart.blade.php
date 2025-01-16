@@ -37,7 +37,7 @@
                                     <div class="tr_item">
                                         <div class="td_item item_img">
                                             <img src="{{ asset('storage/img/products/' . $product['item']['thumbnail']) }}"
-                                                alt="{{$product['item']['full']}}" />
+                                                alt="{{ $product['item']['full'] }}" />
                                         </div>
                                         @foreach ($product['item']['products'] as $prod)
                                             <div class="td_item item_name">
@@ -60,14 +60,12 @@
                                             @foreach ($prod['size'] as $size)
                                                 <div class="td_item item_size">
                                                     <select name="size">
-                                                        <option selected>
-                                                            {{ $size['name'] }}
-                                                        </option>
-                                                        <option value="S">S</option>
-                                                        <option value="M">M</option>
-                                                        <option value="L">L</option>
-                                                        <option value="XL">XL</option>
-                                                        <option value="XXL">XXL</option>
+                                                        @foreach ($sizes as $s)
+                                                            <option value="{{ $s->id }}"
+                                                                @if (old('size', is_object($size->name) ? $size->name->id : $size->id) == $s->id) selected @endif>
+                                                                {{ $s->name }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             @endforeach
@@ -87,8 +85,8 @@
                                         @csrf
                                         @method('post')
                                         <span class="material-icons-outlined">
-                                            <input name="product_id" type="text"
-                                                value="{{ $product['item']['id'] }}" readonly hidden>
+                                            <input name="product_id" type="text" value="{{ $product['item']['id'] }}"
+                                                readonly hidden>
                                             <button class="btn btn-transparent" type="submit">
                                                 <i class="bi bi-heart-fill"></i>
                                             </button>
@@ -97,8 +95,8 @@
                                 </div>
                                 <div class="td_item item_qty">
                                     <div class="quantity">
-                                        <a href="{{ route('reduceCart', ['id' => $product['item']['id']]) }}" class="minus"
-                                            aria-label="Decrease">&minus;</a>
+                                        <a href="{{ route('reduceCart', ['id' => $product['item']['id']]) }}"
+                                            class="minus" aria-label="Decrease">&minus;</a>
                                         <input type="number" class="input-box" value="{{ $product['qty'] }}"
                                             min="1" max="10" readonly>
                                         <a href="{{ route('addToCart', ['id' => $product['item']['id']]) }}" class="plus"

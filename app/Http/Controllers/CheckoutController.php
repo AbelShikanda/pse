@@ -9,13 +9,16 @@ use App\Models\OrderItems;
 use App\Models\Orders;
 use App\Models\ProductImages;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
-{/**
+{
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -40,7 +43,8 @@ class CheckoutController extends Controller
         $cart = new Cart($oldCart);
 
         $request->validate([
-            'mpesa_ref' => 'alpha_num|unique:orders,reference|max:10|min:10',
+            // 'mpesa_ref' => 'alpha_num|unique:orders,reference|max:10|min:10',
+            'mpesa_ref' => '',
             'total' => '',
             'first_name' => '',
             'last_name' => '',
@@ -49,31 +53,72 @@ class CheckoutController extends Controller
             'estate' => '',
             'phone' => '',
             'town' => '',
-            'size' => 'required|not_in:12',
-        ], [
-            'size.not_in' => 'Please select a valid size.',
         ]);
+        // dd($request->all());
 
         $order = new Orders();
         $order->tracking_No = serialize($cart);
         $order->price = $request->total;
-        $order->reference = $request->mpesa_ref; //'SJ48VKFUQQ';
+        // $order->reference = $request->mpesa_ref;
+        $order->reference = 'SJ48VKFUQQ';
         $order->user_id = Auth::user()->uuid;
 
-        Auth::user()->order()->save($order);
+        DB::beginTransaction();
 
-        $order_items = [];
-        foreach ($cart->items as $id => $item) {
-            $order_items[] = [
-                'order_id' => $order->id,
-                'product_id' => $item['item']['products']['0']['id'],
-                'color_id' => $request->color,
-                'size_id' => $request->size,
-                'quantity' => $item['qty'],
-                'price' => $item['price'],
-            ];
+        try {
+            Auth::user()->order()->save($order); // Save order first, once.
+
+            foreach ($cart->items as $item) {
+                $orderItemData = null;
+
+                // Check if `id` exists and is valid
+                if (isset($item['item']['products'][0]['size'][0]['id']) && !isset($item['item']['products'][0]['size'][0]['name']['id'])) {
+                    if ($item['item']['products'][0]['size'][0]['id'] == 12) {
+                        throw new Exception('Please select a valid size, "All Sizes" is not a valid size.');
+                    } else {
+                        $orderItemData = [
+                            'order_id' => $order->id,
+                            'product_id' => $item['item']['products'][0]['id'],
+                            'color_id' => $request->color,
+                            'size_id' => $item['item']['products'][0]['size'][0]['id'],
+                            'quantity' => $item['qty'],
+                            'price' => $item['price'],
+                        ];
+                    }
+                }
+                // Check if `name` exists and is valid
+                elseif (isset($item['item']['products'][0]['size'][0]['name']['id'])) {
+                    if ($item['item']['products'][0]['size'][0]['name']['id'] == 12) {
+                        throw new Exception('Please select a valid size, "All Sizes" is not a valid size.');
+                    } else {
+                        $orderItemData = [
+                            'order_id' => $order->id,
+                            'product_id' => $item['item']['products'][0]['id'],
+                            'color_id' => $request->color,
+                            'size_id' => $item['item']['products'][0]['size'][0]['name']['id'],
+                            'quantity' => $item['qty'],
+                            'price' => $item['price'],
+                        ];
+                    }
+                } else {
+                    throw new Exception('Please select a valid size, "All Sizes" is not a valid size.');
+                }
+
+                // Insert the order item if data is valid
+                if ($orderItemData) {
+                    $orderItem = new Order_Items($orderItemData);
+                    $orderItem->save();
+                }
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            return back()->with(['message' => $e->getMessage()]);
         }
-        Order_Items::insert($order_items);
+
+
+        // dd($order_items);
 
         Session::forget('cart');
 
@@ -88,7 +133,6 @@ class CheckoutController extends Controller
         $image = ProductImages::where('products_id', $id)->first();
         $email = User::where('uuid', Auth::user()->uuid)->pluck('email');
         $user = User::where('id', $order->user_id)->first();
-        // dd($image);
 
         Mail::to($email)
             ->bcc('printshopeld@gmail.com')

@@ -49,13 +49,15 @@ class Cart
         if (array_key_exists($id, $this->items)) {
             $storedItem = $this->items[$id];
         }
-        $storedItem['item']['products']['0']['size']['0']['name'] = $size;
+        $sizeName = ProductSizes::find($size);
+        $storedItem['item']['products']['0']['size']['0']['name'] = $sizeName;
         $storedItem['item']['products']['0']['color']['0']['name'] = $color;
         // $storedItem['price'] = (int)$item->products['0']['price'] * (int)$qnty;
 
         
         $storedItem['item']['products']['0']['size']['0']['name'] = $this->items[$id]['item']['products']['0']['size']['0']['name'];
         $storedItem['item']['products']['0']['color']['0']['name'] = $this->items[$id]['item']['products']['0']['color']['0']['name'];
+        // dd($size, $storedItem);
 
     }
 

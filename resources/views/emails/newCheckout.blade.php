@@ -37,16 +37,12 @@
                     <tr>
                         <td style="border: 1px solid #ddd; text-align: center;">
                             @foreach ($o->products->productImage as $image)
-                                <img src="{{ url('storage/img/products/' . $image->thumbnail) }}" alt="Product Image" style="width: 100px; height: auto;">
+                                <img src="{{ url('storage/img/products/' . $image->thumbnail) }}" alt="Product Image" style="width: 90px; height: auto;">
                             @endforeach
                         </td>
                         <td style="border: 1px solid #ddd;">{{ $o->products->name }}</td>
-                        @foreach ($o->products->color as $color)
-                        <td style="border: 1px solid #ddd;">{{ $color->name }}</td>
-                        @endforeach
-                        @foreach ($o->products->size as $size)
-                        <td style="border: 1px solid #ddd;">{{ $size->name }}</td>
-                        @endforeach
+                        <td style="border: 1px solid #ddd;">{{ $o->color->name }}</td>
+                        <td style="border: 1px solid #ddd;">{{ $o->size->name }}</td>
                         <td style="border: 1px solid #ddd;">{{ $o->quantity }}</td>
                         <td style="border: 1px solid #ddd;">Ksh{{ number_format($o->price, 2) }}</td>
                     </tr>

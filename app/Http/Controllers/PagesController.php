@@ -111,25 +111,27 @@ class PagesController extends Controller
         }
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
-        // $sizes = ProductSizes::all();
-        // $colors = ProductColors::all();
-        // dd($cart, $cart->items, $cart->items['6']['item']['products']);
-        // dd($cart->items['item']['products']['0']['name']);
+        $sizes = ProductSizes::all();
+        $colors = ProductColors::all();
+        
         // foreach ($cart->items as $item) {
         //     foreach ($item['item']['products'] as $item) {
-        //         dd($item['size']);
+        //         // dd($item['size']);
+        //         foreach ($item['size'] as $size) {
+        //             dd($size->name->name);
+        //         }
         //     }
         //     // dd($item['item']['id']);
         // }
-        // $products_id = $cart->items['item']['products']['0']['id'];
+        
         return View('pages.cart', [
             'pageTitle' => $pageTitle,
             'breadcrumbLinks' => $breadcrumbLinks,
             'products' => $cart->items,
             'totalPrice' => $cart->totalPrice,
             'shipping' => 300,
-            // 'sizes' => $sizes,
-            // 'colors' => $colors,
+            'sizes' => $sizes,
+            'colors' => $colors,
         ]);
     }
 
@@ -175,6 +177,9 @@ class PagesController extends Controller
 
     public function updateCart(Request $request, $id)
     {
+        // $size_id = $request->size;
+        // $size = ProductSizes::find($size_id);
+        // dd($request->all());
         $size = $request->size;
         $color = $request->color;
         $images = ProductImages::find($id);
