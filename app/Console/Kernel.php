@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\RemoveUnverifiedUsers::class,
         Commands\GenerateSitemap::class,    // not explicitly necessary to register here
+        Commands\CleanOldContacts::class,
     ];
 
     /**
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('app:generate-sitemap')->weekly();
         $schedule->command('remove:unverified-users')->daily();
+        $schedule->command('contacts:clean')->daily();
     }
 
     /**
