@@ -43,7 +43,7 @@ class CheckoutController extends Controller
         $cart = new Cart($oldCart);
 
         $request->validate([
-            // 'mpesa_ref' => 'alpha_num|unique:orders,reference|max:10|min:10',
+            'mpesa_ref' => 'alpha_num|unique:orders,reference|max:10|min:10',
             'mpesa_ref' => '',
             'total' => '',
             'first_name' => '',
@@ -59,8 +59,8 @@ class CheckoutController extends Controller
         $order = new Orders();
         $order->tracking_No = serialize($cart);
         $order->price = $request->total;
-        // $order->reference = $request->mpesa_ref;
-        $order->reference = 'SJ48VKFUQQ';
+        $order->reference = $request->mpesa_ref;
+        // $order->reference = 'SJ48VKFUQQ';
         $order->user_id = Auth::user()->uuid;
 
         DB::beginTransaction();
