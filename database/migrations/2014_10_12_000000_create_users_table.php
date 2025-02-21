@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('town')->nullable();
             $table->string('location')->nullable();
-            $table->boolean('terms_and_conditions')->default(false)->after('location');
+            $table->boolean('terms_and_conditions')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

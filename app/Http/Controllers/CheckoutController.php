@@ -8,15 +8,15 @@ use App\Models\Order_Items;
 use App\Models\OrderItems;
 use App\Models\Orders;
 use App\Models\ProductImages;
+use App\Models\PromoCodes;
 use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Log;
-
+use Exception;
 
 class CheckoutController extends Controller
 {
@@ -62,6 +62,12 @@ class CheckoutController extends Controller
         $order->price = $request->total;
         $order->reference = $request->mpesa_ref;
         $order->user_id = Auth::user()->uuid;
+        if ($appliedPromo = Session::get('applied_promo')) {
+            $promoCode = PromoCodes::where('code', $appliedPromo)->first();
+            if ($promoCode) {
+                $order->promo_code_id = $promoCode->id;
+            }
+        }
 
         DB::beginTransaction();
         try {
@@ -121,16 +127,14 @@ class CheckoutController extends Controller
             // Commit the transaction only after all items are processed
             DB::commit();
         } catch (Exception $e) {
-            // If any error occurs, rollback the transaction and return the error message
             DB::rollBack();
-            Log::error('Error processing order: ' . $e->getMessage()); // Log the error for debugging
-            return back()->withErrors(['error' => 'An unexpected error occurred while processing your order. Please try again or contact support.']);
+            Log::error('Error processing order: ' . $e->getMessage());  // Log the error for debugging
+            return back()->withErrors(['error' => $invalidSizeMessage]);
         }
-
-
 
         // dd($order_items);
 
+        Session::forget('applied_promo');
         Session::forget('cart');
 
         $order = Orders::with([

@@ -566,8 +566,8 @@ __pycache__/
 # should be stored in the .pubxml.user file.
 
 notes
-<<<<<<< HEAD
 /notes
 /notes/
 =======
->>>>>>> master
+.backupconfig
+.bakignore

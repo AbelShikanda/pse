@@ -39,4 +39,10 @@ class Orders extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Relationship with PromoCode
+    public function promoCode()
+    {
+        return $this->belongsTo(PromoCodes::class, 'promo_code_id');
+    }
 }

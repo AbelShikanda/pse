@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrdersTable extends Migration
+class AddPromoCodeToOrders extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,8 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+        Schema::table('orders', function (Blueprint $table) {
             $table->foreignId('promo_code_id')->nullable()->constrained('promo_codes')->onDelete('set null')->onUpdate('cascade');
-            $table->string('reference');
-            $table->mediumText('tracking_No');
-            $table->decimal('price', 10, 2);
-            $table->boolean('complete')->default(0);
-            $table->timestamps();
         });
     }
 
@@ -32,6 +25,9 @@ class CreateOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropForeign(['promo_code_id']);
+            $table->dropColumn('promo_code_id');
+        });
     }
 }

@@ -160,5 +160,23 @@
                 </ul>
             </li>
         </ul>
+        <p class="text-muted nav-heading mt-4 mb-1">
+            <span>Promo Codes Components</span>
+        </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+
+            <li class="nav-item dropdown">
+                <a href="#table" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+                    <i class="fe fe-grid fe-16"></i>
+                    <span class="ml-3 item-text">Promotion Codes</span>
+                </a>
+                <ul class="collapse list-unstyled pl-4 w-100" id="table">
+                    <li class="nav-item">
+                        <a class="nav-link pl-3" href="{{ route('promo.index') }}"><span
+                                class="ml-1 item-text">Promo Codes</span></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </nav>
 </aside>

@@ -142,6 +142,23 @@
                 <div class="cart_title">
                     Cart Details
                 </div>
+                    @if ($availablePromo && $userCanUsePromo)
+                        <div>If you can see this</div>
+                        <div><a href="https://wa.me/message/UFM7WYYHEIMRA1"><strong class="text-success"> Reach out to get your promo-code </strong></a></div>
+                        <form action="{{ route('promo.apply') }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label class="col-form-label" for="inputSuccess">
+                                    <i class="fas fa-check"></i> Apply promo-code
+                                </label>
+                                <input name="code" type="text" value="" class="form-control is-valid"
+                                    id="inputSuccess">
+                            </div>
+                            <br>
+                            <button type="submit" class="apply-btn">Apply</button>
+                        </form>
+                        <br>
+                    @endif
                 <div class="form_row">
                     <div class="form_group">
                         @foreach ($products as $product)
@@ -156,7 +173,7 @@
                             <strong>Ksh {{ $shipping }}</strong>
                             <br>
                             <br>
-                            <br>
+
                             <div>Lipa Na Mpesa</div>
                             <div>Buy Goods</div>
                             <div>Till: <span> 9030355 </span></div>

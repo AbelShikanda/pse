@@ -1,0 +1,4 @@
+DEVICE_LABEL="TOSHIBA EXT"
+MOUNT_POINT="/media/abel"
+BACKUP_DEST="/media/abel/TOSHIBA EXT/LocalBackups/pse"
+BACKUP_USER=abel

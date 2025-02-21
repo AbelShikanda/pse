@@ -67,7 +67,7 @@ class CreatePasswordResetTokensMirrorTriggerSeeder extends Seeder
                         token = OLD.token,
                         updated_by = user(),
                         change_type = "delete",
-                        changed_at = NOW(),
+                        changed_at = NOW()
                     WHERE email = OLD.email;
                 END IF;
             END;

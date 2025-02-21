@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\RemoveUnverifiedUsers::class,
-        Commands\GenerateSitemap::class,    // not explicitly necessary to register here
+        Commands\GenerateSitemap::class,  // not explicitly necessary to register here
         Commands\CleanOldContacts::class,
     ];
 
@@ -28,7 +28,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('app:generate-sitemap')->weekly();
         $schedule->command('remove:unverified-users')->daily();
-        $schedule->command('contacts:clean')->daily();
+        $schedule->command('remove:contacts')->daily();
+        $schedule->command('remove:promotions')->daily();
     }
 
     /**
@@ -38,7 +39,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

@@ -1,10 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BlogImageController;
@@ -21,6 +18,7 @@ use App\Http\Controllers\Admin\ProductMaterialController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\ProductSizeController;
 use App\Http\Controllers\Admin\ProductTypeController;
+use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CheckoutController;
@@ -30,19 +28,21 @@ use App\Http\Controllers\PricesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingsController;
 use App\Http\Controllers\UnderConstructionController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
+ * |--------------------------------------------------------------------------
+ * | Web Routes
+ * |--------------------------------------------------------------------------
+ */
 Route::get('/under_construction', [UnderConstructionController::class, 'underConstruction'])->name('underConstruction');
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
 
+/*
+ * |--------------------------------------------------------------------------
+ * | Web Routes
+ * |--------------------------------------------------------------------------
+ */
 
 Route::get('/sitemap.xml', function () {
     return response()->file(public_path('sitemap.xml'));
@@ -81,6 +81,14 @@ Route::group(['middleware' => 'adminauth'], function () {
 
     Route::resource('permissions', PermissionsController::class);
     Route::resource('roles', RolesController::class);
+
+    Route::get('/promo', [PromoCodeController::class, 'index'])->name('promo.index');
+    Route::get('/create/promo', [PromoCodeController::class, 'create'])->name('promo.create');
+    Route::post('/create-promo', [PromoCodeController::class, 'createPromo'])->name('create.promo');
+    Route::get('/promo-edit/{id}', [PromoCodeController::class, 'edit'])->name('promo.edit');
+    Route::get('/promo-details/{id}', [PromoCodeController::class, 'show'])->name('promo.show');
+    Route::PATCH('/promo-update/{id}', [PromoCodeController::class, 'update'])->name('promo.update');
+    Route::DELETE('/promo-destroy/{id}', [PromoCodeController::class, 'destroy'])->name('promo.destroy');
 });
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -121,5 +129,6 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
         Route::get('/profile/update/{id}', [ProfileController::class, 'update'])->name('profileUpdate');
     });
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Route::post('/apply-promo', [PromoCodeController::class, 'applyPromo'])->name('promo.apply');
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 });
-

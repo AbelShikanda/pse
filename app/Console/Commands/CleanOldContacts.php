@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Contacts;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class CleanOldContacts extends Command
@@ -11,7 +13,7 @@ class CleanOldContacts extends Command
      *
      * @var string
      */
-    protected $signature = 'clean:contacts';
+    protected $signature = 'remove:contacts';
 
     /**
      * The console command description.
@@ -38,7 +40,7 @@ class CleanOldContacts extends Command
     public function handle()
     {
         try {
-            $deletedContacts = Contact::where('created_at', '<', Carbon::now()->subMonths(3))->delete();
+            $deletedContacts = Contacts::where('created_at', '<', Carbon::now()->subMonths(3))->delete();
             $this->info("Deleted $deletedContacts old contacts.");
         } catch (\Exception $e) {
             $this->error('Error: ' . $e->getMessage());

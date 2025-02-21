@@ -15,6 +15,7 @@ use App\Models\ProductColors;
 use App\Models\ProductImages;
 use App\Models\Products;
 use App\Models\ProductSizes;
+use App\Models\PromoCodes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -73,12 +74,12 @@ class PagesController extends Controller
             ['url' => '/', 'label' => 'Home'],
             ['url' => '', 'label' => 'catalog detail'],
         ];
-        
+
         $product = Products::with(['ProductImage', 'ratings', 'Color', 'Size'])->where('slug', $slug)->firstOrFail();
-    
+
         $images = $product->ProductImage;
-        $colors = $product->Color; 
-        $sizes = $product->Size;  
+        $colors = $product->Color;
+        $sizes = $product->Size;
         $averageRating = $product->ratings->avg('rating') ?? 0;
         // dd($product);
 
@@ -109,29 +110,59 @@ class PagesController extends Controller
         if (!Session::has('cart')) {
             return redirect()->route('catalog')->with('message', 'There is currently nothing in your cart');
         }
+
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
         $sizes = ProductSizes::all();
         $colors = ProductColors::all();
-        
+        $appliedPromo = Session::get('applied_promo');
+        $totalPrice = $cart->totalPrice;
+
+        if ($appliedPromo) {
+            $totalPrice = 0;
+            foreach ($cart->items as $key => $product) {
+                $promotion = PromoCodes::where('code', $appliedPromo)->first();
+                $promo = $promotion->discount_percentage;
+                $originalPrice = $product['item']['products'][0]['price'];
+                $discountedPrice = $originalPrice;
+                $discountedPrice = $originalPrice - ($originalPrice * $promo) / 100;
+
+                $cart->items[$key]['discounted_price'] = $discountedPrice;
+                $totalPrice += $discountedPrice * $cart->items[$key]['qty'];
+            }
+            Session::put('cart', $cart);
+            // dd($cart);
+        }
+
         // foreach ($cart->items as $item) {
         //     foreach ($item['item']['products'] as $item) {
-        //         // dd($item['size']);
+        //         dd($item->promo);
+        //         // dd($item['promotion']);
         //         foreach ($item['size'] as $size) {
-        //             dd($size->name->name);
+        //             dd($size->name);
         //         }
         //     }
         //     // dd($item['item']['id']);
         // }
-        
+        // Session::forget('applied_promo');
+        // Session::forget('cart');
+
+        // Check if a promo code is applied
+        $availablePromo = PromoCodes::where('expires_at', '>', now())->get();
+        $userCanUsePromo = $availablePromo->contains(function ($promo) {
+            return $promo->canUserUse(auth()->id());
+        });
+
         return View('pages.cart', [
             'pageTitle' => $pageTitle,
             'breadcrumbLinks' => $breadcrumbLinks,
             'products' => $cart->items,
-            'totalPrice' => $cart->totalPrice,
+            'totalPrice' => $totalPrice,
             'shipping' => 300,
             'sizes' => $sizes,
             'colors' => $colors,
+            'availablePromo' => $availablePromo,
+            'userCanUsePromo' => $userCanUsePromo,
         ]);
     }
 
@@ -255,7 +286,7 @@ class PagesController extends Controller
             ['url' => '/', 'label' => 'Home'],
             ['url' => '', 'label' => 'blog'],
         ];
-        
+
         $blogs = BlogImages::with('blogs')->orderBy('id', 'DESC')->get();
         // dd($blogs);
 
@@ -283,7 +314,7 @@ class PagesController extends Controller
             ['url' => '/', 'label' => 'Home'],
             ['url' => '', 'label' => 'blog single'],
         ];
-        
+
         $blog = Blog::with(['BlogImage', 'blogCategories', 'comments'])->where('slug', $slug)->firstOrFail();
         // dd($blog);
 
@@ -323,7 +354,6 @@ class PagesController extends Controller
         ]));
     }
 
-
     /**
      * function for the contact page
      *
@@ -361,7 +391,7 @@ class PagesController extends Controller
                     'message' => 'Something went wrong while saving user data.',
                 ]);
             }
-            
+
             $contacts = Contacts::where('id', $contacts->id)->first();
 
             Mail::to('printshopeld@gmail.com')
@@ -376,7 +406,6 @@ class PagesController extends Controller
             throw $th;
         }
     }
-
 
     /**
      * Store a newly created resource in storage.
