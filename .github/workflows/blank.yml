@@ -89,6 +89,9 @@ jobs:
       - name: Debug build
         run: ls -la
 
+      - name: Debug SSH IP
+        run: echo "Using SSH IP: ${{ secrets.SSH_SITES_IP }}"
+
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
