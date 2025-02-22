@@ -89,6 +89,13 @@ jobs:
       - name: Debug build
         run: ls -la
 
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H your.server.ip >> ~/.ssh/known_hosts
+
       - name: upload
         uses: appleboy/scp-action@master
         with:
@@ -237,6 +244,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: [web-deploy, ssh-release]
     steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H your.server.ip >> ~/.ssh/known_hosts
+
       - name: run-befor-hooks
         uses: appleboy/ssh-action@master
         env:
@@ -261,6 +275,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: [web-deploy, ssh-release, run-befor-hook]
     steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H your.server.ip >> ~/.ssh/known_hosts
+
       - name: run-activate-release
         uses: appleboy/ssh-action@master
         env:
@@ -292,6 +313,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: [web-deploy, ssh-release, run-befor-hook, activate-release]
     steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H your.server.ip >> ~/.ssh/known_hosts
+
       - name: run-migrations
         uses: appleboy/ssh-action@master
         env:
@@ -330,6 +358,13 @@ jobs:
         migrations-run,
       ]
     steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H your.server.ip >> ~/.ssh/known_hosts
+
       - name: run-after-hooks
         uses: appleboy/ssh-action@master
         env:
@@ -369,6 +404,13 @@ jobs:
         run-after-hook,
       ]
     steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_SITES_IP }} >> ~/.ssh/known_hosts
+
       - name: run-clean-up
         uses: appleboy/ssh-action@master
         env:
