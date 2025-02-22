@@ -90,12 +90,13 @@ jobs:
         run: ls -la
 
       - name: upload
-        uses: appleboy/ssh-action@master
+        uses: appleboy/scp-action@vmaster
         with:
           host: ${{ secrets.SSH_SITES_IP }}
           username: ${{ secrets.FTP_SITES_USER }}
           password: ${{ secrets.FTP_SITES_PASSWORD }}
           port: ${{ secrets.SSH_SITES_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: ${{ github.sha}}.tar.gz
           target: /home/printsh1/printshopeld/artifacts
       - name: extract archive and create directory
@@ -119,6 +120,7 @@ jobs:
           username: ${{ secrets.FTP_SITES_USER }}
           password: ${{ secrets.FTP_SITES_PASSWORD }}
           port: ${{ secrets.SSH_SITES_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: GITHUB_SHA,SOURCE_CSS_DIR,SOURCE_JS_DIR,SOURCE_BUILD_DIR,DEST_CSS_DIR,DEST_JS_DIR,DEST_BUILD_DIR,DEST_PARENT_DIR,SOURCE_ASSET_DIR,SOURCE_ADMIN_DIR,DEST_ASSET_DIR,DEST_ADMIN_DIR
           script: |
             mkdir -p "/home/printsh1/printshopeld/release/${GITHUB_SHA}"
@@ -249,6 +251,7 @@ jobs:
           username: ${{ secrets.FTP_SITES_USER }}
           password: ${{ secrets.FTP_SITES_PASSWORD }}
           port: ${{ secrets.SSH_SITES_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
             echo "${GITHUB_SHA}"
@@ -274,6 +277,7 @@ jobs:
           username: ${{ secrets.FTP_SITES_USER }}
           password: ${{ secrets.FTP_SITES_PASSWORD }}
           port: ${{ secrets.SSH_SITES_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH,LARAVEL_ENV,LINK_RELEASE_PATH
           # in the event of trouble recognizing the changes after the link find a solytion to refresh
           script: |
@@ -303,6 +307,7 @@ jobs:
           username: ${{ secrets.FTP_SITES_USER }}
           password: ${{ secrets.FTP_SITES_PASSWORD }}
           port: ${{ secrets.SSH_SITES_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH,LARAVEL_ENV
           # in the event of trouble recognizing the changes after the link find a solution to refresh
           script: |
@@ -339,6 +344,7 @@ jobs:
           username: ${{ secrets.FTP_SITES_USER }}
           password: ${{ secrets.FTP_SITES_PASSWORD }}
           port: ${{ secrets.SSH_SITES_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
             echo "${GITHUB_SHA}"
@@ -374,6 +380,7 @@ jobs:
           username: ${{ secrets.FTP_SITES_USER }}
           password: ${{ secrets.FTP_SITES_PASSWORD }}
           port: ${{ secrets.SSH_SITES_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: RELEASE_PATH,ARTIFACTS_PATH
           script: |
             cd $RELEASE_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
