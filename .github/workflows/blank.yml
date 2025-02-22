@@ -4,9 +4,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the master" branch
   push:
-    branches: [master"]
+    branches: [master]
   pull_request:
-    branches: [master"]
+    branches: [master]
 
   # Allows you to run this workflow manually from the Actions tab
   # workflow_dispatch:
@@ -17,7 +17,7 @@ jobs:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-      # Check if the source branch ismaster
+      # Check if the source branch is master
 
       # Runs a single command using the runners shell
       - name: Ls
@@ -27,7 +27,7 @@ jobs:
       - name: Git Clone
         uses: actions/checkout@v4
         with:
-          ref: master"
+          ref: master
 
       # Runs a single command using the runners shell
       - name: Ls
@@ -94,9 +94,8 @@ jobs:
         with:
           host: ${{ secrets.SSH_SITES_IP }}
           username: ${{ secrets.FTP_SITES_USER }}
-          password: ${{ secrets.FTP_SITES_PASSWORD }}
-          port: ${{ secrets.SSH_SITES_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_SITES_PORT }}
           source: ${{ github.sha}}.tar.gz
           target: /home/printsh1/printshopeld/artifacts
       - name: extract archive and create directory
@@ -121,7 +120,7 @@ jobs:
           password: ${{ secrets.FTP_SITES_PASSWORD }}
           port: ${{ secrets.SSH_SITES_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: GITHUB_SHA,SOURCE_CSS_DIR,SOURCE_JS_DIR,SOURCE_BUILD_DIR,DEST_CSS_DIR,DEST_JS_DIR,DEST_BUILD_DIR,DEST_PARENT_DIR,SOURCE_ASSET_DIR,SOURCE_ADMIN_DIR,DEST_ASSET_DIR,DEST_ADMIN_DIR
+          envs: GITHUB_SHA,SOURCE_CSS_DIR,SOURCE_JS_DIR,DEST_CSS_DIR,DEST_JS_DIR,DEST_PARENT_DIR,SOURCE_ASSET_DIR,SOURCE_ADMIN_DIR,DEST_ASSET_DIR,DEST_ADMIN_DIR
           script: |
             mkdir -p "/home/printsh1/printshopeld/release/${GITHUB_SHA}"
             tar xzf /home/printsh1/printshopeld/artifacts/${GITHUB_SHA}.tar.gz -C "/home/printsh1/printshopeld/release/${GITHUB_SHA}"
@@ -225,7 +224,7 @@ jobs:
             rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/.htaccess
             rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/favicon.ico
             rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/index.php
-            rm -rf /home/psrintsh1/printshopeld/release/${GITHUB_SHA}/public/robots.txt
+            rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/robots.txt
             rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/mix-manifest.json
             rm -rf /home/printsh1/printshopeld/release/${GITHUB_SHA}/public/web.config
             # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -371,7 +370,7 @@ jobs:
       ]
     steps:
       - name: run-clean-up
-        uses: appleboy/ssh-actionmaster
+        uses: appleboy/ssh-action@master
         env:
           RELEASE_PATH: /home/printsh1/printshopeld/release
           ARTIFACTS_PATH: /home/printsh1/printshopeld/artifacts
