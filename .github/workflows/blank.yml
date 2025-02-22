@@ -93,7 +93,8 @@ jobs:
         run: |
           echo "Using SSH IP: ${{ secrets.SSH_SITES_IP }}"
           echo "SSH IP from secrets: ${{ secrets.SSH_SITES_IP }}"
-          ping -c 3 "${{ secrets.SSH_SITES_IP }}"
+          ping -c 4 ${{ secrets.SSH_SITES_IP }}
+          nc -zv ${{ secrets.SSH_SITES_IP }} 22 || echo "SSH port is closed!"
 
       - name: Set up SSH
         run: |
