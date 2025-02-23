@@ -251,8 +251,9 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p ${{ secrets.SSH_SITES_PORT }} -H ${{ secrets.SSH_SITES_IP }} >> ~/.ssh/known_hosts
-          cat ~/.ssh/known_hosts
+          eval $(ssh-agent -s)
+          ssh-add -q ~/.ssh/id_rsa
+          ssh-keyscan -p "${{ secrets.SSH_SITES_PORT }}" -H "${{ secrets.SSH_SITES_IP }}" >> ~/.ssh/known_hosts
 
       - name: run-befor-hooks
         uses: appleboy/ssh-action@master
@@ -283,8 +284,9 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p ${{ secrets.SSH_SITES_PORT }} -H ${{ secrets.SSH_SITES_IP }} >> ~/.ssh/known_hosts
-          cat ~/.ssh/known_hosts
+          eval $(ssh-agent -s)
+          ssh-add -q ~/.ssh/id_rsa
+          ssh-keyscan -p "${{ secrets.SSH_SITES_PORT }}" -H "${{ secrets.SSH_SITES_IP }}" >> ~/.ssh/known_hosts
 
       - name: run-activate-release
         uses: appleboy/ssh-action@master
@@ -322,8 +324,9 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p ${{ secrets.SSH_SITES_PORT }} -H ${{ secrets.SSH_SITES_IP }} >> ~/.ssh/known_hosts
-          cat ~/.ssh/known_hosts
+          eval $(ssh-agent -s)
+          ssh-add -q ~/.ssh/id_rsa
+          ssh-keyscan -p "${{ secrets.SSH_SITES_PORT }}" -H "${{ secrets.SSH_SITES_IP }}" >> ~/.ssh/known_hosts
 
       - name: run-migrations
         uses: appleboy/ssh-action@master
@@ -368,8 +371,9 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p ${{ secrets.SSH_SITES_PORT }} -H ${{ secrets.SSH_SITES_IP }} >> ~/.ssh/known_hosts
-          cat ~/.ssh/known_hosts
+          eval $(ssh-agent -s)
+          ssh-add -q ~/.ssh/id_rsa
+          ssh-keyscan -p "${{ secrets.SSH_SITES_PORT }}" -H "${{ secrets.SSH_SITES_IP }}" >> ~/.ssh/known_hosts
 
       - name: run-after-hooks
         uses: appleboy/ssh-action@master
@@ -415,8 +419,9 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p ${{ secrets.SSH_SITES_PORT }} -H ${{ secrets.SSH_SITES_IP }} >> ~/.ssh/known_hosts
-          cat ~/.ssh/known_hosts
+          eval $(ssh-agent -s)
+          ssh-add -q ~/.ssh/id_rsa
+          ssh-keyscan -p "${{ secrets.SSH_SITES_PORT }}" -H "${{ secrets.SSH_SITES_IP }}" >> ~/.ssh/known_hosts
 
       - name: run-clean-up
         uses: appleboy/ssh-action@master
