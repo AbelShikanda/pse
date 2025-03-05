@@ -13,11 +13,12 @@
                     <div class="col"></div>
                     <div class="col">
                         <p class="pt-5">
-                            <a href="{{ route('catalog') }}" class="home_btn">
+                            <a href="https://wa.me/message/UFM7WYYHEIMRA1" class="home_btn">
                                 <span></span>
                                 <span></span>
                                 <span></span>
                                 <span></span>
+                                <i class="bi bi-whatsapp"></i>
                                 Shop now
                             </a>
                         </p>
