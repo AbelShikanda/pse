@@ -16455,6 +16455,20 @@ a {
     opacity: 1;
   }
 }
+#search-transparent {
+  background: transparent !important; /* Makes background transparent */
+  color: white !important; /* Makes text inside white */
+  border: 1px solid white; /* Optional: Adds a white border */
+}
+
+#search-transparent::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.7); /* Makes placeholder text semi-transparent white */
+}
+
+#search-transparent::placeholder {
+  color: rgba(255, 255, 255, 0.7); /* Makes placeholder text semi-transparent white */
+}
+
 body {
   background: rgb(24, 24, 24);
   font-family: "Roboto", sans-serif;

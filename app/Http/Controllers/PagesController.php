@@ -11,6 +11,7 @@ use App\Models\Cart;
 use App\Models\Comments;
 use App\Models\Contact;
 use App\Models\Contacts;
+use App\Models\ProductCategories;
 use App\Models\ProductColors;
 use App\Models\ProductImages;
 use App\Models\Products;
@@ -41,6 +42,7 @@ class PagesController extends Controller
             ['url' => '', 'label' => 'Catalog'],
         ];
 
+        $categories = ProductCategories::all();
         $images = ProductImages::with('Products')
             ->latest()
             ->get();
@@ -48,12 +50,50 @@ class PagesController extends Controller
         // $images = ProductImages::with('Products')
         // ->latest()
         // ->get();
-        // dd($images);
+        // dd($categories);
 
         return view('pages.catalog', with([
             'pageTitle' => $pageTitle,
             'breadcrumbLinks' => $breadcrumbLinks,
             'images' => $images,
+            'categories' => $categories,
+        ]));
+    }
+
+    /**
+     * filter catalog by categories
+     *
+     * This function does the following:
+     * -
+     * -
+     *
+     * @param  Type  parameter  Description
+     * @return ReturnType  Description
+     */
+    public function filterByCategory($slug)
+    {
+        $pageTitle = 'Catalog';
+        $breadcrumbLinks = [
+            ['url' => '/', 'label' => 'Home'],
+            ['url' => '', 'label' => 'Catalog'],
+        ];
+
+        $categories = ProductCategories::all();
+        $category = ProductCategories::where('slug', $slug)->firstOrFail();
+        // dd($category);
+        $images = ProductImages::whereHas('Products', function ($query) use ($category) {
+            $query->where('categories_id', $category->id);
+        })->latest()->get();
+        // dd($images);
+        // $images = ProductImages::with('Products')
+        //     ->latest()
+        //     ->get();
+
+        return view('pages.catalog', with([
+            'pageTitle' => $pageTitle,
+            'breadcrumbLinks' => $breadcrumbLinks,
+            'images' => $images,
+            'categories' => $categories,
         ]));
     }
 

@@ -101,6 +101,7 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::get('/catalog', [PagesController::class, 'catalog'])->name('catalog');
     Route::get('/catalog/show/{slug}', [PagesController::class, 'catalog_detail'])->name('catalogDetail');
+    Route::get('/catalog/{slug}', [PagesController::class, 'filterByCategory'])->name('catalog.category');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::get('/blog', [PagesController::class, 'blog'])->name('blog');
     Route::get('/blog/single/{slug}', [PagesController::class, 'blog_single'])->name('blogSingle');
