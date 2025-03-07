@@ -31,7 +31,7 @@
                 <div class="row align-items-center justify-content-center w-100 col-lg-8 text-center">
 
                     <!-- Dropdown (Select Category) -->
-                    <div class="col-md-4 pb-2">
+                    <!-- <div class="col-md-4 pb-2">
                         <div class="dropdown w-100">
                             <button class="btn btn-outline-secondary dropdown-toggle py-2 w-100 home_btn" type="button"
                                 id="shopDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,7 +46,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Search Bar & Like Button -->
                     <div class="col-md-6">
