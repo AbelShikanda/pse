@@ -36,12 +36,15 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $product_id = Wishlist::where('user_id', $user->id)->pluck('product_id');
-        $wishlist = ProductImages::with('products')->whereIn('id', $product_id)->get();
+        // dd($product_id);
+        $product_image_id = ProductImages::whereIn('products_id', $product_id)->pluck('id');
+        $wishlist = ProductImages::with('products')->whereIn('id', $product_image_id)->get();
 
         $related_category_ids = Products::whereIn('id', $product_id)->pluck('categories_id');
         $related_products = Products::whereIn('categories_id', $related_category_ids)->take(6)->get();
         $related_product_ids = $related_products->pluck('id');
         $related = ProductImages::whereIn('products_id', $related_product_ids)->take(6)->get();
+        // dd($related);
 
         $orders = Orders::with('orderItems', 'orderItems.products')->where('user_id', $user->id)->latest()->get();
         $orders->transform(function ($order, $key) {
@@ -86,12 +89,12 @@ class ProfileController extends Controller
             $wishlist->product_id = $product_id;
             $wishlist->user_id = Auth::id();
             $wishlist->save();
-            
-            $product = Products::with('ProductImage')->find($product_id)->first();
-        
+
+            $product = Products::with('ProductImage')->find($product_id);
+
             Mail::to('printshopeld@gmail.com')
                 ->send(new newWishlist($product));
-            
+
             return redirect()->back()->with('message', 'Your product has been successfully added to the wishlist');
         }
     }

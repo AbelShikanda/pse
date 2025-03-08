@@ -187,19 +187,19 @@
 
                                                 </div>
 
-                                                <div class="track__title">{{ $list->full }}</div>
+                                                <div class="track__title">{{ Str::words($list->full, 1, '...') }}</div>
 
                                                 <div class="track__explicit">
 
                                                     <span
-                                                        class="label">{{ Str::words($list->products['0']->description, 3, '...') }}
+                                                        class="label">{{ Str::words($list->products['0']->description, 1, '...') }}
                                                     </span>
 
                                                 </div>
                                                 @foreach ($list->products as $item)
-                                                    <div class="track__plays px-5"><small>{{ $item->price }}</small></div>
+                                                    <div class="track__plays px-2"><small>{{ $item->price }}</small></div>
                                                 @endforeach
-                                                <div class="track__plays px-3">
+                                                <div class="track__plays px-2">
                                                     <div class="">
                                                         <a href="{{ route('addToCart', $list->id) }}"><span>
                                                                 <i class="bi bi-cart"></i>
@@ -247,7 +247,7 @@
 
                                                 </span>
 
-                                                <span class="related-artist__name">{{ $prod->full }}</span>
+                                                <span class="related-artist__name">{{ Str::words($prod->full, 2, '...') }}</span>
 
                                             </a>
 
