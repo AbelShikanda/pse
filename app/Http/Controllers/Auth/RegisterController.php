@@ -6,28 +6,28 @@ use App\Http\Controllers\Controller;
 use App\Mail\newAccount;
 use App\Models\Admin;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
     /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
+     * |--------------------------------------------------------------------------
+     * | Register Controller
+     * |--------------------------------------------------------------------------
+     * |
+     * | This controller handles the registration of new users as well as their
+     * | validation and creation. By default this controller uses a trait to
+     * | provide this functionality without requiring any additional code.
+     * |
+     */
 
     use RegistersUsers;
 
@@ -57,8 +57,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'first_name' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,}).*[a-zA-Z]+$/i'],
-            'last_name' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,}).*[a-zA-Z]+$/i'],
+            'first_name' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{4,}).*[a-zA-Z]+$/i'],
+            'last_name' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{4,}).*[a-zA-Z]+$/i'],
             'phone' => [
                 'required', 'string', 'max:255',
                 Rule::unique('users'),  // Check for uniqueness in the users table
@@ -78,16 +78,16 @@ class RegisterController extends Controller
                 Rule::unique('users'),  // Check for uniqueness in the users table
                 function ($attribute, $value, $fail) {
                     $existing = DB::table('user_mirrors')
-                    ->where('email', $value)
-                    ->where('change_type', '!=', 'delete')
-                    ->count();
+                        ->where('email', $value)
+                        ->where('change_type', '!=', 'delete')
+                        ->count();
                     if ($existing > 0) {
                         $fail('The email is already taken.');
                     }
                 }
             ],
-            'town' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,}).*[a-zA-Z]+$/i'],
-            'location' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{3,}).*[a-zA-Z]+$/i'],
+            'town' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{4,}).*[a-zA-Z]+$/i'],
+            'location' => ['required', 'string', 'max:255', 'regex:/^(?!.*[bcdfghjklmnpqrstvwxyz]{4,}).*[a-zA-Z]+$/i'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
             'first_name.regex' => 'Enter proper first name.',
@@ -115,9 +115,9 @@ class RegisterController extends Controller
             'location' => $data['location'],
             'password' => Hash::make($data['password']),
         ]);
-        
+
         Mail::to('printshopeld@gmail.com')
-        ->send(new newAccount($user));
+            ->send(new newAccount($user));
 
         return $user;
     }
