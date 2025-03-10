@@ -25,19 +25,19 @@ class OrdersController extends Controller
             'orderItems.products.size',
             'orderItems.products.ProductImage',
         ])
-        ->orderBy('created_at', 'DESC')
-        ->get();
+            ->orderBy('created_at', 'DESC')
+            ->get();
         // $ordersItems = OrderItems::orderBy('id', 'DESC')->get();
         // $users = User::latest()->get();
 
         // foreach ($orders as $order) {
         //     dump($order);
-            // foreach ($order->orderItems as $items) {
-            //         dump($items->products->producttype);
-            //     foreach ($items->products as $prods) {
-            //             dump($prods->name);
-            //     }
-            // }
+        // foreach ($order->orderItems as $items) {
+        //         dump($items->products->producttype);
+        //     foreach ($items->products as $prods) {
+        //             dump($prods->name);
+        //     }
+        // }
         // }
 
         return view('admin.orders.index', with([
@@ -86,9 +86,9 @@ class OrdersController extends Controller
             $order = Orders::with('user')->find($id);
             $order->complete = 1;
             $order->save();
-            
+
             $email = User::where('id', $order->user->id)->pluck('email')->first();
-            
+
             Mail::to($email)
                 ->send(new orderApproval($order));
 
@@ -111,6 +111,15 @@ class OrdersController extends Controller
      */
     public function destroy($id)
     {
-        // return view('admin.orders.index');
+        // Find the order by ID
+        $order = Orders::findOrFail($id);
+
+        // Check if the order was created more than 7 days ago and is not confirmed
+        if ($order->complete == 0 && $order->created_at->diffInDays(now()) > 3) {
+            $order->delete();  // Delete the order
+            return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
+        }
+
+        return redirect()->route('orders.index')->with('error', 'Order cannot be deleted.');
     }
 }

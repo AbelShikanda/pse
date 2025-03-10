@@ -59,17 +59,35 @@
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-right">
 
-                                                            <a class="dropdown-item" href="{{ route('orders.update', $order->id) }}"
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('orders.update', $order->id) }}"
                                                                 onclick="event.preventDefault();
                                                                 document.getElementById('update-order-{{ $order->id }}').submit();">
                                                                 {{ __('Confirm Order') }}
                                                             </a>
-    
-                                                            <form id="update-order-{{ $order->id }}" action="{{ route('orders.update', $order->id) }}"
+
+                                                            <form id="update-order-{{ $order->id }}"
+                                                                action="{{ route('orders.update', $order->id) }}"
                                                                 method="post" class="d-none">
                                                                 @csrf
                                                                 @method('patch')
                                                             </form>
+
+                                                            @if ($order->created_at->diffInDays(now()) > 3)
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('orders.destroy', $order->id) }}"
+                                                                    onclick="event.preventDefault();
+                                                                document.getElementById('destroy-order-{{ $order->id }}').submit();">
+                                                                    {{ __('Delete Order') }}
+                                                                </a>
+
+                                                                <form id="destroy-order-{{ $order->id }}"
+                                                                    action="{{ route('orders.destroy', $order->id) }}"
+                                                                    method="post" class="d-none">
+                                                                    @csrf
+                                                                    @method('patch')
+                                                                </form>
+                                                            @endif
                                                         </div>
                                                     @endif
                                                 </td>
@@ -88,9 +106,16 @@
                                                 <tr id="collap-{{ $orderId }}" class="collapse in p-3 bg-light">
                                                     <td colspan="8">
                                                         <dl class="row mb-0 mt-1">
-                                                            <dt class="col-sm-2"><img src="{{ asset('storage/img/products/'.$item->products->ProductImage[0]->thumbnail) }}" style="width:40px;" alt="{{$item->products->ProductImage[0]->full}}"></dt>
-                                                            <dt class="col-sm-2">{{ Str::words($item->products->name, 3, '...') }}</dt>
-                                                            <dt class="col-sm-2">{{ Str::words($item->products->producttype[0]->name, 3, '...') }}</dt>
+                                                            <dt class="col-sm-2"><img
+                                                                    src="{{ asset('storage/img/products/' . $item->products->ProductImage[0]->thumbnail) }}"
+                                                                    style="width:40px;"
+                                                                    alt="{{ $item->products->ProductImage[0]->full }}">
+                                                            </dt>
+                                                            <dt class="col-sm-2">
+                                                                {{ Str::words($item->products->name, 3, '...') }}</dt>
+                                                            <dt class="col-sm-2">
+                                                                {{ Str::words($item->products->producttype[0]->name, 3, '...') }}
+                                                            </dt>
                                                             <dt class="col-sm-2">{{ $item->products->color[0]->name }}</dt>
                                                             <dt class="col-sm-2">{{ $item->products->size[0]->name }}</dt>
                                                             <dt class="col-sm-2">{{ $item->quantity }}</dt>
