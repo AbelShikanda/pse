@@ -95,7 +95,7 @@ class OrdersController extends Controller
             if (!$order) {
                 DB::rollBack();
 
-                return back()->with('message', 'Something went wrong while saving user data');
+                return back()->with('message', 'Something went wrong while saving data');
             }
 
             DB::commit();
