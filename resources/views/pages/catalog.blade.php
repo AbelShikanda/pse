@@ -51,8 +51,8 @@
                     <!-- Search Bar & Like Button -->
                     <div class="col-md-6">
                         <div class="input-group justify-content-center flex-wrap">
-                            <input type="text" class="form-control py-2 w-50" placeholder="Search..."
-                                aria-label="Search" id="search-transparent">
+                            <input type="text" class="form-control py-2 w-50" placeholder="Search..." aria-label="Search"
+                                id="search-transparent">
                             <button class="btn btn-outline-secondary px-3" type="button" id="searchButton">
                                 <i class="bi bi-search"></i>
                             </button>
@@ -73,6 +73,9 @@
         </div>
     </section>
     <!-- End Portfolio Details Section -->
+    <div class="d-flex justify-content-center">
+        {{ $images->links() }}
+    </div>
 
 
     <br>

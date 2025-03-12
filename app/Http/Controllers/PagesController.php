@@ -45,12 +45,12 @@ class PagesController extends Controller
         $categories = ProductCategories::all();
         $images = ProductImages::with('Products')
             ->latest()
-            ->get();
+            ->paginate(18);
         // dd($images);
         // $images = ProductImages::with('Products')
         // ->latest()
         // ->get();
-        // dd($categories);
+        // dd($images);
 
         return view('pages.catalog', with([
             'pageTitle' => $pageTitle,
@@ -80,10 +80,9 @@ class PagesController extends Controller
 
         $categories = ProductCategories::all();
         $category = ProductCategories::where('slug', $slug)->firstOrFail();
-        // dd($category);
         $images = ProductImages::whereHas('Products', function ($query) use ($category) {
             $query->where('categories_id', $category->id);
-        })->latest()->get();
+        })->latest()->paginate(18);
         // dd($images);
         // $images = ProductImages::with('Products')
         //     ->latest()
