@@ -14,6 +14,7 @@ use App\Models\WishList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class ProfileController extends Controller
@@ -106,5 +107,39 @@ class ProfileController extends Controller
         $dele->delete();
 
         return redirect()->route('profile')->with('message', 'The item has been deleted Successfully.');
+    }
+
+    public function edit()
+    {
+        return view('profile.edit', ['user' => Auth::user()]);
+    }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'gender' => 'nullable|string',
+            'phone' => 'nullable|string|max:15',
+            'town' => 'nullable|string|max:255',
+            'location' => 'nullable|string|max:255',
+            'password' => 'nullable|min:8|confirmed',
+        ]);
+
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'phone' => $request->phone,
+            'town' => $request->town,
+            'location' => $request->location,
+            'password' => $request->password ? Hash::make($request->password) : $user->password,
+        ]);
+
+        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully!');
     }
 }

@@ -46,11 +46,6 @@ class PagesController extends Controller
         $images = ProductImages::with('Products')
             ->latest()
             ->paginate(18);
-        // dd($images);
-        // $images = ProductImages::with('Products')
-        // ->latest()
-        // ->get();
-        // dd($images);
 
         return view('pages.catalog', with([
             'pageTitle' => $pageTitle,
@@ -83,10 +78,6 @@ class PagesController extends Controller
         $images = ProductImages::whereHas('Products', function ($query) use ($category) {
             $query->where('categories_id', $category->id);
         })->latest()->paginate(18);
-        // dd($images);
-        // $images = ProductImages::with('Products')
-        //     ->latest()
-        //     ->get();
 
         return view('pages.catalog', with([
             'pageTitle' => $pageTitle,
@@ -120,7 +111,6 @@ class PagesController extends Controller
         $colors = $product->Color;
         $sizes = $product->Size;
         $averageRating = $product->ratings->avg('rating') ?? 0;
-        // dd($product);
 
         return view('pages.catalog_detail', with([
             'pageTitle' => $pageTitle,
@@ -170,23 +160,8 @@ class PagesController extends Controller
                 $totalPrice += $discountedPrice * $cart->items[$key]['qty'];
             }
             Session::put('cart', $cart);
-            // dd($cart);
         }
 
-        // foreach ($cart->items as $item) {
-        //     foreach ($item['item']['products'] as $item) {
-        //         dd($item->promo);
-        //         // dd($item['promotion']);
-        //         foreach ($item['size'] as $size) {
-        //             dd($size->name);
-        //         }
-        //     }
-        //     // dd($item['item']['id']);
-        // }
-        // Session::forget('applied_promo');
-        // Session::forget('cart');
-
-        // Check if a promo code is applied
         $availablePromo = PromoCodes::where('expires_at', '>', now())->get();
         $userCanUsePromo = $availablePromo->contains(function ($promo) {
             return $promo->canUserUse(auth()->id());
@@ -218,7 +193,6 @@ class PagesController extends Controller
      */
     public function add_to_cart(Request $request, $id)
     {
-        // $images = ProductImages::with('products')->find($id);
         $images = ProductImages::with([
             'products' => function ($query) {
                 $query->with('color');
@@ -247,9 +221,6 @@ class PagesController extends Controller
 
     public function updateCart(Request $request, $id)
     {
-        // $size_id = $request->size;
-        // $size = ProductSizes::find($size_id);
-        // dd($request->all());
         $size = $request->size;
         $color = $request->color;
         $images = ProductImages::find($id);
@@ -327,7 +298,6 @@ class PagesController extends Controller
         ];
 
         $blogs = BlogImages::with('blogs')->orderBy('id', 'DESC')->get();
-        // dd($blogs);
 
         return view('pages.blog', with([
             'pageTitle' => $pageTitle,
@@ -355,7 +325,6 @@ class PagesController extends Controller
         ];
 
         $blog = Blog::with(['BlogImage', 'blogCategories', 'comments'])->where('slug', $slug)->firstOrFail();
-        // dd($blog);
 
         return view('pages.blog_single', with([
             'pageTitle' => $pageTitle,
@@ -411,11 +380,9 @@ class PagesController extends Controller
             'subject' => 'required',
             'message' => 'required',
         ]);
-        // dd($contacts);
 
         try {
             DB::beginTransaction();
-            // Logic For Save User Data
 
             $contacts = Contacts::create([
                 'name' => $request->name,
@@ -459,7 +426,6 @@ class PagesController extends Controller
 
         try {
             DB::beginTransaction();
-            // Logic For Save User Data
 
             $comments = Comments::create([
                 'content' => $request->message,
@@ -474,11 +440,6 @@ class PagesController extends Controller
             }
 
             $comments = Comments::with('blog')->where('id', $comments->id)->first();
-
-            // dd($comments->blog->title);
-
-            // Mail::to('printshopeld@gmail.com')
-            //     ->send(new newComment($comments));
 
             DB::commit();
             return redirect()->back()->with('message', 'your comment has been sent Successfully.');

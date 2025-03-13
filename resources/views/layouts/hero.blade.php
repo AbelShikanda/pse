@@ -19,7 +19,7 @@
                                 <span></span>
                                 <span></span>
                                 <i class="bi bi-whatsapp"></i>
-                                Shop now
+                                Customize
                             </a>
                         </p>
                     </div>

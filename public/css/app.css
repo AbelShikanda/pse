@@ -16684,6 +16684,17 @@ body a:hover {
   flex-flow: row wrap;
   align-items: flex-end;
 }
+.artist__header .artist__info__actions {
+  visibility: hidden;
+}
+@media (max-width: 522px) {
+  .artist__header .artist__info__actions {
+    visibility: visible;
+    display: flex; /* Or block */
+    justify-content: center;
+    gap: 10px;
+  }
+}
 .artist__header .artist__info .profile__img {
   margin-right: 15px;
 }
@@ -16883,8 +16894,8 @@ body a:hover {
     flex-flow: column wrap;
   }
   artist__header .artist__info {
-    margin-top: 0;
     width: 100%;
+    margin-top: 0;
     display: flex;
     flex-flow: column wrap;
     align-items: center;
@@ -17322,4 +17333,33 @@ button:hover {
 .rating input:checked ~ input::before,
 .rating input:checked::before {
   color: var(--c);
+}
+
+.p-form-control {
+  background-color: transparent !important; /* Make input fields transparent */
+  color: white !important; /* Set text color to white */
+  border: 1px solid white !important; /* Add a white border */
+}
+
+.p-form-control::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.7) !important; /* Light white placeholder text */
+}
+
+.p-form-control::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important; /* Light white placeholder text */
+}
+
+.p-form-label {
+  color: white !important; /* Make label text white */
+}
+
+.p-btn-primary {
+  background-color: white !important;
+  color: black !important;
+  border: none;
+}
+
+.p-btn-primary:hover {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
 }

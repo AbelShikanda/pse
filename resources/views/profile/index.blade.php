@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('footer')
-    {{-- Leave this section empty to exclude the sidebar --}}
+    {{-- Leave this section empty to exclude the footer --}}
 @endsection
 
 @section('content')
@@ -14,27 +14,7 @@
     <section class="content">
         <div class="content__left">
 
-            <section class="navigation">
-
-                <!-- Main -->
-                <div class="navigation__list">
-
-                    {{-- Navigation --}}
-
-                </div>
-                <!-- / -->
-
-            </section>
-            <section class="playlist">
-
-                <a href="#">
-
-                    <i class="ion-ios-plus-outline"></i>
-                    Edit Profile
-
-                </a>
-
-            </section>
+            @include('layouts.partials.profileNav')
 
         </div>
 
@@ -42,7 +22,8 @@
 
             <div class="artist is-verified">
 
-                <div class="artist__header" style="background-image: url('{{ asset('assets/img/header.jpg') }}'); opacity: 0.5;">
+                <div class="artist__header"
+                    style="background-image: url('{{ asset('assets/img/header.jpg') }}'); opacity: 0.5;">
 
                     <div class="artist__info">
 
@@ -55,16 +36,17 @@
 
                             <div class="artist__info__actions">
 
-                                {{-- <button class="button-dark">
-                                    <i class="ion-ios-play"></i>
-                                    Play
+                                <button class="button-dark">
+                                    <a href="{{ route('profile.index') }}" class="text-light">Home</a>
                                 </button>
 
-                                <button class="button-light">Follow</button>
+                                <button class="button-light">
+                                    <a href="{{ route('profile.edit') }}">Edit</a>
+                                </button>
 
                                 <button class="button-light more">
                                     <i class="ion-ios-more"></i>
-                                </button> --}}
+                                </button>
 
                             </div>
 
@@ -113,20 +95,8 @@
                         </div>
 
                         <div class="artist__navigation__friends">
-                            <div class="artist__listeners__label">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</div>
-
-                            {{-- <a href="#">
-                                <img src="http://zblogged.com/wp-content/uploads/2015/11/17.jpg" alt="" />
-                            </a> --}}
-
-                            {{-- <a href="#">
-                                <img src="http://zblogged.com/wp-content/uploads/2015/11/5.png" alt="" />
-                            </a> --}}
-
-                            {{-- <a href="#">
-                                <img src="http://cdn.devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg"
-                                    alt="" />
-                            </a> --}}
+                            <div class="artist__listeners__label">{{ Auth::user()->first_name }}
+                                {{ Auth::user()->last_name }}</div>
 
                         </div>
 
@@ -247,7 +217,8 @@
 
                                                 </span>
 
-                                                <span class="related-artist__name">{{ Str::words($prod->full, 2, '...') }}</span>
+                                                <span
+                                                    class="related-artist__name">{{ Str::words($prod->full, 2, '...') }}</span>
 
                                             </a>
 
@@ -322,7 +293,9 @@
                                                                 @csrf
                                                                 @method('post')
                                                                 <div class="track__lengthened">
-                                                                    <input type="text" name="productId" value="{{ $items->products->id }}" readonly hidden>
+                                                                    <input type="text" name="productId"
+                                                                        value="{{ $items->products->id }}" readonly
+                                                                        hidden>
                                                                     <div class="container">
                                                                         <div class="rating">
                                                                             <input type="radio"

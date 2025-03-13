@@ -38,7 +38,7 @@
                             {{ Auth::user()->first_name }}
                         </a>
                         <ul>
-                            <li><a href="{{ route('profile') }}">Profile</a></li>
+                            <li><a href="{{ route('profile.index') }}">Profile</a></li>
                             <li class="">
                                 <a href="{{ route('cart') }}">
                                         {{ Session::has('cart') ? Session::get('cart')->totalQty : '0' }}

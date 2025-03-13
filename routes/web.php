@@ -124,10 +124,10 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     Route::resource('ratings', RatingsController::class);
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::group(['middleware' => ['auth', 'verified']], function () {
-        Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-        Route::get('/profile/show/{id}', [ProfileController::class, 'show'])->name('profileShow');
-        Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->name('profileEdit');
-        Route::get('/profile/update/{id}', [ProfileController::class, 'update'])->name('profileUpdate');
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/profile/show/{id}', [ProfileController::class, 'show'])->name('profile.show');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     });
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::post('/apply-promo', [PromoCodeController::class, 'applyPromo'])->name('promo.apply');
