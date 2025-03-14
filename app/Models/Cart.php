@@ -20,35 +20,55 @@ class Cart
         }
     }
 
-    public function add($item, $id)
+    public function add($item, $id, $quantity, $size, $color)
     {
+        $quantity = $quantity ?? 1;
+
+        if ($this->items && array_key_exists($id, $this->items)) {
+            return back()->with('error', 'This product is already in your cart.');
+        }
+
         $storedItem = [
-            'qty' => 0,
+            'qty' => $quantity,
             'price' => $item->products['0']['price'],
             'item' => $item,
+            'size' => $size,
+            'color' => $color,
         ];
-        if ($this->items) {
-            if (array_key_exists($id, $this->items)) {
-                $storedItem = $this->items[$id];
-            }
+
+        if ($this->items && array_key_exists($id, $this->items)) {
+            $storedItem = $this->items[$id];
+            $storedItem['qty'] += $quantity;
         }
-        $storedItem['qty']++;
+
         $storedItem['price'] = $item->products['0']['price'] * $storedItem['qty'];
-        $this->totalQty++;
+
+        $this->totalQty += $quantity;
         $this->items[$id] = $storedItem;
-        $this->totalPrice += $item->products['0']['price'];
+        $this->totalPrice += $item->products['0']['price'] * $quantity;
     }
 
     public function update($item, $id, $size, $color)
     {
-        $storedItem = [
-            'qty' => 0,
-            'price' => $item->products['0']['price'],
-            'item' => $item,
-        ];
-        if (array_key_exists($id, $this->items)) {
-            $storedItem = $this->items[$id];
+        $storedItem = $this->items[$id];
+
+        if (!empty($storedItem['size']) || !empty($storedItem['color'])) {
+            $storedItem['size'] = $size;
+            $storedItem['color'] = $color;
+        } else {
+            $storedItem = [
+                'qty' => $storedItem['qty'],
+                'price' => $item->products[0]['price'],
+                'item' => $item,
+                'size' => $size,
+                'color' => $color,
+            ];
         }
+
+        if (array_key_exists($id, $this->items)) {
+            $this->items[$id] = $storedItem;
+        }
+
         $sizeName = ProductSizes::find($size);
         $storedItem['item']['products']['0']['size']['0']['name'] = $sizeName;
         $storedItem['item']['products']['0']['color']['0']['name'] = $color;
@@ -61,13 +81,34 @@ class Cart
 
     public function reduce($id)
     {
+        if (!isset($this->items[$id])) {
+            return;
+        }
+
+        $productPrice = $this->items[$id]['item']['products'][0]['price'];
+
         $this->items[$id]['qty']--;
-        $this->items[$id]['price'] -= $this->items[$id]['item']['price'];
+        $this->items[$id]['price'] -= $productPrice;
         $this->totalQty--;
-        $this->totalPrice -= $this->items[$id]['item']['price'];
+        $this->totalPrice -= $productPrice;
+
         if ($this->items[$id]['qty'] <= 0) {
             unset($this->items[$id]);
         }
+    }
+
+    public function increase($id)
+    {
+        if (!isset($this->items[$id])) {
+            return;
+        }
+
+        $productPrice = $this->items[$id]['item']['products'][0]['price'];
+
+        $this->items[$id]['qty']++;
+        $this->items[$id]['price'] += $productPrice;
+        $this->totalQty++;
+        $this->totalPrice += $productPrice;
     }
 
     public function remove($id)

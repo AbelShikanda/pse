@@ -45,30 +45,50 @@
                                                 <label
                                                     class="sub">{{ Str::words($prod['description'], 3, '...') }}</label>
                                             </div>
-                                            @foreach ($prod['color'] as $color)
+                                            @if (!isset($product['color']) && !isset($product['size']))
+                                                @foreach ($prod['color'] as $color)
+                                                    <div class="td_item item_color">
+                                                        <select name="color">
+                                                            <option selected>{{ $color['name'] }}</option>
+                                                            <option value="black">black</option>
+                                                            <option value="white">white</option>
+                                                            <option value="grey">grey</option>
+                                                        </select>
+                                                    </div>
+                                                @endforeach
+                                                @foreach ($prod['size'] as $size)
+                                                    <div class="td_item item_size">
+                                                        <select name="size">
+                                                            @foreach ($sizes as $s)
+                                                                <option value="{{ $s->id }}"
+                                                                    @if (old('size', is_object($size->name) ? $size->name->id : $size->id) == $s->id) selected @endif>
+                                                                    {{ $s->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @endforeach
+                                            @else
                                                 <div class="td_item item_color">
                                                     <select name="color">
-                                                        <option selected>
-                                                            {{ $color['name'] }}
-                                                        </option>
+                                                        <option selected>{{ $product['color'] }}</option>
                                                         <option value="black">black</option>
                                                         <option value="white">white</option>
                                                         <option value="grey">grey</option>
                                                     </select>
                                                 </div>
-                                            @endforeach
-                                            @foreach ($prod['size'] as $size)
+
                                                 <div class="td_item item_size">
                                                     <select name="size">
                                                         @foreach ($sizes as $s)
                                                             <option value="{{ $s->id }}"
-                                                                @if (old('size', is_object($size->name) ? $size->name->id : $size->id) == $s->id) selected @endif>
+                                                                @if (old('size', is_object($product['size']) ? $product['size'] : $product['size']) == $s->id) selected @endif>
                                                                 {{ $s->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                            @endforeach
+                                            @endif
                                         @endforeach
                                         <div class="td_item item_actions">
                                             <span>
@@ -99,8 +119,8 @@
                                             class="minus" aria-label="Decrease">&minus;</a>
                                         <input type="number" class="input-box" value="{{ $product['qty'] }}"
                                             min="1" max="10" readonly>
-                                        <a href="{{ route('addToCart', ['id' => $product['item']['id']]) }}" class="plus"
-                                            aria-label="Increase">&plus;</a>
+                                        <a href="{{ route('increaseCart', ['id' => $product['item']['id']]) }}"
+                                            class="plus" aria-label="Increase">&plus;</a>
                                     </div>
                                 </div>
                                 <div class="td_item item_price">
@@ -142,23 +162,24 @@
                 <div class="cart_title">
                     Cart Details
                 </div>
-                    @if ($availablePromo && $userCanUsePromo)
-                        <div>If you can see this</div>
-                        <div><a href="https://wa.me/message/UFM7WYYHEIMRA1"><strong class="text-success"> Reach out to get your promo-code </strong></a></div>
-                        <form action="{{ route('promo.apply') }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label class="col-form-label" for="inputSuccess">
-                                    <i class="fas fa-check"></i> Apply promo-code
-                                </label>
-                                <input name="code" type="text" value="" class="form-control is-valid"
-                                    id="inputSuccess">
-                            </div>
-                            <br>
-                            <button type="submit" class="apply-btn">Apply</button>
-                        </form>
+                @if ($availablePromo && $userCanUsePromo)
+                    <div>If you can see this</div>
+                    <div><a href="https://wa.me/message/UFM7WYYHEIMRA1"><strong class="text-success"> Reach out to get your
+                                promo-code </strong></a></div>
+                    <form action="{{ route('promo.apply') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputSuccess">
+                                <i class="fas fa-check"></i> Apply promo-code
+                            </label>
+                            <input name="code" type="text" value="" class="form-control is-valid"
+                                id="inputSuccess">
+                        </div>
                         <br>
-                    @endif
+                        <button type="submit" class="apply-btn">Apply</button>
+                    </form>
+                    <br>
+                @endif
                 <div class="form_row">
                     <div class="form_group">
                         @foreach ($products as $product)

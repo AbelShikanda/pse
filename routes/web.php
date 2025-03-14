@@ -114,10 +114,12 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     Route::post('/wishlist/{id}', [ProfileController::class, 'wishlist'])->name('wishlist');
     Route::post('/deleteWish/{id}', [ProfileController::class, 'deleteWish'])->name('deleteWish');
     Route::get('/cart', [PagesController::class, 'getCart'])->name('cart');
-    Route::get('/cart/add/{id}', [PagesController::class, 'add_to_cart'])->name('addToCart');
+    Route::get('/cart/add-to-cart/{id}', [PagesController::class, 'add_to_cart'])->name('addToCart');
+    Route::post('/cart/add-single/{id}', [PagesController::class, 'add_to_cart_single'])->name('add.single');
     Route::get('/deleteCart/{id}', [PagesController::class, 'deleteCart'])->name('deleteCart');
     Route::post('/updateCart/{id}', [PagesController::class, 'updateCart'])->name('updateCart');
     Route::get('/reduceCart/{id}', [PagesController::class, 'getReduceCart'])->name('reduceCart');
+    Route::get('/increaseCart/{id}', [PagesController::class, 'getIncreaseCart'])->name('increaseCart');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::post('/postCheckout/{id}', [CheckoutController::class, 'postCheckout'])->name('postCheckout');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

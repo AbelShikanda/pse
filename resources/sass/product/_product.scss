@@ -277,34 +277,129 @@ a {
 			> div {
 				flex: 1;
 			}
-			.option {
-				margin-top: 12px;
-				display: inline-block;
-				position: relative;
-				&:hover {
-					color: $textColor;
-				}
-				&::before {
-					content: "";
-					position: absolute;
-					border-width: 2px 2px 0 0;
-					border-style: solid;
-					top: 0;
-					bottom: 0;
-					height: 5px;
-					width: 5px;
-					right: -18px;
-					margin: auto;
-					transform: rotate(135deg);
-				}
-			}
 			> div + div {
-				margin-top: 20px;
+				margin: 20px 15px;
 				flex: none;
 			}
-			ul {
+			.td_item {
+				padding: 5px;
+				background-color: #000;
 				display: flex;
-				margin: 15px 5px;
+				flex-direction: column;
+				align-items: baseline;
+				justify-content: center;
+				font-weight: 400;
+				font-size: 16px;
+				color: #666;
+				transition: all 0.3s linear;
+				@include size(sm-device) {
+					padding: 5px;
+				}
+				&.item_size {
+					@include size(sm-device) {
+						grid-row-start: 2;
+						grid-row-end: 2;
+						grid-column-start: 1;
+						grid-column-end: 3;
+						width: 100%;
+					}
+					select {
+						height: 30px;
+						background-color: transparent;
+						border-color: transparent;
+						border-width: 2px;
+						outline: none;
+						color: #9d9d9d;
+						font-weight: 400;
+						font-size: 16px;
+						transition: all 0.3s linear;
+						&:focus {
+							background-color: #020202;
+						}
+						&:hover {
+							border-bottom: solid 2px #111111;
+						}
+					}
+				}
+				&.item_color {
+					@include size(sm-device) {
+						grid-row-start: 2;
+						grid-row-end: 2;
+						grid-column-start: 3;
+						grid-column-end: 5;
+						width: 100%;
+					}
+					select {
+						height: 30px;
+						background-color: transparent;
+						border-color: transparent;
+						border-width: 2px;
+						outline: none;
+						color: #9d9d9d;
+						font-weight: 400;
+						font-size: 16px;
+						transition: all 0.3s linear;
+						&:focus {
+							background-color: #020202;
+						}
+						&:hover {
+							border-bottom: solid 2px #111111;
+						}
+					}
+				}
+				&.item_qty {
+					@include size(sm-device) {
+						grid-row-start: 3;
+						grid-row-end: 3;
+						grid-column-start: 1;
+						grid-column-end: 3;
+						width: 100%;
+					}
+					// align-items: start;
+					.quantity {
+						display: flex;
+						height: 2rem;
+						border: 2px solid rgb(222, 68, 233);
+						border-radius: 16px;
+						overflow: hidden;
+						box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+						button {
+							background-color: rgb(222, 68, 233);
+							border-radius: 2px; /* Adjust for slight rounding or set to 0 for a perfect square */
+							color: #fff;
+							border: none;
+							cursor: pointer;
+							font-size: 20px;
+							width: 2rem; /* Same as height to make it square */
+							height: 2rem;
+							text-align: center;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							transition: background-color 0.2s;
+						}
+						button:hover {
+							background-color: rgb(222, 68, 233, 0.7);
+						}
+						.input-box {
+							width: 2rem;
+							text-align: center;
+							border: none;
+							padding: 8px 8px;
+							font-size: 14px;
+							outline: none;
+						}
+						/* Hide the number input spin buttons */
+						.input-box::-webkit-inner-spin-button,
+						.input-box::-webkit-outer-spin-button {
+							-webkit-appearance: none;
+							margin: 0;
+						}
+						.input-box[type="number"] {
+							-moz-appearance: textfield;
+						}
+					}
+				}
 			}
 		}
 		.color li + li {
@@ -315,17 +410,6 @@ a {
 			height: 20px;
 			border-radius: 50%;
 			display: block;
-		}
-		$colors-list: $bdot1 $bdot2 $bdot3 $bdot4 $bdot5;
-		@each $current-color in $colors-list {
-			$i: index($colors-list, $current-color);
-			.color-bdot#{$i} {
-				background-color: $current-color;
-				&:hover,
-				&.active {
-					box-shadow: 0 0 0 3px white, 0 0 0 5px $current-color;
-				}
-			}
 		}
 		.rate {
 			position: static;
@@ -414,7 +498,7 @@ a {
 			right: 10px;
 			margin-top: 0;
 		}
-		.controls > div {
+		.controls > div > div {
 			&.qty {
 				width: 60px;
 			}

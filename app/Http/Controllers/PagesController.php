@@ -37,22 +37,20 @@ class PagesController extends Controller
     public function catalog()
     {
         $pageTitle = 'Catalog';
-        $breadcrumbLinks = [
-            ['url' => '/', 'label' => 'Home'],
-            ['url' => '', 'label' => 'Catalog'],
-        ];
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'Catalog']];
 
         $categories = ProductCategories::all();
-        $images = ProductImages::with('Products')
-            ->latest()
-            ->paginate(18);
+        $images = ProductImages::with('Products')->latest()->paginate(18);
 
-        return view('pages.catalog', with([
-            'pageTitle' => $pageTitle,
-            'breadcrumbLinks' => $breadcrumbLinks,
-            'images' => $images,
-            'categories' => $categories,
-        ]));
+        return view(
+            'pages.catalog',
+            with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+                'images' => $images,
+                'categories' => $categories,
+            ]),
+        );
     }
 
     /**
@@ -68,23 +66,25 @@ class PagesController extends Controller
     public function filterByCategory($slug)
     {
         $pageTitle = 'Catalog';
-        $breadcrumbLinks = [
-            ['url' => '/', 'label' => 'Home'],
-            ['url' => '', 'label' => 'Catalog'],
-        ];
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'Catalog']];
 
         $categories = ProductCategories::all();
         $category = ProductCategories::where('slug', $slug)->firstOrFail();
         $images = ProductImages::whereHas('Products', function ($query) use ($category) {
             $query->where('categories_id', $category->id);
-        })->latest()->paginate(18);
+        })
+            ->latest()
+            ->paginate(18);
 
-        return view('pages.catalog', with([
-            'pageTitle' => $pageTitle,
-            'breadcrumbLinks' => $breadcrumbLinks,
-            'images' => $images,
-            'categories' => $categories,
-        ]));
+        return view(
+            'pages.catalog',
+            with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+                'images' => $images,
+                'categories' => $categories,
+            ]),
+        );
     }
 
     /**
@@ -100,41 +100,41 @@ class PagesController extends Controller
     public function catalog_detail($slug)
     {
         $pageTitle = 'Catalog Detail';
-        $breadcrumbLinks = [
-            ['url' => '/', 'label' => 'Home'],
-            ['url' => '', 'label' => 'catalog detail'],
-        ];
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail']];
 
-        $product = Products::with(['ProductImage', 'ratings', 'Color', 'Size'])->where('slug', $slug)->firstOrFail();
+        $product = Products::with(['ProductImage', 'ratings', 'Color', 'Size'])
+            ->where('slug', $slug)
+            ->firstOrFail();
 
+        $allSizes = ProductSizes::all();
         $images = $product->ProductImage;
         $colors = $product->Color;
         $sizes = $product->Size;
         $averageRating = $product->ratings->avg('rating') ?? 0;
 
-        return view('pages.catalog_detail', with([
-            'pageTitle' => $pageTitle,
-            'breadcrumbLinks' => $breadcrumbLinks,
-            'product' => $product,
-            'colors' => $colors,
-            'sizes' => $sizes,
-            'metaTitle' => $product->meta_title,
-            'metaDescription' => $product->meta_description,
-            'metaKeywords' => $product->meta_keywords,
-            'metaImage' => $product->ProductImage[0]->thumbnail ? asset('storage/img/products/' . $product->ProductImage[0]->thumbnail) : asset('default-meta-image.jpg'),
-            'metaUrl' => route('catalogDetail', $product->slug),
-            'averageRating' => $averageRating,
-        ]));
+        return view(
+            'pages.catalog_detail',
+            with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+                'product' => $product,
+                'colors' => $colors,
+                'allSizes' => $allSizes,
+                'sizes' => $sizes,
+                'metaTitle' => $product->meta_title,
+                'metaDescription' => $product->meta_description,
+                'metaKeywords' => $product->meta_keywords,
+                'metaImage' => $product->ProductImage[0]->thumbnail ? asset('storage/img/products/' . $product->ProductImage[0]->thumbnail) : asset('default-meta-image.jpg'),
+                'metaUrl' => route('catalogDetail', $product->slug),
+                'averageRating' => $averageRating,
+            ]),
+        );
     }
 
     public function getCart()
     {
         $pageTitle = 'Cart';
-        $breadcrumbLinks = [
-            ['url' => '/', 'label' => 'Home'],
-            ['url' => '', 'label' => 'catalog detail'],
-            ['url' => '', 'label' => 'cart'],
-        ];
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
 
         if (!Session::has('cart')) {
             return redirect()->route('catalog')->with('message', 'There is currently nothing in your cart');
@@ -193,30 +193,86 @@ class PagesController extends Controller
      */
     public function add_to_cart(Request $request, $id)
     {
+        $color = $request->input('color');
+        $size = $request->input('size');
+        $quantity = $request->input('quantity', 1);
+
         $images = ProductImages::with([
             'products' => function ($query) {
                 $query->with('color');
                 $query->with('size');
-            }
+            },
         ])->find($id);
+
+        if (!$images) {
+            return redirect()->back()->with('error', 'Product not found.');
+        }
 
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        $cart->add($images, $images->id);
+        $cart->add($images, $images->id, $quantity, $size, $color);
 
         $request->session()->put('cart', $cart);
 
         $pageTitle = 'Cart';
-        $breadcrumbLinks = [
-            ['url' => '/', 'label' => 'Home'],
-            ['url' => '', 'label' => 'catalog detail'],
-            ['url' => '', 'label' => 'cart'],
-        ];
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
 
-        return redirect()->route('cart')->with([
-            'pageTitle' => $pageTitle,
-            'breadcrumbLinks' => $breadcrumbLinks,
-        ]);
+        return redirect()
+            ->route('cart')
+            ->with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+            ]);
+    }
+
+    /**
+     * FUnction to add to cart
+     *
+     * This function does the following:
+     * - Step 1
+     * - Step 2
+     * - Step 3
+     *
+     * @param  Parameter type  Parameter name Description of the parameter (optional)
+     * @return Return type Description of the return value (optional)
+     */
+    public function add_to_cart_single(Request $request, $id)
+    {
+        $color = $request->input('color');
+        $size = $request->input('size');
+        $quantity = $request->input('quantity', 1);
+
+        if ($size == 12) {
+            return back()->with('message', 'Please select a valid size before adding this product to the cart.');
+        }
+
+        $images = ProductImages::with([
+            'products' => function ($query) {
+                $query->with('color');
+                $query->with('size');
+            },
+        ])->find($id);
+
+        if (!$images) {
+            return redirect()->back()->with('error', 'Product not found.');
+        }
+
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->add($images, $images->id, $quantity, $size, $color);
+
+        $request->session()->put('cart', $cart);
+        // dd($cart);
+
+        $pageTitle = 'Cart';
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
+
+        return redirect()
+            ->route('cart')
+            ->with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+            ]);
     }
 
     public function updateCart(Request $request, $id)
@@ -229,16 +285,14 @@ class PagesController extends Controller
         $cart->update($images, $images->id, $size, $color);
 
         $pageTitle = 'Cart';
-        $breadcrumbLinks = [
-            ['url' => '/', 'label' => 'Home'],
-            ['url' => '', 'label' => 'catalog detail'],
-            ['url' => '', 'label' => 'cart'],
-        ];
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
         Session::put('cart', $cart);
-        return redirect()->route('cart')->with([
-            'pageTitle' => $pageTitle,
-            'breadcrumbLinks' => $breadcrumbLinks,
-        ]);
+        return redirect()
+            ->route('cart')
+            ->with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+            ]);
     }
 
     public function getReduceCart($id)
@@ -248,24 +302,42 @@ class PagesController extends Controller
         $cart->reduce($id);
 
         $pageTitle = 'Cart';
-        $breadcrumbLinks = [
-            ['url' => '/', 'label' => 'Home'],
-            ['url' => '', 'label' => 'catalog detail'],
-            ['url' => '', 'label' => 'cart'],
-        ];
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
         if (count($cart->items) > 0) {
             Session::put('cart', $cart);
         } else {
             Session::forget('cart');
         }
-        return redirect()->route('cart')->with([
-            'pageTitle' => $pageTitle,
-            'breadcrumbLinks' => $breadcrumbLinks,
-        ]);
+        return redirect()
+            ->route('cart')
+            ->with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+            ]);
+    }
+
+    public function getIncreaseCart($id)
+    {
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->increase($id);
+
+        $pageTitle = 'Cart';
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
+
+        Session::put('cart', $cart);
+
+        return redirect()
+            ->route('cart')
+            ->with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+            ]);
     }
 
     public function deleteCart($id)
     {
+        // Session::forget('cart');
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
         $cart->remove($id);
@@ -292,18 +364,18 @@ class PagesController extends Controller
     public function blog()
     {
         $pageTitle = 'stories';
-        $breadcrumbLinks = [
-            ['url' => '/', 'label' => 'Home'],
-            ['url' => '', 'label' => 'blog'],
-        ];
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'blog']];
 
         $blogs = BlogImages::with('blogs')->orderBy('id', 'DESC')->get();
 
-        return view('pages.blog', with([
-            'pageTitle' => $pageTitle,
-            'breadcrumbLinks' => $breadcrumbLinks,
-            'blogs' => $blogs,
-        ]));
+        return view(
+            'pages.blog',
+            with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+                'blogs' => $blogs,
+            ]),
+        );
     }
 
     /**
@@ -319,23 +391,25 @@ class PagesController extends Controller
     public function blog_single($slug)
     {
         $pageTitle = 'Single Stories';
-        $breadcrumbLinks = [
-            ['url' => '/', 'label' => 'Home'],
-            ['url' => '', 'label' => 'blog single'],
-        ];
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'blog single']];
 
-        $blog = Blog::with(['BlogImage', 'blogCategories', 'comments'])->where('slug', $slug)->firstOrFail();
+        $blog = Blog::with(['BlogImage', 'blogCategories', 'comments'])
+            ->where('slug', $slug)
+            ->firstOrFail();
 
-        return view('pages.blog_single', with([
-            'pageTitle' => $pageTitle,
-            'breadcrumbLinks' => $breadcrumbLinks,
-            'blog' => $blog,
-            'metaTitle' => $blog->meta_title,
-            'metaDescription' => $blog->meta_description,
-            'metaKeywords' => $blog->meta_keywords,
-            'metaImage' => $blog->BlogImage[0]->thumbnail ? asset('storage/img/blogs/' . $blog->BlogImage[0]->thumbnail) : asset('default-meta-image.jpg'),
-            'metaUrl' => route('blogSingle', $blog->slug),
-        ]));
+        return view(
+            'pages.blog_single',
+            with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+                'blog' => $blog,
+                'metaTitle' => $blog->meta_title,
+                'metaDescription' => $blog->meta_description,
+                'metaKeywords' => $blog->meta_keywords,
+                'metaImage' => $blog->BlogImage[0]->thumbnail ? asset('storage/img/blogs/' . $blog->BlogImage[0]->thumbnail) : asset('default-meta-image.jpg'),
+                'metaUrl' => route('blogSingle', $blog->slug),
+            ]),
+        );
     }
 
     /**
@@ -351,15 +425,15 @@ class PagesController extends Controller
     public function contacts(Request $request)
     {
         $pageTitle = 'Contact';
-        $breadcrumbLinks = [
-            ['url' => '/', 'label' => 'Home'],
-            ['url' => '', 'label' => 'Contact'],
-        ];
+        $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'Contact']];
 
-        return view('pages.contact', with([
-            'pageTitle' => $pageTitle,
-            'breadcrumbLinks' => $breadcrumbLinks,
-        ]));
+        return view(
+            'pages.contact',
+            with([
+                'pageTitle' => $pageTitle,
+                'breadcrumbLinks' => $breadcrumbLinks,
+            ]),
+        );
     }
 
     /**
@@ -400,13 +474,14 @@ class PagesController extends Controller
 
             $contacts = Contacts::where('id', $contacts->id)->first();
 
-            Mail::to('printshopeld@gmail.com')
-                ->send(new newContact($contacts));
+            Mail::to('printshopeld@gmail.com')->send(new newContact($contacts));
 
             DB::commit();
-            return redirect()->back()->with([
-                'message' => 'Your message has been sent successfully.',
-            ]);
+            return redirect()
+                ->back()
+                ->with([
+                    'message' => 'Your message has been sent successfully.',
+                ]);
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
