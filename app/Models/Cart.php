@@ -24,97 +24,127 @@ class Cart
     {
         $quantity = $quantity ?? 1;
 
-        if ($this->items && array_key_exists($id, $this->items)) {
-            return back()->with('error', 'This product is already in your cart.');
+        if (!$this->items) {
+            $this->items = [];
         }
 
-        $storedItem = [
-            'qty' => $quantity,
-            'price' => $item->products['0']['price'],
-            'item' => $item,
-            'size' => $size,
-            'color' => $color,
-        ];
+        $uniqueKey = $id . '-' . $size . '-' . $color;
 
-        if ($this->items && array_key_exists($id, $this->items)) {
-            $storedItem = $this->items[$id];
-            $storedItem['qty'] += $quantity;
-        }
-
-        $storedItem['price'] = $item->products['0']['price'] * $storedItem['qty'];
-
-        $this->totalQty += $quantity;
-        $this->items[$id] = $storedItem;
-        $this->totalPrice += $item->products['0']['price'] * $quantity;
-    }
-
-    public function update($item, $id, $size, $color)
-    {
-        $storedItem = $this->items[$id];
-
-        if (!empty($storedItem['size']) || !empty($storedItem['color'])) {
-            $storedItem['size'] = $size;
-            $storedItem['color'] = $color;
+        if (array_key_exists($uniqueKey, $this->items)) {
+            $this->items[$uniqueKey]['qty'] += $quantity;
+            $this->items[$uniqueKey]['price'] = $item['price'] * $this->items[$uniqueKey]['qty'];
         } else {
-            $storedItem = [
-                'qty' => $storedItem['qty'],
-                'price' => $item->products[0]['price'],
-                'item' => $item,
+            $this->items[$uniqueKey] = [
+                'qty' => $quantity,
+                'unit_price' => $item['price'],
+                'thumbnail' => $item['thumbnails'],
+                'product_name' => $item['product_name'],
+                'product_desc' => $item['product_desc'],
+                'price' => $item['price'] * $quantity,
+                'product_id' => $item['product_id'],
+                'image_id' => $item['id'],
                 'size' => $size,
                 'color' => $color,
+                'color_id' => $item['color_id'],
             ];
         }
 
-        if (array_key_exists($id, $this->items)) {
-            $this->items[$id] = $storedItem;
-        }
-
-        $sizeName = ProductSizes::find($size);
-        $storedItem['item']['products']['0']['size']['0']['name'] = $sizeName;
-        $storedItem['item']['products']['0']['color']['0']['name'] = $color;
-        // $storedItem['price'] = (int)$item->products['0']['price'] * (int)$qnty;
-
-        $storedItem['item']['products']['0']['size']['0']['name'] = $this->items[$id]['item']['products']['0']['size']['0']['name'];
-        $storedItem['item']['products']['0']['color']['0']['name'] = $this->items[$id]['item']['products']['0']['color']['0']['name'];
-        // dd($size, $storedItem);
+        $this->totalQty += $quantity;
+        $this->totalPrice += $item['price'] * $quantity;
     }
 
-    public function reduce($id)
+    public function update($id, $size, $color)
     {
-        if (!isset($this->items[$id])) {
+        $oldKey = null;
+        $relatedItems = [];
+
+        foreach ($this->items as $key => $item) {
+            if ($item['image_id'] == $id) {
+                $oldKey = $key;
+            } else {
+                $relatedItems[$key] = $item;
+            }
+        }
+
+        if (!$oldKey || !isset($this->items[$oldKey])) {
+            return false;
+        }
+
+        $newKey = $id . '-' . $size . '-' . $color;
+
+        if (isset($this->items[$newKey])) {
+            return back()->with('message', 'This item color and size is already in your cart.');
+        } else {
+            $oldItem = $this->items[$oldKey];
+
+            $this->items[$newKey] = [
+                'qty' => $this->items[$oldKey]['qty'],
+                'unit_price' => $oldItem['unit_price'],
+                'thumbnail' => $oldItem['thumbnail'],
+                'product_name' => $oldItem['product_name'],
+                'product_desc' => $oldItem['product_desc'],
+                'price' => $oldItem['unit_price'] * $this->items[$oldKey]['qty'],
+                'product_id' => $oldItem['product_id'],
+                'image_id' => $id,
+                'size' => $size,
+                'color' => $color,
+                'color_id' => $oldItem['color_id'],
+            ];
+            unset($this->items[$oldKey]);
+        }
+
+        return true;
+    }
+
+    public function reduce($key)
+    {
+        // Ensure the item exists in the cart
+        if (!isset($this->items[$key])) {
             return;
         }
 
-        $productPrice = $this->items[$id]['item']['products'][0]['price'];
+        $productPrice = $this->items[$key]['unit_price'];
 
-        $this->items[$id]['qty']--;
-        $this->items[$id]['price'] -= $productPrice;
+        $this->items[$key]['qty']--;
+        $this->items[$key]['price'] -= $productPrice;
         $this->totalQty--;
         $this->totalPrice -= $productPrice;
 
-        if ($this->items[$id]['qty'] <= 0) {
-            unset($this->items[$id]);
+        // If quantity is 0 or less, remove the item
+        if ($this->items[$key]['qty'] <= 0) {
+            unset($this->items[$key]);
         }
     }
 
-    public function increase($id)
+    public function increase($key)
     {
-        if (!isset($this->items[$id])) {
+        // Ensure the item exists in the cart
+        if (!isset($this->items[$key])) {
             return;
         }
 
-        $productPrice = $this->items[$id]['item']['products'][0]['price'];
+        $productPrice = $this->items[$key]['unit_price'];
 
-        $this->items[$id]['qty']++;
-        $this->items[$id]['price'] += $productPrice;
+        $this->items[$key]['qty']++;
+        $this->items[$key]['price'] += $productPrice;
         $this->totalQty++;
         $this->totalPrice += $productPrice;
     }
 
-    public function remove($id)
+    public function remove($key)
     {
-        $this->totalQty -= (int) $this->items[$id]['qty'];
-        $this->totalPrice -= (int) $this->items[$id]['price'];
-        unset($this->items[$id]);
+        // Ensure the item exists in the cart
+        if (!isset($this->items[$key])) {
+            return;
+        }
+
+        $productPrice = $this->items[$key]['unit_price'];
+
+        // Deduct from total quantity and price
+        $this->totalQty -= (int) $this->items[$key]['qty'];
+        $this->totalPrice -= (int) $this->items[$key]['price'];
+
+        // Remove the item from the cart
+        unset($this->items[$key]);
     }
 }

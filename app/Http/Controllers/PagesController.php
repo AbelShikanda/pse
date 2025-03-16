@@ -167,6 +167,8 @@ class PagesController extends Controller
             return $promo->canUserUse(auth()->id());
         });
 
+        // dd($cart);
+
         return View('pages.cart', [
             'pageTitle' => $pageTitle,
             'breadcrumbLinks' => $breadcrumbLinks,
@@ -193,24 +195,36 @@ class PagesController extends Controller
      */
     public function add_to_cart(Request $request, $id)
     {
-        $color = $request->input('color');
-        $size = $request->input('size');
-        $quantity = $request->input('quantity', 1);
-
-        $images = ProductImages::with([
-            'products' => function ($query) {
-                $query->with('color');
-                $query->with('size');
-            },
-        ])->find($id);
+        $images = ProductImages::with('products.color:id,name', 'products.size:id,name')->find($id);
 
         if (!$images) {
             return redirect()->back()->with('error', 'Product not found.');
         }
 
+        $color = $images->products['0']->color['0']->name;
+        $color_id = $images->products['0']->color['0']->id;
+        $size = $images->products['0']->size['0']->id;
+        $price = $images->products['0']->price;
+        $product_id = $images->products['0']->id;
+        $product_name = $images->products['0']->name;
+        $product_desc = $images->products['0']->description;
+        $thumbnails = $images->thumbnail;
+        $quantity = 1;
+
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        $cart->add($images, $images->id, $quantity, $size, $color);
+        $cart->add([
+            'id' => $images->id,
+            'thumbnails' => $thumbnails,
+            'product_id' => $product_id ?? null,
+            'product_name' => $product_name ?? null,
+            'product_desc' => $product_desc ?? null,
+            'price' => $price ?? 0,
+            'size' => $size,
+            'color' => $color,
+            'color_id' => $color_id,
+            'qty' => $quantity
+        ], $images->id, $quantity, $size, $color);
 
         $request->session()->put('cart', $cart);
 
@@ -238,32 +252,43 @@ class PagesController extends Controller
      */
     public function add_to_cart_single(Request $request, $id)
     {
-        $color = $request->input('color');
-        $size = $request->input('size');
-        $quantity = $request->input('quantity', 1);
-
-        if ($size == 12) {
-            return back()->with('message', 'Please select a valid size before adding this product to the cart.');
-        }
-
-        $images = ProductImages::with([
-            'products' => function ($query) {
-                $query->with('color');
-                $query->with('size');
-            },
-        ])->find($id);
+        $images = ProductImages::with('products.color:id,name', 'products.size:id,name')->find($id);
 
         if (!$images) {
             return redirect()->back()->with('error', 'Product not found.');
         }
 
+        $color = $request->input('color');
+        $size = $request->input('size');
+        $quantity = $request->input('quantity', 1);
+
+        $color_id = $images->products['0']->color['0']->id;
+        $price = $images->products['0']->price;
+        $product_id = $images->products['0']->id;
+        $product_name = $images->products['0']->name;
+        $product_desc = $images->products['0']->description;
+        $thumbnails = $images->thumbnail;
+
+        if ($size == 12) {
+            return back()->with('message', 'Please select a valid size before adding this product to the cart.');
+        }
+
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        $cart->add($images, $images->id, $quantity, $size, $color);
+        $cart->add([
+            'id' => $images->id,
+            'thumbnails' => $thumbnails,
+            'product_id' => $product_id ?? null,
+            'product_name' => $product_name ?? null,
+            'product_desc' => $product_desc ?? null,
+            'price' => $price ?? 0,
+            'size' => $size,
+            'color' => $color,
+            'color_id' => $color_id,
+            'qty' => $quantity
+        ], $images->id, $quantity, $size, $color);
 
         $request->session()->put('cart', $cart);
-        // dd($cart);
-
         $pageTitle = 'Cart';
         $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
 
@@ -279,10 +304,14 @@ class PagesController extends Controller
     {
         $size = $request->size;
         $color = $request->color;
+        // $quantity = $request->quantity;
+
         $images = ProductImages::find($id);
+
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        $cart->update($images, $images->id, $size, $color);
+
+        $cart->update($images->id, $size, $color);
 
         $pageTitle = 'Cart';
         $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
@@ -295,11 +324,15 @@ class PagesController extends Controller
             ]);
     }
 
-    public function getReduceCart($id)
+    public function getReduceCart($key)
     {
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        $cart->reduce($id);
+
+        if (!$cart || !isset($cart->items[$key])) {
+            return back()->with('error', 'Item not found in cart');
+        }
+        $cart->reduce($key);
 
         $pageTitle = 'Cart';
         $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
@@ -316,11 +349,16 @@ class PagesController extends Controller
             ]);
     }
 
-    public function getIncreaseCart($id)
+    public function getIncreaseCart($key)
     {
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        $cart->increase($id);
+
+        if (!$cart || !isset($cart->items[$key])) {
+            return back()->with('error', 'Item not found in cart');
+        }
+
+        $cart->increase($key);
 
         $pageTitle = 'Cart';
         $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
@@ -335,12 +373,16 @@ class PagesController extends Controller
             ]);
     }
 
-    public function deleteCart($id)
+    public function deleteCart($key)
     {
-        // Session::forget('cart');
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        $cart->remove($id);
+
+        if (!$cart || !isset($cart->items[$key])) {
+            return back()->with('error', 'Item not found in cart');
+        }
+
+        $cart->remove($key);
 
         if (count($cart->items) > 0) {
             Session::put('cart', $cart);

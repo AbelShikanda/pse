@@ -32,64 +32,38 @@
                         @foreach ($products as $product)
                             <div class="cart_responsive">
 
-                                <form action="{{ route('updateCart', $product['item']['id']) }}"method="POST">
+                                <form action="{{ route('updateCart', $product['product_id']) }}"method="POST">
                                     @csrf
                                     <div class="tr_item">
                                         <div class="td_item item_img">
-                                            <img src="{{ asset('storage/img/products/' . $product['item']['thumbnail']) }}"
-                                                alt="{{ $product['item']['full'] }}" />
+                                            <img src="{{ asset('storage/img/products/' . $product['thumbnail']) }}"
+                                                {{-- alt="{{ $product['full'] }}" --}} />
                                         </div>
-                                        @foreach ($product['item']['products'] as $prod)
-                                            <div class="td_item item_name">
-                                                <label class="main">{{ Str::words($prod['name'], 2, '...') }}</label>
-                                                <label
-                                                    class="sub">{{ Str::words($prod['description'], 3, '...') }}</label>
-                                            </div>
-                                            @if (!isset($product['color']) && !isset($product['size']))
-                                                @foreach ($prod['color'] as $color)
-                                                    <div class="td_item item_color">
-                                                        <select name="color">
-                                                            <option selected>{{ $color['name'] }}</option>
-                                                            <option value="black">black</option>
-                                                            <option value="white">white</option>
-                                                            <option value="grey">grey</option>
-                                                        </select>
-                                                    </div>
-                                                @endforeach
-                                                @foreach ($prod['size'] as $size)
-                                                    <div class="td_item item_size">
-                                                        <select name="size">
-                                                            @foreach ($sizes as $s)
-                                                                <option value="{{ $s->id }}"
-                                                                    @if (old('size', is_object($size->name) ? $size->name->id : $size->id) == $s->id) selected @endif>
-                                                                    {{ $s->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                @endforeach
-                                            @else
-                                                <div class="td_item item_color">
-                                                    <select name="color">
-                                                        <option selected>{{ $product['color'] }}</option>
-                                                        <option value="black">black</option>
-                                                        <option value="white">white</option>
-                                                        <option value="grey">grey</option>
-                                                    </select>
-                                                </div>
+                                        <div class="td_item item_name">
+                                            <label
+                                                class="main">{{ Str::words($product['product_name'], 2, '...') }}</label>
+                                            <label
+                                                class="sub">{{ Str::words($product['product_desc'], 3, '...') }}</label>
+                                        </div>
+                                        <div class="td_item item_color">
+                                            <select name="color">
+                                                <option selected>{{ $product['color'] }}</option>
+                                                <option value="black">black</option>
+                                                <option value="white">white</option>
+                                                <option value="grey">grey</option>
+                                            </select>
+                                        </div>
 
-                                                <div class="td_item item_size">
-                                                    <select name="size">
-                                                        @foreach ($sizes as $s)
-                                                            <option value="{{ $s->id }}"
-                                                                @if (old('size', is_object($product['size']) ? $product['size'] : $product['size']) == $s->id) selected @endif>
-                                                                {{ $s->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            @endif
-                                        @endforeach
+                                        <div class="td_item item_size">
+                                            <select name="size">
+                                                @foreach ($sizes as $s)
+                                                    <option value="{{ $s->id }}"
+                                                        @if (old('size', is_object($product['size']) ? $product['size'] : $product['size']) == $s->id) selected @endif>
+                                                        {{ $s->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                         <div class="td_item item_actions">
                                             <span>
                                                 <button type="submit" class="btn btn-light"
@@ -99,13 +73,15 @@
                                                 </button>
                                             </span>
                                         </div>
+                                        <input type="number" class="input-box" value="{{ $product['qty'] }}"
+                                            name="quantity" readonly hidden>
                                 </form>
                                 <div class="td_item item_like">
-                                    <form method="post" action="{{ route('wishlist', $product['item']['id']) }}">
+                                    <form method="post" action="{{ route('wishlist', $product['product_id']) }}">
                                         @csrf
                                         @method('post')
                                         <span class="material-icons-outlined">
-                                            <input name="product_id" type="text" value="{{ $product['item']['id'] }}"
+                                            <input name="product_id" type="text" value="{{ $product['product_id'] }}"
                                                 readonly hidden>
                                             <button class="btn btn-transparent" type="submit">
                                                 <i class="bi bi-heart-fill"></i>
@@ -115,20 +91,36 @@
                                 </div>
                                 <div class="td_item item_qty">
                                     <div class="quantity">
-                                        <a href="{{ route('reduceCart', ['id' => $product['item']['id']]) }}"
-                                            class="minus" aria-label="Decrease">&minus;</a>
+                                        @php
+                                            $cartKey =
+                                                $product['product_id'] .
+                                                '-' .
+                                                $product['size'] .
+                                                '-' .
+                                                $product['color'];
+                                        @endphp
+                                        <a href="{{ route('reduceCart', ['key' => $cartKey]) }}" class="minus"
+                                            aria-label="Decrease">&minus;</a>
                                         <input type="number" class="input-box" value="{{ $product['qty'] }}"
                                             min="1" max="10" readonly>
-                                        <a href="{{ route('increaseCart', ['id' => $product['item']['id']]) }}"
-                                            class="plus" aria-label="Increase">&plus;</a>
+                                        <a href="{{ route('increaseCart', ['key' => $cartKey]) }}" class="plus"
+                                            aria-label="Increase">&plus;</a>
                                     </div>
                                 </div>
                                 <div class="td_item item_price">
-                                    <label>Ksh. {{ $product['item']['products']['0']['price'] }}</label>
+                                    <label>Ksh. {{ $product['price'] }}</label>
                                 </div>
                                 <div class="td_item item_remove">
+                                        @php
+                                            $cartKey =
+                                                $product['product_id'] .
+                                                '-' .
+                                                $product['size'] .
+                                                '-' .
+                                                $product['color'];
+                                        @endphp
                                     <span class="material-icons-outlined">
-                                        <a href="{{ route('deleteCart', ['id' => $product['item']['id']]) }}">
+                                        <a href="{{ route('deleteCart', ['key' => $cartKey]) }}">
                                             <i class="bi bi-x"></i>
                                         </a>
                                     </span>
@@ -183,7 +175,7 @@
                 <div class="form_row">
                     <div class="form_group">
                         @foreach ($products as $product)
-                            <form action="{{ route('postCheckout', ['id' => $product['item']['id']]) }}" method="POST">
+                            <form action="{{ route('postCheckout', ['id' => $product['product_id']]) }}" method="POST">
                         @endforeach
                         @csrf
                         <div class="subtotal">
@@ -209,17 +201,15 @@
 
                                 @foreach ($products as $product)
                                     <input name="price" type="text" class="form-control" id=""
-                                        value="{{ $product['item']['products']['0']['price'] }}" readonly hidden>
+                                        value="{{ $product['price'] }}" readonly hidden>
                                     <input name="qntty" type="text" class="form-control" id=""
                                         value="{{ $product['qty'] }}" readonly hidden>
                                     <input name="pID" type="text" class="form-control" id=""
-                                        value="{{ $product['item']['id'] }}" readonly hidden>
+                                        value="{{ $product['product_id'] }}" readonly hidden>
                                     <input name="color" type="text" class="form-control" id=""
-                                        value="{{ $product['item']['products']['0']['color']['0']['id'] }}" readonly
-                                        hidden>
+                                        value="{{ $product['color_id'] }}" readonly hidden>
                                     <input name="size" type="text" class="form-control" id=""
-                                        value="{{ $product['item']['products']['0']['size']['0']['id'] }}" readonly
-                                        hidden>
+                                        value="{{ $product['size'] }}" readonly hidden>
                                 @endforeach
 
                                 <input name="total" type="text" class="form-control" id=""

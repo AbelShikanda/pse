@@ -57,7 +57,7 @@
                                     <option selected>
                                         {{ $product->color[0]->name }}
                                     </option>
-                                    <option value="black">Navy</option>
+                                    <option value="Navy">Navy</option>
                                     <option value="white">white</option>
                                     <option value="grey">grey</option>
                                 </select>
@@ -68,13 +68,11 @@
                             <h5>size</h5>
                             <div class="td_item item_size">
                                 <select name="size">
-                                    @foreach ($product->size as $s)
-                                        @foreach ($allSizes as $size)
-                                            <option value="{{ $size->id }}"
-                                                @if (old('size', is_object($s->name) ? $s->name->id : $s->id) == $s->id) selected @endif>
-                                                {{ $size->name }}
-                                            </option>
-                                        @endforeach
+                                    @foreach ($allSizes as $size)
+                                        <option value="{{ $size->id }}"
+                                            @if ($product->Size->contains('id', $size->id) || old('size') == $size->id) selected @endif>
+                                            {{ $size->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
