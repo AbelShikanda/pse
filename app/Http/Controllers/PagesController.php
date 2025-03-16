@@ -49,7 +49,7 @@ class PagesController extends Controller
                 'breadcrumbLinks' => $breadcrumbLinks,
                 'images' => $images,
                 'categories' => $categories,
-            ]),
+            ])
         );
     }
 
@@ -377,6 +377,8 @@ class PagesController extends Controller
     {
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
+
+        dd(Session::get('cart'));
 
         if (!$cart || !isset($cart->items[$key])) {
             return back()->with('error', 'Item not found in cart');

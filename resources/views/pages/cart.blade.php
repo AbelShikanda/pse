@@ -32,7 +32,7 @@
                         @foreach ($products as $product)
                             <div class="cart_responsive">
 
-                                <form action="{{ route('updateCart', $product['product_id']) }}"method="POST">
+                                <form action="{{ route('updateCart', $product['image_id']) }}"method="POST">
                                     @csrf
                                     <div class="tr_item">
                                         <div class="td_item item_img">
@@ -77,11 +77,11 @@
                                             name="quantity" readonly hidden>
                                 </form>
                                 <div class="td_item item_like">
-                                    <form method="post" action="{{ route('wishlist', $product['product_id']) }}">
+                                    <form method="post" action="{{ route('wishlist', $product['image_id']) }}">
                                         @csrf
                                         @method('post')
                                         <span class="material-icons-outlined">
-                                            <input name="product_id" type="text" value="{{ $product['product_id'] }}"
+                                            <input name="product_id" type="text" value="{{ $product['image_id'] }}"
                                                 readonly hidden>
                                             <button class="btn btn-transparent" type="submit">
                                                 <i class="bi bi-heart-fill"></i>
@@ -93,7 +93,7 @@
                                     <div class="quantity">
                                         @php
                                             $cartKey =
-                                                $product['product_id'] .
+                                                $product['image_id'] .
                                                 '-' .
                                                 $product['size'] .
                                                 '-' .
@@ -113,7 +113,7 @@
                                 <div class="td_item item_remove">
                                         @php
                                             $cartKey =
-                                                $product['product_id'] .
+                                                $product['image_id'] .
                                                 '-' .
                                                 $product['size'] .
                                                 '-' .
@@ -175,7 +175,7 @@
                 <div class="form_row">
                     <div class="form_group">
                         @foreach ($products as $product)
-                            <form action="{{ route('postCheckout', ['id' => $product['product_id']]) }}" method="POST">
+                            <form action="{{ route('postCheckout', ['id' => $product['image_id']]) }}" method="POST">
                         @endforeach
                         @csrf
                         <div class="subtotal">
@@ -205,7 +205,7 @@
                                     <input name="qntty" type="text" class="form-control" id=""
                                         value="{{ $product['qty'] }}" readonly hidden>
                                     <input name="pID" type="text" class="form-control" id=""
-                                        value="{{ $product['product_id'] }}" readonly hidden>
+                                        value="{{ $product['image_id'] }}" readonly hidden>
                                     <input name="color" type="text" class="form-control" id=""
                                         value="{{ $product['color_id'] }}" readonly hidden>
                                     <input name="size" type="text" class="form-control" id=""
