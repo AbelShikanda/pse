@@ -86,7 +86,6 @@ class Cart
 
         if ($this->items[$selectedKey]['size'] !== $newSize || $this->items[$selectedKey]['color'] !== $newColor) {
             $oldItem = $this->items[$selectedKey];
-
             $this->items[$newKey] = [
                 'qty' => $oldItem['qty'],
                 'unit_price' => $oldItem['unit_price'],
@@ -103,7 +102,6 @@ class Cart
             unset($this->items[$selectedKey]);
         } else {
             $oldItem = $this->items[$selectedKey];
-
             $this->items[$newKey] = [
                 'qty' => $oldItem['qty'],
                 'unit_price' => $oldItem['unit_price'],
