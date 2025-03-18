@@ -349,9 +349,8 @@ jobs:
             cd $ACTIVE_RELEASE_PATH
             # php artisan migrate --force
             # php artisan db:seed --force
-            php artisan migrate --path=/database/migrations/2025_02_16_193521_create_promo_codes_table.php --force
-            php artisan migrate --path=/database/migrations/2025_02_16_194556_create_promo_code_usages_table.php --force
-            php artisan migrate --path=/database/migrations/2025_02_21_141255_add_promo_code_to_orders.php --force
+            # php artisan migrate --path=/database/migrations/2025_03_18_165017_create_reviews_table.php --force
+            # php artisan migrate --path=/database/migrations/2025_03_18_194947_create_review_tokens_table.php --force
 
   # Run activate release
   run-after-hook:
