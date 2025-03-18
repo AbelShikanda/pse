@@ -79,40 +79,22 @@ class CheckoutController extends Controller
                 $invalidSizeMessage = 'Please select a valid size. "All Sizes" is not a valid option.';
 
                 // Check if `id` exists and is valid
-                if (isset($item['item']['products'][0]['size'][0]['id']) && !isset($item['item']['products'][0]['size'][0]['name']['id'])) {
-                    if ($item['item']['products'][0]['size'][0]['id'] == 12) {
+                if (isset($item['size'])) {
+                    if ($item['size'] == 12) {
                         // If size is invalid, roll back transaction and return the error
                         DB::rollBack();
                         return back()->with(['message' => $invalidSizeMessage]);
                     } else {
                         $orderItemData = [
                             'order_id' => $order->id,
-                            'product_id' => $item['item']['products'][0]['id'],
+                            'product_id' => $item['product_id'],
                             'color_id' => $request->color,
-                            'size_id' => $item['item']['products'][0]['size'][0]['id'],
-                            'quantity' => $item['qty'],
-                            'price' => $item['price'],
-                        ];
-                    }
-                }
-                // Check if `name` exists and is valid
-                elseif (isset($item['item']['products'][0]['size'][0]['name']['id'])) {
-                    if ($item['item']['products'][0]['size'][0]['name']['id'] == 12) {
-                        // If size is invalid, roll back transaction and return the error
-                        DB::rollBack();
-                        return back()->with(['message' => $invalidSizeMessage]);
-                    } else {
-                        $orderItemData = [
-                            'order_id' => $order->id,
-                            'product_id' => $item['item']['products'][0]['id'],
-                            'color_id' => $request->color,
-                            'size_id' => $item['item']['products'][0]['size'][0]['name']['id'],
+                            'size_id' => $item['size'],
                             'quantity' => $item['qty'],
                             'price' => $item['price'],
                         ];
                     }
                 } else {
-                    // If neither `id` nor `name` exist
                     DB::rollBack();
                     return back()->with(['message' => $invalidSizeMessage]);
                 }

@@ -53,44 +53,67 @@ class Cart
         $this->totalPrice += $item['price'] * $quantity;
     }
 
-    public function update($id, $size, $color)
+    public function update($id, $newSize, $newColor, $oldSize, $oldColor)
     {
-        $oldKey = null;
-        $relatedItems = [];
+        $selectedKey = null;
 
         foreach ($this->items as $key => $item) {
             if ($item['image_id'] == $id) {
-                $oldKey = $key;
-            } else {
-                $relatedItems[$key] = $item;
+                // Check if this item matches exactly by size & color
+                if ($item['size'] == $oldSize && $item['color'] == $oldColor) {
+                    $selectedKey = $key;  // Exact match found
+                }
+
+                // If no exact match, store the first found key (fallback)
+                // if (!$selectedKey) {
+                //     $selectedKey = $key;
+                // }
             }
         }
 
-        if (!$oldKey || !isset($this->items[$oldKey])) {
+        // dd([
+        //     'exact match' => $selectedKey
+        // ]);
+
+        if (!$selectedKey || !isset($this->items[$selectedKey])) {
             return false;
         }
 
-        $newKey = $id . '-' . $size . '-' . $color;
+        $newKey = $id . '-' . $newSize . '-' . $newColor;
+
+        // dd([
+        //     'Old Item Key' => $selectedKey,
+        //     'New Item Key' => $newKey,
+        // ]);
 
         if (isset($this->items[$newKey])) {
+            // dd([
+            //     'Old Item Key' => $selectedKey,
+            //     'New Item Key' => $newKey,
+            // ]);
             return back()->with('message', 'This item color and size is already in your cart.');
+        }
+
+        if ($this->items[$selectedKey]['size'] !== $newSize || $this->items[$selectedKey]['color'] !== $newColor) {
+            $this->items[$selectedKey]['size'] = $newSize;
+            $this->items[$selectedKey]['color'] = $newColor;
         } else {
-            $oldItem = $this->items[$oldKey];
+            $oldItem = $this->items[$selectedKey];
 
             $this->items[$newKey] = [
-                'qty' => $this->items[$oldKey]['qty'],
+                'qty' => $oldItem['qty'],
                 'unit_price' => $oldItem['unit_price'],
                 'thumbnail' => $oldItem['thumbnail'],
                 'product_name' => $oldItem['product_name'],
                 'product_desc' => $oldItem['product_desc'],
-                'price' => $oldItem['unit_price'] * $this->items[$oldKey]['qty'],
+                'price' => $oldItem['unit_price'] * $oldItem['qty'],
                 'product_id' => $oldItem['product_id'],
                 'image_id' => $id,
-                'size' => $size,
-                'color' => $color,
+                'size' => $newSize,
+                'color' => $newColor,
                 'color_id' => $oldItem['color_id'],
             ];
-            unset($this->items[$oldKey]);
+            unset($this->items[$selectedKey]);
         }
 
         return true;
@@ -137,8 +160,6 @@ class Cart
         if (!isset($this->items[$key])) {
             return;
         }
-
-        $productPrice = $this->items[$key]['unit_price'];
 
         // Deduct from total quantity and price
         $this->totalQty -= (int) $this->items[$key]['qty'];

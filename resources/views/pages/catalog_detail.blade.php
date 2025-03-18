@@ -47,7 +47,7 @@
                     <h5>Description</h5>
                     <p>{{ $product->description }}</p>
                 </article>
-                <form action="{{ route('add.single', $product->id) }}" method="POST">
+                <form action="{{ route('add.single', $product->ProductImage->first()->id) }}" method="POST">
                     @csrf
                     <div class="controls">
                         <div class="color">

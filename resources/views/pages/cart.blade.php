@@ -73,8 +73,9 @@
                                                 </button>
                                             </span>
                                         </div>
-                                        <input type="number" class="input-box" value="{{ $product['qty'] }}"
-                                            name="quantity" readonly hidden>
+                                        <input type="number" class="input-box" value="{{ $product['qty'] }}" name="quantity" readonly hidden>
+                                        <input type="hidden" name="original_size" value="{{ $product['size'] }}">
+                                        <input type="hidden" name="original_color" value="{{ $product['color'] }}">
                                 </form>
                                 <div class="td_item item_like">
                                     <form method="post" action="{{ route('wishlist', $product['image_id']) }}">
@@ -93,11 +94,7 @@
                                     <div class="quantity">
                                         @php
                                             $cartKey =
-                                                $product['image_id'] .
-                                                '-' .
-                                                $product['size'] .
-                                                '-' .
-                                                $product['color'];
+                                                $product['image_id'] . '-' . $product['size'] . '-' . $product['color'];
                                         @endphp
                                         <a href="{{ route('reduceCart', ['key' => $cartKey]) }}" class="minus"
                                             aria-label="Decrease">&minus;</a>
@@ -111,14 +108,10 @@
                                     <label>Ksh. {{ $product['price'] }}</label>
                                 </div>
                                 <div class="td_item item_remove">
-                                        @php
-                                            $cartKey =
-                                                $product['image_id'] .
-                                                '-' .
-                                                $product['size'] .
-                                                '-' .
-                                                $product['color'];
-                                        @endphp
+                                    @php
+                                        $cartKey =
+                                            $product['image_id'] . '-' . $product['size'] . '-' . $product['color'];
+                                    @endphp
                                     <span class="material-icons-outlined">
                                         <a href="{{ route('deleteCart', ['key' => $cartKey]) }}">
                                             <i class="bi bi-x"></i>

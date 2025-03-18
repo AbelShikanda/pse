@@ -124,7 +124,7 @@ class PagesController extends Controller
                 'metaTitle' => $product->meta_title,
                 'metaDescription' => $product->meta_description,
                 'metaKeywords' => $product->meta_keywords,
-                'metaImage' => $product->ProductImage[0]->thumbnail ? asset('storage/img/products/' . $product->ProductImage[0]->thumbnail) : asset('default-meta-image.jpg'),
+                'metaImage' => $product->ProductImage[0]->thumbnail ? asset('storage/app/public/img/products/' . $product->ProductImage[0]->thumbnail) : asset('default-meta-image.jpg'),
                 'metaUrl' => route('catalogDetail', $product->slug),
                 'averageRating' => $averageRating,
             ]),
@@ -228,6 +228,8 @@ class PagesController extends Controller
 
         $request->session()->put('cart', $cart);
 
+        // dd($cart->items);
+
         $pageTitle = 'Cart';
         $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
 
@@ -304,14 +306,15 @@ class PagesController extends Controller
     {
         $size = $request->size;
         $color = $request->color;
-        // $quantity = $request->quantity;
+        $originalSize = $request->original_size;
+        $originalColor = $request->original_color;
 
         $images = ProductImages::find($id);
 
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
 
-        $cart->update($images->id, $size, $color);
+        $cart->update($images->id, $size, $color, $originalSize, $originalColor);
 
         $pageTitle = 'Cart';
         $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
@@ -377,8 +380,6 @@ class PagesController extends Controller
     {
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-
-        dd(Session::get('cart'));
 
         if (!$cart || !isset($cart->items[$key])) {
             return back()->with('error', 'Item not found in cart');
@@ -450,7 +451,7 @@ class PagesController extends Controller
                 'metaTitle' => $blog->meta_title,
                 'metaDescription' => $blog->meta_description,
                 'metaKeywords' => $blog->meta_keywords,
-                'metaImage' => $blog->BlogImage[0]->thumbnail ? asset('storage/img/blogs/' . $blog->BlogImage[0]->thumbnail) : asset('default-meta-image.jpg'),
+                'metaImage' => $blog->BlogImage[0]->thumbnail ? asset('storage/app/public/img/blogs/' . $blog->BlogImage[0]->thumbnail) : asset('default-meta-image.jpg'),
                 'metaUrl' => route('blogSingle', $blog->slug),
             ]),
         );
