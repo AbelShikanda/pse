@@ -53,7 +53,7 @@ class Cart
         $this->totalPrice += $item['price'] * $quantity;
     }
 
-    public function update($id, $newSize, $newColor, $oldSize, $oldColor)
+    public function update($id, $newSize, $newColor, $oldSize, $oldColor, $quantity)
     {
         $selectedKey = null;
 
@@ -63,17 +63,8 @@ class Cart
                 if ($item['size'] == $oldSize && $item['color'] == $oldColor) {
                     $selectedKey = $key;  // Exact match found
                 }
-
-                // If no exact match, store the first found key (fallback)
-                // if (!$selectedKey) {
-                //     $selectedKey = $key;
-                // }
             }
         }
-
-        // dd([
-        //     'exact match' => $selectedKey
-        // ]);
 
         if (!$selectedKey || !isset($this->items[$selectedKey])) {
             return false;
@@ -81,22 +72,35 @@ class Cart
 
         $newKey = $id . '-' . $newSize . '-' . $newColor;
 
-        // dd([
-        //     'Old Item Key' => $selectedKey,
-        //     'New Item Key' => $newKey,
-        // ]);
-
         if (isset($this->items[$newKey])) {
-            // dd([
-            //     'Old Item Key' => $selectedKey,
-            //     'New Item Key' => $newKey,
-            // ]);
-            return back()->with('message', 'This item color and size is already in your cart.');
+            if ($newKey !== $selectedKey) {
+                $this->items[$newKey]['qty'] += $quantity;
+                $this->items[$newKey]['price'] = $this->items[$newKey]['unit_price'] * $this->items[$newKey]['qty'];
+                unset($this->items[$selectedKey]);
+
+                return true;
+            } else {
+                return back()->with('message', 'This item color and size is already in your cart.');
+            }
         }
 
         if ($this->items[$selectedKey]['size'] !== $newSize || $this->items[$selectedKey]['color'] !== $newColor) {
-            $this->items[$selectedKey]['size'] = $newSize;
-            $this->items[$selectedKey]['color'] = $newColor;
+            $oldItem = $this->items[$selectedKey];
+
+            $this->items[$newKey] = [
+                'qty' => $oldItem['qty'],
+                'unit_price' => $oldItem['unit_price'],
+                'thumbnail' => $oldItem['thumbnail'],
+                'product_name' => $oldItem['product_name'],
+                'product_desc' => $oldItem['product_desc'],
+                'price' => $oldItem['unit_price'] * $oldItem['qty'],
+                'product_id' => $oldItem['product_id'],
+                'image_id' => $id,
+                'size' => $newSize,
+                'color' => $newColor,
+                'color_id' => $oldItem['color_id'],
+            ];
+            unset($this->items[$selectedKey]);
         } else {
             $oldItem = $this->items[$selectedKey];
 

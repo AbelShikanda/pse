@@ -306,6 +306,7 @@ class PagesController extends Controller
     {
         $size = $request->size;
         $color = $request->color;
+        $quantity = $request->quantity;
         $originalSize = $request->original_size;
         $originalColor = $request->original_color;
 
@@ -314,7 +315,7 @@ class PagesController extends Controller
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
 
-        $cart->update($images->id, $size, $color, $originalSize, $originalColor);
+        $cart->update($images->id, $size, $color, $originalSize, $originalColor, $quantity);
 
         $pageTitle = 'Cart';
         $breadcrumbLinks = [['url' => '/', 'label' => 'Home'], ['url' => '', 'label' => 'catalog detail'], ['url' => '', 'label' => 'cart']];
