@@ -152,7 +152,7 @@ class PagesController extends Controller
             foreach ($cart->items as $key => $product) {
                 $promotion = PromoCodes::where('code', $appliedPromo)->first();
                 $promo = $promotion->discount_percentage;
-                $originalPrice = $product['item']['products'][0]['price'];
+                $originalPrice = $product['unit_price'];
                 $discountedPrice = $originalPrice;
                 $discountedPrice = $originalPrice - ($originalPrice * $promo) / 100;
 

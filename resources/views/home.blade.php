@@ -65,7 +65,7 @@
                             <p class="s-description text-center">
                                 Stay up-to date with trends.
                                 Place no limits on your designs.
-                                Be memorable through your logo, your colors and <br> 
+                                Be memorable through your logo, your colors and <br>
                                 your brand.
                                 <br>
                                 #BeNoticed
@@ -210,49 +210,32 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    {{-- <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
                         <div class="swiper-wrapper">
 
-                            <div class="swiper-slide">
-                                <div class="testimonial-box">
-                                    <div class="author-test">
-                                        <img src="assets/img/testimonial-2.jpg" alt=""
-                                            class="rounded-circle b-shadow-a">
-                                        <span class="author">Xavi Alonso</span>
+                            @foreach ($reviews as $review)
+                                <div class="swiper-slide">
+                                    <div class="testimonial-box">
+                                        <div class="author-test">
+                                            <img src="{{ asset('admin/assets/images/default_person.png') }}" alt=""
+                                                class="rounded-circle b-shadow-a">
+                                            <span class="author">{{ $review->rating }}</span>
+                                        </div>
+                                        <div class="content-test">
+                                            <p class="description lead">
+                                                {{ $review->review }}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="content-test">
-                                        <p class="description lead">
-                                            Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Lorem ipsum
-                                            dolor sit amet,
-                                            consectetur adipiscing elit.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div><!-- End testimonial item -->
-
-                            <div class="swiper-slide">
-                                <div class="testimonial-box">
-                                    <div class="author-test">
-                                        <img src="assets/img/testimonial-4.jpg" alt=""
-                                            class="rounded-circle b-shadow-a">
-                                        <span class="author">Marta Socrate</span>
-                                    </div>
-                                    <div class="content-test">
-                                        <p class="description lead">
-                                            Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Lorem ipsum
-                                            dolor sit amet,
-                                            consectetur adipiscing elit.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div><!-- End testimonial item -->
+                                </div><!-- End testimonial item -->
+                            @endforeach
                         </div>
                         <div class="swiper-pagination"></div>
-                    </div> --}}
+                    </div>
 
-                    <!-- <div id="testimonial-mf" class="owl-carousel owl-theme">
-                                                      
-                                                    </div> -->
+                    <div id="testimonial-mf" class="owl-carousel owl-theme">
+
+                    </div>
                 </div>
             </div>
         </div>

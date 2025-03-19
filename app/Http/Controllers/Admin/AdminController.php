@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Review;
+use App\Models\ReviewToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class AdminController extends Controller
 {
-
     // public function __construct()
     // {
     //     $this->middleware(['auth:admin', 'permission:View Admins'])->only(['index', 'show']);
@@ -73,7 +75,7 @@ class AdminController extends Controller
                 'email' => $request->email,
                 'is_admin' => $isAdmin,
                 'is_staff' => $isStaff,
-                'password' => Hash::make($request->password) // Ensure the password is hashed properly
+                'password' => Hash::make($request->password)  // Ensure the password is hashed properly
             ]);
 
             if (!$createAdmin) {
@@ -83,7 +85,6 @@ class AdminController extends Controller
 
             $roles = $request->get('role');
             $createAdmin->assignRole($roles);
-
 
             DB::commit();
             return redirect()->route('admins.index')->with('message', 'Admin Created Successfully.');
@@ -111,8 +112,7 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-
-        $admin =  Admin::find($id);
+        $admin = Admin::find($id);
         $roleName = $admin->getRoleNames()->all();
         $roles = Role::get();
 
@@ -144,7 +144,6 @@ class AdminController extends Controller
             'password_confirmation' => 'nullable|same:password',
             'role' => 'required|array',
             'role.*' => 'exists:roles,name',
-            
         ]);
 
         $isAdmin = $request->has('admin') ? 1 : 0;
@@ -181,7 +180,6 @@ class AdminController extends Controller
                 $admin->save();
             }
 
-
             $roles = $request->get('role');
             $admin->assignRole($roles);
 
@@ -214,5 +212,25 @@ class AdminController extends Controller
             DB::rollBack();
             throw $th;
         }
+    }
+
+    public function generateToken()
+    {
+        $token = Str::uuid();
+        $url = url('/review/create?token=' . $token);
+
+        $reviewToken = ReviewToken::create([
+            'token' => $token,
+            'url' => $url,
+            'expires_at' => now()->addMonths(6),
+        ]);
+
+        return redirect()
+            ->route('review_tokens.index')
+            ->with([
+                'message' => 'Token generated successfully!',
+                'token' => $reviewToken->token,
+                'url' => $reviewToken->url
+            ]);
     }
 }

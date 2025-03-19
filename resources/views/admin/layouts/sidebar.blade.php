@@ -178,5 +178,27 @@
                 </ul>
             </li>
         </ul>
+        <p class="text-muted nav-heading mt-4 mb-1">
+            <span>Review Tokens Components</span>
+        </p>
+        <ul class="navbar-nav flex-fill w-100 mb-2">
+
+            <li class="nav-item dropdown">
+                <a href="#Review" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+                    <i class="fe fe-grid fe-16"></i>
+                    <span class="ml-3 item-text">Review Tokens</span>
+                </a>
+                <ul class="collapse list-unstyled pl-4 w-100" id="Review">
+                    <li class="nav-item">
+                        <a class="nav-link pl-3" href="{{ route('review_tokens.index') }}"><span
+                                class="ml-1 item-text">Tokens</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pl-3" href="{{ route('review.index') }}"><span
+                                class="ml-1 item-text">Reviews</span></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </nav>
 </aside>

@@ -27,6 +27,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PricesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingsController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UnderConstructionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -89,6 +90,12 @@ Route::group(['middleware' => 'adminauth'], function () {
     Route::get('/promo-details/{id}', [PromoCodeController::class, 'show'])->name('promo.show');
     Route::PATCH('/promo-update/{id}', [PromoCodeController::class, 'update'])->name('promo.update');
     Route::DELETE('/promo-destroy/{id}', [PromoCodeController::class, 'destroy'])->name('promo.destroy');
+
+    Route::get('/generate-review-token', [AdminController::class, 'generateToken'])->name('generateToken');
+    Route::get('/review-tokens/index', [ReviewController::class, 'review_tokens_index'])->name('review_tokens.index');
+    Route::get('/review/index', [ReviewController::class, 'review_index'])->name('review.index');
+    Route::get('/review/show/{id}', [ReviewController::class, 'review_show'])->name('review.show');
+    Route::DELETE('/review/destroy/{id}', [ReviewController::class, 'review_destroy'])->name('review.destroy');
 });
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -133,5 +140,11 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     });
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::post('/apply-promo', [PromoCodeController::class, 'applyPromo'])->name('promo.apply');
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Route::middleware('guest.review')->group(function () {
+        Route::get('/review/create', [ReviewController::class, 'create'])->name('review.create');
+        Route::post('/review/store', [ReviewController::class, 'store'])->name('review.store');
+    });
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 });

@@ -38,7 +38,6 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-
         'api' => [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
@@ -58,6 +57,7 @@ class Kernel extends HttpKernel
         'adminauth' => \App\Http\Middleware\AdminAuthenticated::class,
         'admin.permission' => \App\Http\Middleware\AdminPermissionMiddleware::class,
         'TrackVisitorJourney' => \App\Http\Middleware\TrackVisitorJourney::class,
+        'guest.review' => \App\Http\Middleware\ReviewMiddleware::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
