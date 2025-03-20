@@ -350,7 +350,7 @@ jobs:
             # php artisan migrate --force
             # php artisan db:seed --force
             # php artisan migrate --path=/database/migrations/2025_03_18_165017_create_reviews_table.php --force
-            # php artisan migrate --path=/database/migrations/2025_03_20_160334_add_guest_name_to_reviews_table.php --force
+            php artisan migrate --path=/database/migrations/2025_03_20_160334_add_guest_name_to_reviews_table.php --force
 
   # Run activate release
   run-after-hook:
