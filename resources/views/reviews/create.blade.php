@@ -80,7 +80,7 @@
                                 <div class="col-md-6">
                                     <div class="title-box-2 pt-4 pt-md-0">
                                         <h5 class="title-left">
-                                            Register for more
+                                            Register for Points
                                         </h5>
                                     </div>
                                     <div class="more-info">
