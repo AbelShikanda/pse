@@ -17,6 +17,7 @@ class CreateReviewsTable extends Migration
             $table->id();
             $table->string('token')->unique();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('guest_name')->nullable();
             $table->text('review');
             $table->integer('rating')->checkBetween(1, 5);
             $table->timestamps();

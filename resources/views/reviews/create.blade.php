@@ -42,6 +42,8 @@
                                             role="form">
                                             @csrf
                                             @method('post')
+                                            <input type="text" name="guest_name" value="{{ request('name') }}" hidden
+                                                class="form-control" >
                                             <div class="row">
                                                 <div class="col-md-12 mb-3">
                                                     <div class="form-group">

@@ -12,8 +12,10 @@
                         </p>
                     </div>
                     <div class="col-md-6">
-                        <a href="{{ route('generateToken') }}" type="button"
-                            class=" float-right btn mb-2 btn-outline-primary">Add Token</a>
+                        <!-- Button to trigger modal -->
+                        <button type="button" class="float-right btn mb-2 btn-outline-primary" data-toggle="modal" data-target="#generateTokenModal">
+                            Add Token
+                        </button>
                     </div>
                 </div>
                 @if (session()->has('message'))
@@ -68,4 +70,32 @@
             </div> <!-- .col-12 -->
         </div> <!-- .row -->
     </div> <!-- .container-fluid -->
+
+
+    <!-- Modal for Token Generation -->
+    <div class="modal fade" id="generateTokenModal" tabindex="-1" role="dialog" aria-labelledby="generateTokenModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="generateTokenModalLabel">Generate Review Token</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('generateToken') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="guest_name">Enter Name</label>
+                            <input type="text" class="form-control" id="guest_name" name="guest_name" required placeholder="Enter guest name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Generate Token</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

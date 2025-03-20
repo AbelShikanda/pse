@@ -91,7 +91,7 @@ Route::group(['middleware' => 'adminauth'], function () {
     Route::PATCH('/promo-update/{id}', [PromoCodeController::class, 'update'])->name('promo.update');
     Route::DELETE('/promo-destroy/{id}', [PromoCodeController::class, 'destroy'])->name('promo.destroy');
 
-    Route::get('/generate-review-token', [AdminController::class, 'generateToken'])->name('generateToken');
+    Route::POST('/generate-review-token', [AdminController::class, 'generateToken'])->name('generateToken');
     Route::get('/review-tokens/index', [ReviewController::class, 'review_tokens_index'])->name('review_tokens.index');
     Route::get('/review/index', [ReviewController::class, 'review_index'])->name('review.index');
     Route::get('/review/show/{id}', [ReviewController::class, 'review_show'])->name('review.show');

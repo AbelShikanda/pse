@@ -219,15 +219,24 @@
                                         <div class="author-test">
                                             <img src="{{ asset('admin/assets/images/default_person.png') }}" alt=""
                                                 class="rounded-circle b-shadow-a">
-                                            <span class="author">{{ $review->rating }}</span>
+                                            <span class="author">{{ $review->user_id ? $review->user->name : $review->guest_name }}</span>
                                         </div>
                                         <div class="content-test">
+                                            <div class="rating">
+                                                @for ($i=5; $i>=1; $i--) 
+                                                    @if ($i <= $review->rating)
+                                                        <i class="bi bi-star-fill text-purple" ></i>
+                                                    @else
+                                                        <i class="bi bi-star text-secondary" ></i>
+                                                    @endif
+                                                @endfor
+                                            </div>
                                             <p class="description lead">
                                                 {{ $review->review }}
                                             </p>
                                         </div>
                                     </div>
-                                </div><!-- End testimonial item -->
+                                </div>
                             @endforeach
                         </div>
                         <div class="swiper-pagination"></div>

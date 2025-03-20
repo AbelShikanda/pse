@@ -214,10 +214,15 @@ class AdminController extends Controller
         }
     }
 
-    public function generateToken()
+    public function generateToken(Request $request)
     {
+        $request->validate([
+            'guest_name' => 'required|string|max:255',
+        ]);
+
         $token = Str::uuid();
-        $url = url('/review/create?token=' . $token);
+        $name = urlencode($request->guest_name);
+        $url = url('/review/create?token=' . $token . '&name=' . $name);
 
         $reviewToken = ReviewToken::create([
             'token' => $token,

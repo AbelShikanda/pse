@@ -48,7 +48,7 @@
                                         @foreach ($reviews as $index => $review)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $review->user_id }}</td>
+                                                <td>{{ $review->user_id ? $review->user->name : $review->guest_name }}</td>
                                                 <td>{{ $review->rating }}</td>
                                                 <td>{{ $review->created_at }}</td>
                                                 <td>
@@ -60,19 +60,6 @@
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item"
                                                             href="{{ route('review.show', $review->id) }}">View</a>
-                                                        <!-- <a class="dropdown-item"
-                                                            href="#">Edit</a>
-                                                            <a class="dropdown-item text-danger"
-                                                                href="#"
-                                                                onclick="event.preventDefault(); document.getElementById('delete-review-{{ $review->id }}').submit();">
-                                                                Delete
-                                                            </a>
-                                                            <form id="delete-review-{{ $review->id }}"
-                                                                action="#"
-                                                                method="POST" class="d-none">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                            </form> -->
                                                     </div>
                                                 </td>
                                             </tr>

@@ -88,6 +88,7 @@ class ReviewController extends Controller
         $request->validate([
             'review' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
+            'guest_name' => 'nullable|string|max:255',
             'token' => 'required|string|exists:review_tokens,token',
         ]);
 
@@ -109,7 +110,7 @@ class ReviewController extends Controller
         ];
 
         if (!auth()->check()) {
-            $reviewData['token'] = $token;  // Store token for guests
+            $reviewData['guest_name'] = $request->input('guest_name');
         }
 
         // Create the review
