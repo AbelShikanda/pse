@@ -219,7 +219,7 @@
                                         <div class="author-test">
                                             <img src="{{ asset('admin/assets/images/default_person.png') }}" alt=""
                                                 class="rounded-circle b-shadow-a">
-                                            <span class="author">{{ $review->user_id ? $review->user->name : $review->guest_name }}</span>
+                                            <span class="author">{{ $review->user_id ? $review->user->first_name : $review->guest_name }}</span>
                                         </div>
                                         <div class="content-test">
                                             <div class="rating">

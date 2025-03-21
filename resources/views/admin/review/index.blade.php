@@ -48,7 +48,7 @@
                                         @foreach ($reviews as $index => $review)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $review->user_id ? $review->user->name : $review->guest_name }}</td>
+                                                <td>{{ $review->user_id ? $review->user->first_name : $review->guest_name }}</td>
                                                 <td>{{ $review->rating }}</td>
                                                 <td>{{ $review->created_at }}</td>
                                                 <td>
