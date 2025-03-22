@@ -87,6 +87,13 @@ class CreateProductSizesSeeder extends Seeder
                 'created_at' => Carbon::create('2022', '11', '26', '14', '35', '17'),
                 'updated_at' => Carbon::create('2022', '11', '26', '14', '35', '17'),
             ],
+            [
+                'id' => 12,
+                'name' => 'All Sizes',
+                'slug' => 'all sizes',
+                'created_at' => Carbon::create('2022', '11', '26', '14', '35', '17'),
+                'updated_at' => Carbon::create('2022', '11', '26', '14', '35', '17'),
+            ],
         ]);
     }
 }

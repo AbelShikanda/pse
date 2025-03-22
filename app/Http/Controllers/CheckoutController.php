@@ -10,6 +10,7 @@ use App\Models\Orders;
 use App\Models\ProductImages;
 use App\Models\PromoCodes;
 use App\Models\User;
+use App\Services\MpesaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,14 +21,17 @@ use Exception;
 
 class CheckoutController extends Controller
 {
+    private $mpesaService;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(MpesaService $mpesaService)
     {
         $this->middleware('auth');
+        $this->mpesaService = $mpesaService;  // Inject the service
     }
 
     public function postCheckout(Request $request, $id)
@@ -45,7 +49,8 @@ class CheckoutController extends Controller
         $cart = new Cart($oldCart);
 
         $request->validate([
-            'mpesa_ref' => 'alpha_num|unique:orders,reference|max:10|min:10',
+            // 'mpesa_ref' => 'alpha_num|unique:orders,reference|max:10|min:10',
+            'mpesa_ref' => '',
             'total' => '',
             'first_name' => '',
             'last_name' => '',
@@ -54,13 +59,23 @@ class CheckoutController extends Controller
             'estate' => '',
             'phone' => '',
             'town' => '',
+            // 'mpesa_ref' => 'required|alpha_num|unique:orders,reference|max:10|min:10',
+            // 'total' => 'required|numeric|min:1',
+            // 'first_name' => 'required|string|max:255',
+            // 'last_name' => 'required|string|max:255',
+            // 'landmark' => 'nullable|string|max:255',
+            // 'house_no' => 'nullable|string|max:255',
+            // 'estate' => 'nullable|string|max:255',
+            // 'phone' => 'required|digits_between:10,15',
+            // 'town' => 'required|string|max:255',
         ]);
         // dd($request->all());
 
         $order = new Orders();
         $order->tracking_No = serialize($cart);
         $order->price = $request->total;
-        $order->reference = $request->mpesa_ref;
+        // $order->reference = $request->mpesa_ref;
+        $order->reference = 'DHJEIOKSJU';
         $order->user_id = Auth::user()->uuid;
         if ($appliedPromo = Session::get('applied_promo')) {
             $promoCode = PromoCodes::where('code', $appliedPromo)->first();
@@ -71,12 +86,14 @@ class CheckoutController extends Controller
 
         DB::beginTransaction();
         try {
+            $invalidSizeMessage = 'Please select a valid size. "All Sizes" is not a valid option.';
             // Save order first, once.
+
+            // dd($order);
             Auth::user()->order()->save($order);
 
             foreach ($cart->items as $item) {
                 $orderItemData = null;
-                $invalidSizeMessage = 'Please select a valid size. "All Sizes" is not a valid option.';
 
                 // Check if `id` exists and is valid
                 if (isset($item['size'])) {
@@ -105,13 +122,20 @@ class CheckoutController extends Controller
                     $orderItem->save();
                 }
             }
+            // $mpesaResponse = $this->mpesaService->stkPushRequest($request->phone, $request->total);
+            $mpesaResponse = $this->mpesaService->stkPushRequest('0728157164', '1');
+            if (isset($mpesaResponse['error'])) {
+                DB::rollBack();
+                dd($mpesaResponse);
+                return back()->with(['message' => $mpesaResponse['error']]);
+            }
 
             // Commit the transaction only after all items are processed
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('Error processing order: ' . $e->getMessage());  // Log the error for debugging
-            return back()->withErrors(['error' => $invalidSizeMessage]);
+            Log::error('Error processing order: ' . $e->getMessage());
+            return back()->with(['message' => $invalidSizeMessage]);
         }
 
         // dd($order_items);
@@ -119,22 +143,26 @@ class CheckoutController extends Controller
         Session::forget('applied_promo');
         Session::forget('cart');
 
-        $order = Orders::with([
-            'orderItems',
-            'orderItems.products',
-            'orderItems.products.ProductImage',
-            'orderItems.size',
-            'orderItems.color',
-        ])->find($order->id);
+        $order = Orders::with(['orderItems', 'orderItems.products', 'orderItems.products.ProductImage', 'orderItems.size', 'orderItems.color'])->find($order->id);
 
         $image = ProductImages::where('products_id', $id)->first();
         $email = User::where('uuid', Auth::user()->uuid)->pluck('email');
         $user = User::where('id', $order->user_id)->first();
 
-        Mail::to($email)
-            ->bcc('printshopeld@gmail.com')
-            ->send(new newCheckout($order, $image, $user));
+        Mail::to($email)->bcc('printshopeld@gmail.com')->send(new newCheckout($order, $image, $user));
 
         return redirect()->route('home')->with('message', 'Your order has been placed Successfully.');
+    }
+
+    public function mpesaCallback(Request $request, MpesaService $mpesaService)
+    {
+        $mpesaResponse = $request->all();
+        $payment = $mpesaService->handleMpesaCallback($mpesaResponse);
+
+        if ($payment) {
+            return response()->json(['message' => 'Payment received and recorded.'], 200);
+        }
+
+        return response()->json(['message' => 'Payment failed or invalid response.'], 400);
     }
 }

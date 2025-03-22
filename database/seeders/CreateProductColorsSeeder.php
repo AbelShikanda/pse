@@ -73,6 +73,41 @@ class CreateProductColorsSeeder extends Seeder
                 'created_at' => Carbon::create('2022', '11', '26', '14', '11', '36'),
                 'updated_at' => Carbon::create('2022', '11', '26', '14', '11', '36'),
             ],
+            [
+                'id' => 4,
+                'name' => 'Maroon',
+                'slug' => 'maroon',
+                'created_at' => Carbon::create('2022', '11', '26', '14', '09', '36'),
+                'updated_at' => Carbon::create('2022', '11', '26', '14', '09', '36'),
+            ],
+            [
+                'id' => 5,
+                'name' => 'Brown',
+                'slug' => 'brown',
+                'created_at' => Carbon::create('2022', '11', '26', '14', '10', '18'),
+                'updated_at' => Carbon::create('2022', '11', '26', '14', '10', '18'),
+            ],
+            [
+                'id' => 6,
+                'name' => 'Yellow',
+                'slug' => 'yellow',
+                'created_at' => Carbon::create('2022', '11', '26', '14', '11', '03'),
+                'updated_at' => Carbon::create('2022', '11', '26', '14', '11', '03'),
+            ],
+            [
+                'id' => 7,
+                'name' => 'Beige',
+                'slug' => 'beige',
+                'created_at' => Carbon::create('2022', '11', '26', '14', '11', '25'),
+                'updated_at' => Carbon::create('2022', '11', '26', '14', '11', '25'),
+            ],
+            [
+                'id' => 8,
+                'name' => 'Emerald',
+                'slug' => 'emerald',
+                'created_at' => Carbon::create('2022', '11', '26', '14', '11', '36'),
+                'updated_at' => Carbon::create('2022', '11', '26', '14', '11', '36'),
+            ],
         ]);
     }
 }

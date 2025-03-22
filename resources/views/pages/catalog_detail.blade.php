@@ -57,9 +57,10 @@
                                     <option selected>
                                         {{ $product->color[0]->name }}
                                     </option>
-                                    <option value="Navy">Navy</option>
-                                    <option value="white">white</option>
-                                    <option value="grey">grey</option>
+                                    <option value="Black">Black</option>
+                                    <option value="White">White</option>
+                                    <option value="Grey">Grey</option>
+                                    <option value="Navy Blue">Navy Blue</option>
                                 </select>
                             </div>
                             <!-- <a href="#!">{{ $product->color[0]->name }}</a> -->

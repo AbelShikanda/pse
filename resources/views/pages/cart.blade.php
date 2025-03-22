@@ -48,9 +48,10 @@
                                         <div class="td_item item_color">
                                             <select name="color">
                                                 <option selected>{{ $product['color'] }}</option>
-                                                <option value="black">black</option>
-                                                <option value="white">white</option>
-                                                <option value="grey">grey</option>
+                                                <option value="Black">Black</option>
+                                                <option value="White">White</option>
+                                                <option value="Grey">Grey</option>
+                                                <option value="Navy Blue">Navy Blue</option>
                                             </select>
                                         </div>
 

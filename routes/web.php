@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MpesaPayContorller;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PricesController;
 use App\Http\Controllers\ProfileController;
@@ -129,6 +130,7 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     Route::get('/increaseCart/{key}', [PagesController::class, 'getIncreaseCart'])->name('increaseCart');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::post('/postCheckout/{id}', [CheckoutController::class, 'postCheckout'])->name('postCheckout');
+    Route::post('/mpesa/callback', [CheckoutController::class, 'mpesaCallback']);
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::resource('ratings', RatingsController::class);
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
