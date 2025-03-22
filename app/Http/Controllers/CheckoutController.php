@@ -94,9 +94,11 @@ class CheckoutController extends Controller
 
             foreach ($cart->items as $item) {
                 $orderItemData = null;
+                // dd($item['size']);
 
                 // Check if `id` exists and is valid
                 if (isset($item['size'])) {
+                    // dd($item['size']);
                     if ($item['size'] == 12) {
                         // If size is invalid, roll back transaction and return the error
                         DB::rollBack();
@@ -110,6 +112,7 @@ class CheckoutController extends Controller
                             'quantity' => $item['qty'],
                             'price' => $item['price'],
                         ];
+                        // dd($orderItemData);
                     }
                 } else {
                     DB::rollBack();
@@ -123,7 +126,7 @@ class CheckoutController extends Controller
                 }
             }
             // $mpesaResponse = $this->mpesaService->stkPushRequest($request->phone, $request->total);
-            $mpesaResponse = $this->mpesaService->stkPushRequest('0728157164', '1');
+            $mpesaResponse = $this->mpesaService->stkPushRequest('254728157164', '1');
             if (isset($mpesaResponse['error'])) {
                 DB::rollBack();
                 dd($mpesaResponse);
@@ -157,6 +160,7 @@ class CheckoutController extends Controller
     public function mpesaCallback(Request $request, MpesaService $mpesaService)
     {
         $mpesaResponse = $request->all();
+        dd($mpesaResponse);
         $payment = $mpesaService->handleMpesaCallback($mpesaResponse);
 
         if ($payment) {

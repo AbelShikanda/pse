@@ -25,14 +25,26 @@ class MpesaService
     public function getAccessToken()
     {
         $url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
-        $credentials = base64_encode($this->consumerKey . ':' . $this->consumerSecret);
+        $headers = ['Content-Type:application/json; charset=utf8'];
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_HEADER, FALSE);
+        curl_setopt($curl, CURLOPT_USERPWD, $this->consumerKey . ':' . $this->consumerSecret);
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . $credentials
-        ])->get($url);
+        $response = curl_exec($curl);
+        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-        if ($response->successful()) {
-            return $response->json()['access_token'];
+        curl_close($curl);
+
+        if ($status !== 200) {
+            return null;
+        }
+
+        $result = json_decode($response);
+
+        if (isset($result->access_token)) {
+            return $result->access_token;
         }
 
         return null;
@@ -50,7 +62,12 @@ class MpesaService
 
         $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
-        $data = [
+        $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $accessToken];
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $stkpushheader);
+        $curl_post_data = array(
             'BusinessShortCode' => $this->shortcode,
             'Password' => $password,
             'Timestamp' => $timestamp,
@@ -62,14 +79,20 @@ class MpesaService
             'CallBackURL' => $this->callbackURL,
             'AccountReference' => 'TestPayment',
             'TransactionDesc' => 'Payment for Order'
-        ];
+        );
+        $data_string = json_encode($curl_post_data);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+        echo $curl_response = curl_exec($curl);
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $accessToken,
-            'Content-Type' => 'application/json'
-        ])->post($url, $data);
+        $data = json_decode($curl_response);
 
-        return $response->json();
+        $CheckoutRequestID = $data->CheckoutRequestID;
+        $ResponseCode = $data->ResponseCode;
+        if ($ResponseCode == '0') {
+            echo 'The CheckoutRequestID for this transaction is : ' . $CheckoutRequestID;
+        }
     }
 
     public function handleMpesaCallback($mpesaResponse)
