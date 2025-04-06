@@ -36,7 +36,7 @@
                                     @csrf
                                     <div class="tr_item">
                                         <div class="td_item item_img">
-                                            <img src="{{ asset('storage/img/products/' . $product['thumbnail']) }}"
+                                            <img src="{{ asset('storage/app/public/img/products/' . $product['thumbnail']) }}"
                                                 {{-- alt="{{ $product['full'] }}" --}} />
                                         </div>
                                         <div class="td_item item_name">
@@ -188,10 +188,9 @@
                             <label>Subtotal: </label>
                             <strong class="text-success">Ksh {{ $totalPrice + $shipping }}</strong>
                             <div class="form-group">
-                                <label class="col-form-label" for="inputSuccess"><i class="fas fa-check"></i> Your M-pesa
-                                    Reference Number</label>
-                                <input name="mpesa_ref" type="text" value="" class="form-control is-valid"
-                                    id="inputSuccess">
+                                <label class="col-form-label" for="inputSuccess"><i class="fas fa-check"></i> Your Number starting (245)</label>
+                                <input name="phone" type="phone" value="" class="form-control is-valid" placeholder="254712345678"
+                                    id="inputSuccess" required>
 
                                 @foreach ($products as $product)
                                     <input name="price" type="text" class="form-control" id=""

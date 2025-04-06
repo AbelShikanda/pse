@@ -15,9 +15,14 @@ class CreateMpesaPaymentsTable extends Migration
     {
         Schema::create('mpesa_payments', function (Blueprint $table) {
             $table->id();
-            $table->string('phone_number');
-            $table->decimal('amount', 10, 2);
-            $table->string('receipt_number')->unique();
+            $table->string('merchant_request_id')->nullable();
+            $table->string('checkout_request_id')->nullable();
+            $table->integer('result_code')->nullable();
+            $table->string('result_desc')->nullable();
+            $table->decimal('amount', 10, 2)->nullable();
+            $table->string('mpesa_receipt_number')->nullable();
+            $table->timestamp('transaction_date')->nullable();
+            $table->string('phone_number')->nullable();
             $table->string('status')->default('Pending');
             $table->timestamps();
         });

@@ -349,8 +349,9 @@ jobs:
             cd $ACTIVE_RELEASE_PATH
             # php artisan migrate --force
             # php artisan db:seed --force
-            # php artisan migrate --path=/database/migrations/2025_03_18_165017_create_reviews_table.php --force
             # php artisan migrate --path=/database/migrations/2025_03_22_145945_create_mpesa_payments_table.php --force
+            php artisan migrate:reset --path=database/migrations/2025_03_22_145945_create_mpesa_payments_table.php --force
+            php artisan migrate --path=database/migrations/2025_03_22_145945_create_mpesa_payments_table.php --force
 
   # Run activate release
   run-after-hook:

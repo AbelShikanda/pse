@@ -67,7 +67,7 @@
                                 <div class="inputregister-box">
                                     <input type="text" name="location"
                                         value="{{ old('location') }}" required autocomplete="location" autofocus>
-                                    <span>Location</span>
+                                    <span>clossest location for delivery</span>
                                     <i></i>
                                 </div>
                             </div>

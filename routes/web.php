@@ -130,7 +130,7 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     Route::get('/increaseCart/{key}', [PagesController::class, 'getIncreaseCart'])->name('increaseCart');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::post('/postCheckout/{id}', [CheckoutController::class, 'postCheckout'])->name('postCheckout');
-    Route::post('/mpesa/callback', [CheckoutController::class, 'mpesaCallback']);
+    Route::post('/api/mpesa/callback', [CheckoutController::class, 'mpesaCallback'])->withoutMiddleware(['auth']);
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::resource('ratings', RatingsController::class);
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

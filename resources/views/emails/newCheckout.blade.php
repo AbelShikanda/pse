@@ -16,8 +16,7 @@
 <body>
     <h1>Thank you for your business</h1>
 
-    <p>Hi {{ $user->first_name }}, you have placed a new order successfully.<br>
-        (Pending confirmation)</p>
+    <p>Hi {{ $user->first_name }}, you have placed an order successfully.<br></p>
 
     <p>Your order reference is: {{ $order->reference }}</p>
     @if ($order->promoCode)
@@ -25,6 +24,15 @@
     @else
         <p>No promo code was applied.</p>
     @endif
+    <br>
+    <ul>
+        <li>
+            <p>Your order will take three business day to be completed</p>
+        </li>
+        <li>
+            <p>We will deliver to this clossest location: ({{ $order->user->location }})</p>
+        </li>
+    </ul>
 
     <h3>Order Details</h3>
 

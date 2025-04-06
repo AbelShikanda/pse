@@ -59,7 +59,7 @@
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-right">
 
-                                                            <a class="dropdown-item"
+                                                            <!-- <a class="dropdown-item"
                                                                 href="{{ route('orders.update', $order->id) }}"
                                                                 onclick="event.preventDefault();
                                                                 document.getElementById('update-order-{{ $order->id }}').submit();">
@@ -71,7 +71,7 @@
                                                                 method="post" class="d-none">
                                                                 @csrf
                                                                 @method('patch')
-                                                            </form>
+                                                            </form> -->
 
                                                             @if ($order->created_at->diffInDays(now()) > 3)
                                                                 <a class="dropdown-item"

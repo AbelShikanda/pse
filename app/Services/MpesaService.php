@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\MpesaPayment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class MpesaService
@@ -15,16 +16,16 @@ class MpesaService
 
     public function __construct()
     {
-        $this->consumerKey = env('MPESA_CONSUMER_KEY');
-        $this->consumerSecret = env('MPESA_CONSUMER_SECRET');
-        $this->shortcode = env('MPESA_SHORTCODE');
-        $this->passkey = env('MPESA_PASSKEY');
-        $this->callbackURL = env('MPESA_CALLBACK_URL');
+        $this->consumerKey = config('mpesa.consumer_key');
+        $this->consumerSecret = config('mpesa.consumer_secret');
+        $this->shortcode = config('mpesa.shortcode');
+        $this->passkey = config('mpesa.passkey');
+        $this->callbackURL = config('mpesa.callback_url');
     }
 
     public function getAccessToken()
     {
-        $url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+        $url = 'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
         $headers = ['Content-Type:application/json; charset=utf8'];
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -57,10 +58,10 @@ class MpesaService
             return ['error' => 'Failed to generate access token'];
         }
 
-        $timestamp = now()->format('YmdHis');
+        $timestamp = Carbon::now()->format('YmdHis');
         $password = base64_encode($this->shortcode . $this->passkey . $timestamp);
 
-        $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+        $url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
         $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $accessToken];
 
@@ -71,10 +72,10 @@ class MpesaService
             'BusinessShortCode' => $this->shortcode,
             'Password' => $password,
             'Timestamp' => $timestamp,
-            'TransactionType' => 'CustomerPayBillOnline',
+            'TransactionType' => 'CustomerBuyGoodsOnline',
             'Amount' => $amount,
             'PartyA' => $phoneNumber,
-            'PartyB' => $this->shortcode,
+            'PartyB' => '9030355',
             'PhoneNumber' => $phoneNumber,
             'CallBackURL' => $this->callbackURL,
             'AccountReference' => 'TestPayment',
@@ -84,39 +85,24 @@ class MpesaService
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
-        echo $curl_response = curl_exec($curl);
+        $curl_response = curl_exec($curl);
 
-        $data = json_decode($curl_response);
-
-        $CheckoutRequestID = $data->CheckoutRequestID;
-        $ResponseCode = $data->ResponseCode;
-        if ($ResponseCode == '0') {
-            echo 'The CheckoutRequestID for this transaction is : ' . $CheckoutRequestID;
-        }
-    }
-
-    public function handleMpesaCallback($mpesaResponse)
-    {
-        if (isset($mpesaResponse['Body']['stkCallback'])) {
-            $callback = $mpesaResponse['Body']['stkCallback'];
-
-            if ($callback['ResultCode'] == 0) {
-                $metadata = collect($callback['CallbackMetadata']['Item']);
-
-                $amount = $metadata->where('Name', 'Amount')->first()['Value'] ?? null;
-                $receipt = $metadata->where('Name', 'MpesaReceiptNumber')->first()['Value'] ?? null;
-                $phoneNumber = $metadata->where('Name', 'PhoneNumber')->first()['Value'] ?? null;
-
-                // Store payment in database
-                return MpesaPayment::create([
-                    'phone_number' => $phoneNumber,
-                    'amount' => $amount,
-                    'receipt_number' => $receipt,
-                    'status' => 'Completed'
-                ]);
-            }
+        if (curl_errno($curl)) {
+            return ['error' => 'CURL Error: ' . curl_error($curl)];
         }
 
-        return null;
+        curl_close($curl);
+
+        $responseData = json_decode($curl_response, true);
+
+        if (!isset($responseData['ResponseCode'])) {
+            return ['error' => 'Invalid response from M-Pesa', 'response' => $responseData];
+        }
+
+        if ($responseData['ResponseCode'] !== '0') {
+            return ['error' => 'M-Pesa request failed', 'response' => $responseData];
+        }
+
+        return $responseData;
     }
 }
