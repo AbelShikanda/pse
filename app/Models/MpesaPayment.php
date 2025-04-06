@@ -10,6 +10,7 @@ class MpesaPayment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'order_id',
         'merchant_request_id',
         'checkout_request_id',
         'result_code',

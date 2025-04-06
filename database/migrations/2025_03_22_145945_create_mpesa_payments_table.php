@@ -15,6 +15,7 @@ class CreateMpesaPaymentsTable extends Migration
     {
         Schema::create('mpesa_payments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('order_id')->nullable();
             $table->string('merchant_request_id')->nullable();
             $table->string('checkout_request_id')->nullable();
             $table->integer('result_code')->nullable();

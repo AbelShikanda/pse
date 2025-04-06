@@ -111,6 +111,15 @@ class CheckoutController extends Controller
                 return back()->with(['message' => $mpesaResponse['error']]);
             }
 
+            MpesaPayment::create([
+                'order_id' => $order->id,
+                'merchant_request_id' => $mpesaResponse['MerchantRequestID'],
+                'checkout_request_id' => $mpesaResponse['CheckoutRequestID'],
+                'phone_number' => $request->phone,
+                'status' => 'Pending',
+            ]);
+            DB::commit();
+
             $maxAttempts = 10;
             $attempt = 0;
 
@@ -123,21 +132,16 @@ class CheckoutController extends Controller
                 DB::reconnect('mysql');
 
                 $paymentConfirmed = MpesaPayment::on('mysql')
-                    ->where('phone_number', ltrim($request->phone, '+'))
-                    ->where('amount', $request->total)
+                    ->where('order_id', $order->id)
                     ->where('status', 'Completed')
-                    ->latest()
+                    ->latest('updated_at')
                     ->withoutGlobalScopes()
                     ->exists();
 
-                Log::info("Attempt #$attempt: Checking payment status for {$request->phone}. Found: " . ($paymentConfirmed ? 'Yes' : 'No'));
+                Log::info("Attempt #$attempt: Checking payment status for {$order->id}. Found: " . ($paymentConfirmed ? 'Yes' : 'No'));
 
                 if ($paymentConfirmed) {
-                    Log::info('Payment confirmed, exiting loop.');
-                    $order->complete = 1;
-                    $order->save();
-                    DB::commit();
-                    Log::info('Order marked as complete.');
+                    Log::info('Payment confirmed, confirming payment to user.');
                     break;
                 }
 
@@ -179,7 +183,9 @@ class CheckoutController extends Controller
 
         $callback = $mpesaResponse['Body']['stkCallback'];
 
-        if ($callback['ResultCode'] == 0) {
+        $payment = MpesaPayment::where('checkout_request_id', $callback['CheckoutRequestID'])->first();
+
+        if ($payment && $callback['ResultCode'] == 0) {
             $metadata = collect($callback['CallbackMetadata']['Item']);
 
             $items = $metadata->mapWithKeys(function ($item) {
@@ -189,9 +195,7 @@ class CheckoutController extends Controller
             Log::info('Mpesa Payment Details logging ...');
 
             try {
-                $payment = MpesaPayment::create([
-                    'merchant_request_id' => $callback['MerchantRequestID'],
-                    'checkout_request_id' => $callback['CheckoutRequestID'],
+                $payment->update([
                     'result_code' => $callback['ResultCode'],
                     'result_desc' => $callback['ResultDesc'],
                     'amount' => $items['Amount']['Value'] ?? null,
@@ -202,6 +206,15 @@ class CheckoutController extends Controller
                     'phone_number' => $items['PhoneNumber']['Value'] ?? null,
                     'status' => 'Completed',
                 ]);
+
+                if ($payment->order_id) {
+                    $order = Orders::find($payment->order_id);
+                    if ($order) {
+                        $order->complete = 1;
+                        $order->save();
+                        Log::info("Order #{$order->id} marked as complete from callback.");
+                    }
+                }
 
                 Log::info('Payment successfully recorded:', ['payment' => $payment]);
 
