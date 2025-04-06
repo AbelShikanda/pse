@@ -350,8 +350,10 @@ jobs:
             # php artisan migrate --force
             # php artisan db:seed --force
             # php artisan migrate --path=/database/migrations/2025_03_22_145945_create_mpesa_payments_table.php --force
-            php artisan migrate:reset --path=database/migrations/2025_03_22_145945_create_mpesa_payments_table.php --force
-            php artisan migrate --path=database/migrations/2025_03_22_145945_create_mpesa_payments_table.php --force
+            php artisan migrate:reset --path=database/migrations/2024_11_22_221348_create_orders_table.php --force
+            php artisan migrate:reset --path=database/migrations/2024_11_22_221405_create_order__items_table.php --force
+            php artisan migrate --path=database/migrations/2024_11_22_221348_create_orders_table.php --force
+            php artisan migrate --path=database/migrations/2024_11_22_221405_create_order__items_table.php --force
 
   # Run activate release
   run-after-hook:
