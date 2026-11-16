@@ -38,7 +38,7 @@ jobs:
         uses: shivammathur/setup-php@2.30.4
         with:
           php-version: "8.3"
-          extensions: imagick, swoole, openssl
+          extensions: imagick, pdo_mysql, pdo_pgsql, pgsql, mbstring, curl, dom, tokenizer, fileinfo, bcmath, intl
 
       # Install composer
       - name: Install composer dependencies
@@ -350,10 +350,10 @@ jobs:
             # php artisan migrate --force
             # php artisan db:seed --force
             # php artisan migrate --path=/database/migrations/2025_03_22_145945_create_mpesa_payments_table.php --force
-            php artisan migrate:reset --path=database/migrations/2024_11_22_221348_create_orders_table.php --force
-            php artisan migrate:reset --path=database/migrations/2024_11_22_221405_create_order__items_table.php --force
-            php artisan migrate --path=database/migrations/2024_11_22_221348_create_orders_table.php --force
-            php artisan migrate --path=database/migrations/2024_11_22_221405_create_order__items_table.php --force
+            # php artisan migrate:reset --path=database/migrations/2024_11_22_221348_create_orders_table.php --force
+            # php artisan migrate:reset --path=database/migrations/2024_11_22_221405_create_order__items_table.php --force
+            # php artisan migrate --path=database/migrations/2024_11_22_221348_create_orders_table.php --force
+            # php artisan migrate --path=database/migrations/2024_11_22_221405_create_order__items_table.php --force
 
   # Run activate release
   run-after-hook:
