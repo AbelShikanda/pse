@@ -33,6 +33,7 @@
 </head>
 
 <body>
+    <a class="ps-skip-link" href="#main">Skip to content</a>
     @include('layouts.header')
 
     @if (session('message'))

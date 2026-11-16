@@ -24,7 +24,7 @@
   /* Text */
   --text: #f5f3fa;
   --text-2: #a5a1b2;
-  --text-3: #777383;
+  --text-3: #8a8496;
 
   /* States */
   --ok: #34d399;
@@ -408,3 +408,8 @@ a:hover { color: var(--brand-3); }
 /* Reveal on scroll */
 [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
 [data-reveal].is-revealed { opacity: 1; transform: none; }
+
+/* Focus + skip link */
+.ps-skip-link { position:absolute; left:-9999px; top:0; background:var(--brand); color:#fff; padding:.7rem 1.2rem; border-radius:0 0 var(--r-md) 0; z-index:1200; font-weight:700; }
+.ps-skip-link:focus { left:0; }
+:focus-visible { outline:2px solid var(--brand-2); outline-offset:2px; border-radius:4px; }

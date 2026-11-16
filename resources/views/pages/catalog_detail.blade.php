@@ -71,7 +71,7 @@
 
                 <div class="ps-cta-row">
                     <button type="submit" class="ps-btn" style="flex:1; justify-content:center; min-width:200px"><i class="bi bi-bag-plus"></i> Add to cart</button>
-                    <button type="button" class="ps-icon-btn" data-wishlist="{{ $product->id }}" aria-label="Save to wishlist" style="width:48px;height:48px;border:1px solid var(--border-strong);border-radius:var(--r-md)"><i class="bi bi-heart"></i></button>
+                    <button type="button" class="ps-icon-btn" data-wishlist="{{ optional($product->ProductImage->first())->id ?? 0 }}" aria-label="Save to wishlist" style="width:48px;height:48px;border:1px solid var(--border-strong);border-radius:var(--r-md)"><i class="bi bi-heart"></i></button>
                 </div>
             </form>
 

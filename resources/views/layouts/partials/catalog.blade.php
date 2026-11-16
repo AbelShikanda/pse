@@ -6,7 +6,7 @@
             @if ($product->promotion)<span class="ps-card__badge">Promo</span>@endif
         </div>
     </a>
-    <button type="button" class="ps-card__wishlist" data-wishlist="{{ $product->id }}" aria-label="Save {{ $product->name }} to wishlist"><i class="bi bi-heart"></i></button>
+    <button type="button" class="ps-card__wishlist" data-wishlist="{{ $item->id }}" aria-label="Save {{ $product->name }} to wishlist"><i class="bi bi-heart"></i></button>
     <div class="ps-card__body">
         <p class="ps-card__name">{{ $product->name }}</p>
         <p class="ps-card__meta">{{ $product->slug }}</p>
