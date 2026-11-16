@@ -30,7 +30,7 @@
                         <div class="card shadow">
                             <div class="card-body">
                                 <!-- table -->
-                                <table class="table datatables" id="dataTable-1">
+                                <div class="table-responsive"><table class="table datatables" id="dataTable-1">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -95,7 +95,7 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
-                                </table>
+                                </table></div>
                             </div>
                         </div>
                     </div> <!-- simple table -->

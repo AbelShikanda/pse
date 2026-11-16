@@ -17,7 +17,7 @@
                         <div class="card shadow">
                             <div class="card-body">
                                 <!-- table -->
-                                <table class="table table-hover table-borderless border-v">
+                                <div class="table-responsive"><table class="table table-hover table-borderless border-v">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>Date</th>
@@ -125,7 +125,7 @@
                                             @endforeach
                                         @endforeach
                                     </tbody>
-                                </table>
+                                </table></div>
                             </div>
                         </div>
                     </div>

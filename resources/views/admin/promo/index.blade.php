@@ -38,7 +38,7 @@
                         <div class="card shadow">
                             <div class="card-body">
                                 <!-- table -->
-                                <table class="table datatables" id="promoTable">
+                                <div class="table-responsive"><table class="table datatables" id="promoTable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -88,7 +88,7 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
-                                </table>
+                                </table></div>
 
                             </div>
                         </div>
