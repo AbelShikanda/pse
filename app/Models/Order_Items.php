@@ -22,6 +22,11 @@ class Order_Items extends Model
         'price',
         'quantity',
     ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'quantity' => 'integer',
+    ];
     
     /**
     * Get the orders.

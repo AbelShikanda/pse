@@ -19,7 +19,7 @@
                             <div class="stats">
                                 <div class="col-4">
                                     <h4>20</h4>
-                                    <p><a href="{{ route('profileShow', 1) }}">>>Purhases<<</a></p>
+                                    <p><a href="{{ route('profile.show', auth()->id()) }}">>>Purhases<<</a></p>
                                 </div>
                                 <div class="col-4">
                                     <h4>10</h4>

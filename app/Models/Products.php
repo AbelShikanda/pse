@@ -16,7 +16,15 @@ class Products extends Model
      *
      * @var array
      */
-    protected $fillable = ['categories_id', 'colors_id', 'sizes_id', 'materials_id', 'type_id', 'name', 'slug', 'description', 'meta_title', 'meta_description', 'meta_keywords', 'meta_image', 'price'];
+    protected $fillable = ['categories_id', 'colors_id', 'sizes_id', 'materials_id', 'type_id', 'name', 'slug', 'description', 'meta_title', 'meta_description', 'meta_keywords', 'meta_image', 'price', 'whatsapp', 'telegram', 'website', 'promotion'];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'whatsapp' => 'boolean',
+        'telegram' => 'boolean',
+        'website' => 'boolean',
+        'promotion' => 'boolean',
+    ];
 
     /**
      * Get the options for generating the slug.

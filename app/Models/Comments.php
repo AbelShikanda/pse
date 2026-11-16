@@ -9,13 +9,6 @@ class Comments extends Model
 {
     use HasFactory;
 
-    // protected $fillable = ['blog_id', 'user_id', 'content'];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'blog_id',
         'user_id',

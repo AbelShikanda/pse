@@ -11,8 +11,6 @@
                             comments / stories 
                         </p>
                     </div>
-                    <div class="col-md-6">
-                        <a  type="button" class=" float-right btn mb-2 btn-outline-primary">Add comment</a>
                     </div>
                 </div>
                 <p class="card-text">
@@ -63,9 +61,6 @@
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         {{-- <a class="dropdown-item"
                                                             href="{{ route('comments.show', $comment->id) }}">view</a> --}}
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('comment.edit', $comment->id) }}">Edit</a>
-
                                                         <a class="dropdown-item" href="{{ route('comment.destroy', $comment->id) }}"
                                                             onclick="event.preventDefault();
                                                             document.getElementById('destroy-comment-{{ $comment->id }}').submit();">

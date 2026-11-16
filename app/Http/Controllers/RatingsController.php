@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Mail\newRating;
-use App\Models\Admin;
-use App\Models\ProductImages;
 use App\Models\Products;
 use App\Models\Ratings;
 use Illuminate\Http\Request;
@@ -19,26 +17,16 @@ class RatingsController extends Controller
     public function index()
     {
         $ratedItems = Ratings::pluck('products_id')->toArray();
-
         $productsWithRatings = Products::whereIn('id', $ratedItems)
             ->with(['ratings' => function ($query) {
                 $query->select('products_id', DB::raw('AVG(rating) as avg_rating'))
                     ->groupBy('products_id');
             }])
             ->get();
-        // dd($productsWithRatings);
 
         return view('admin.ratings.index', with([
             'productsWithRatings' => $productsWithRatings,
         ]));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -65,44 +53,16 @@ class RatingsController extends Controller
                 ]);
         }
 
+        if (!isset($rate)) {
+            return redirect()->back()->with('error', 'No rating submitted.');
+        }
+
         $rate = Ratings::with('user')->find($rate->id);
-        $product = Products::with('ProductImage')->find($product_id)->first();
+        $product = Products::with('ProductImage')->find($product_id);
 
         Mail::to('printshopeld@gmail.com')
             ->send(new newRating($rate, $product));
 
         return redirect()->back()->with('success', 'Ratings submitted successfully!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

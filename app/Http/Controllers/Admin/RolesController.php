@@ -9,14 +9,6 @@ use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware(['auth:admin', 'permission:View Roles'])->only(['index', 'show']);
-    //     $this->middleware(['auth:admin', 'permission:Create Roles'])->only(['create', 'store']);
-    //     $this->middleware(['auth:admin', 'permission:Edit Roles'])->only(['edit', 'update']);
-    //     $this->middleware(['auth:admin', 'permission:Delete Roles'])->only(['destroy']);
-    // }
-
     /**
      * Display a listing of the resource.
      */
@@ -57,7 +49,6 @@ class RolesController extends Controller
         ]);
 
         $role->syncPermissions($permissions);
-        // $role->revokePermissionTo($permission);
 
         return redirect()
             ->route('roles.index')
@@ -71,14 +62,6 @@ class RolesController extends Controller
     {
         $role = Role::with('permissions')->find($role->id);
 
-        // dd($role);
-        // foreach ($role as $roles) {
-        //     // dd($roles);
-        //     foreach ($roles->permissions as $r) {
-        //         dd($r->name);
-        //     }
-        // }
-
         return view('admin.roles.show',  [
             'role' => $role,
         ]);
@@ -89,7 +72,6 @@ class RolesController extends Controller
      */
     public function edit(Role $role)
     {
-        $role = $role;
         $rolePermissions = $role->permissions->pluck('name')->toArray();
         $permissions = Permission::get();
 

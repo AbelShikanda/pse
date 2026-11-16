@@ -35,7 +35,7 @@ class GenerateSitemap extends Command
         // Add dynamic URLs (e.g., products)
         $products = Products::all();
         foreach ($products as $product) {
-            $sitemap->add(Url::create(route('catalogDetail', $product->id))
+            $sitemap->add(Url::create(route('catalogDetail', $product->slug))
                 ->setLastModificationDate($product->updated_at)
                 ->setChangeFrequency('weekly')
                 ->setPriority(0.8));
@@ -44,7 +44,7 @@ class GenerateSitemap extends Command
         // Add other dynamic URLs (e.g., blogs)
         $blogs = Blog::all();
         foreach ($blogs as $blog) {
-            $sitemap->add(Url::create(route('blogSingle', $blog->id))
+            $sitemap->add(Url::create(route('blogSingle', $blog->slug))
                 ->setLastModificationDate($blog->updated_at)
                 ->setChangeFrequency('weekly')
                 ->setPriority(0.6));

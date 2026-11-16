@@ -22,6 +22,10 @@ class PromoCodes extends Model
 
     protected $casts = [
         'expires_at' => 'datetime',
+        'discount_percentage' => 'decimal:2',
+        'max_uses' => 'integer',
+        'times_used' => 'integer',
+        'user_limit' => 'integer',
     ];
 
     /**

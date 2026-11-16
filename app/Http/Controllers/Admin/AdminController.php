@@ -15,14 +15,6 @@ use Spatie\Permission\Models\Role;
 
 class AdminController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware(['auth:admin', 'permission:View Admins'])->only(['index', 'show']);
-    //     $this->middleware(['auth:admin', 'permission:Create Admins'])->only(['create', 'store']);
-    //     $this->middleware(['auth:admin', 'permission:Edit Admins'])->only(['edit', 'update']);
-    //     $this->middleware(['auth:admin', 'permission:Delete Admins'])->only(['destroy']);
-    // }
-
     /**
      * Display a listing of the resource.
      */
@@ -100,7 +92,6 @@ class AdminController extends Controller
     public function show($id)
     {
         $admin = Admin::with('roles')->where('id', $id)->first();
-        // dd($admin);
 
         return view('admin.admins.show')->with([
             'admin' => $admin

@@ -19,7 +19,7 @@ class CreateReviewsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('guest_name')->nullable();
             $table->text('review');
-            $table->integer('rating')->checkBetween(1, 5);
+            $table->unsignedTinyInteger('rating');
             $table->timestamps();
         });
     }

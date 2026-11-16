@@ -9,17 +9,14 @@ class Ratings extends Model
 {
     use HasFactory;
 
-    // protected $fillable = ['product_id', 'user_id', 'rating'];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'products_id',
         'user_id',
         'rating',
+    ];
+
+    protected $casts = [
+        'rating' => 'integer',
     ];
 
     public function product()

@@ -22,13 +22,17 @@
         @endif
         <div class="container-blog mt-5 mb-5">
             <div class="product-image">
-                <img src="{{ asset('storage/img/products/' . $product->ProductImage[0]->thumbnail) }}"
-                    alt="{{ $product->ProductImage[0]->full }}" class="product-pic">
+                @if ($product->ProductImage->first())
+                <img src="{{ asset('storage/img/products/' . $product->ProductImage->first()->thumbnail) }}"
+                    alt="{{ $product->ProductImage->first()->full }}" class="product-pic">
+                @else
+                <img src="{{ asset('assets/img/logo.png') }}" alt="{{ $product->name }}" class="product-pic">
+                @endif
             </div>
             <div class="product-details">
                 <header>
                     <h1 class="title">{{ $product->name }}</h1>
-                    <span class="colorCat">{{ $product->color[0]->name }}</span>
+                    <span class="colorCat">{{ optional($product->Color->first())->name }}</span>
                     <div class="prices">
                         <span class="before">{{ $product->price * 1.1 }}</span>
                         <span class="current">{{ $product->price }}</span>
@@ -47,7 +51,7 @@
                     <h5>Description</h5>
                     <p>{{ $product->description }}</p>
                 </article>
-                <form action="{{ route('add.single', $product->ProductImage->first()->id) }}" method="POST">
+                <form action="{{ route('add.single', optional($product->ProductImage->first())->id ?? 0) }}" method="POST">
                     @csrf
                     <div class="controls">
                         <div class="color">
@@ -55,7 +59,7 @@
                             <div class="td_item item_color">
                                 <select name="color">
                                     <option selected>
-                                        {{ $product->color[0]->name }}
+                                        {{ optional($product->Color->first())->name }}
                                     </option>
                                     <option value="Black">Black</option>
                                     <option value="White">White</option>
@@ -63,7 +67,7 @@
                                     <option value="Navy Blue">Navy Blue</option>
                                 </select>
                             </div>
-                            <!-- <a href="#!">{{ $product->color[0]->name }}</a> -->
+                            {{-- <a href="#!">{{ optional($product->Color->first())->name }}</a> --}}
                         </div>
                         <div class="size">
                             <h5>size</h5>
@@ -77,7 +81,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <!-- <a href="#!">{{ $product->size[0]->name }}</a> -->
+                            {{-- <a href="#!">{{ $product->size[0]->name }}</a> --}}
                         </div>
                         <div class="qty">
                             <h5>qty</h5>

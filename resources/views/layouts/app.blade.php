@@ -47,7 +47,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RBL70XY3HX"></script>
     <script type="application/ld+json">
         {
-          "@context": "https://schema.org",
+          "@@context": "https://schema.org",
           "@type": "Organization",
           "url": "https://www.printshopeld.com",
           "name": "Print Shop ELd",

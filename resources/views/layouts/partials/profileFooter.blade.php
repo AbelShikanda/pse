@@ -14,5 +14,5 @@
     <div class="form_group w_100 mb-5">
         <label class="input_label">DOB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: detail </label>
     </div>
-    <a class="btn mt-5 text-dark p-4" href="{{ route('profileEdit', 1) }}">Edit Profile</a></a>
+    <a class="btn mt-5 text-dark p-4" href="{{ route('profile.edit') }}">Edit Profile</a>
 </div>

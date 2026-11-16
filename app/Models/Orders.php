@@ -11,24 +11,18 @@ class Orders extends Model
 
     protected $table = 'orders';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
+        'user_id',
+        'promo_code_id',
         'reference',
-        'colors_id',
-        'sizes_id',
-        'materials_id',
-        'type_id',
-        'sku',
-        'name',
-        'description',
-        'meta_keywords',
+        'tracking_No',
         'price',
-        'status',
-        'featured',
+        'complete',
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'complete' => 'boolean',
     ];
 
     public function orderItems()

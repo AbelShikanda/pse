@@ -8,7 +8,6 @@ use App\Http\Controllers\Admin\BlogImageController;
 use App\Http\Controllers\Admin\CommentsController;
 use App\Http\Controllers\Admin\ContactsController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\OrderItemsController;
 use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\ProductCategoryController;
@@ -23,7 +22,6 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\MpesaPayContorller;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PricesController;
 use App\Http\Controllers\ProfileController;
@@ -59,29 +57,30 @@ Route::group(['prefix' => '/admin'], function () {
     Route::get('/login', [AdminAuthController::class, 'getLogin'])->name('getLogin');
     Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('postLogin');
     Route::post('/logout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
-    Route::resource('dashboard', DashboardController::class)->middleware('adminauth');
+    Route::resource('dashboard', DashboardController::class)->only(['index'])->middleware('adminauth');
+    Route::get('/dashboard/schedules', [DashboardController::class, 'schedules'])->name('schedules')->middleware('adminauth');
 });
 
 Route::group(['middleware' => 'adminauth'], function () {
-    Route::resource('colors', ProductColorController::class);
-    Route::resource('sizes', ProductSizeController::class);
-    Route::resource('types', ProductTypeController::class);
-    Route::resource('materials', ProductMaterialController::class);
-    Route::resource('product_categories', ProductCategoryController::class);
+    Route::resource('colors', ProductColorController::class)->except(['show']);
+    Route::resource('sizes', ProductSizeController::class)->except(['show']);
+    Route::resource('types', ProductTypeController::class)->except(['show']);
+    Route::resource('materials', ProductMaterialController::class)->except(['show']);
+    Route::resource('product_categories', ProductCategoryController::class)->except(['show']);
     Route::resource('products', ProductsController::class);
-    Route::resource('product_images', ProductImageController::class);
-    Route::resource('orders', OrdersController::class);
-    Route::resource('order_items', OrderItemsController::class);
+    Route::resource('product_images', ProductImageController::class)->except(['show']);
+    Route::resource('orders', OrdersController::class)->only(['index', 'show', 'update', 'destroy']);
     Route::resource('admins', AdminController::class);
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->only(['index', 'show']);
     Route::resource('blogs', BlogController::class);
-    Route::resource('blog_categories', BlogCategoryController::class);
-    Route::resource('blog_images', BlogImageController::class);
-    Route::resource('contact', ContactsController::class);
-    Route::resource('prices', PricesController::class);
-    Route::resource('comment', CommentsController::class);
+    Route::resource('blog_categories', BlogCategoryController::class)->except(['show']);
+    Route::resource('blog_images', BlogImageController::class)->except(['show']);
+    Route::resource('contact', ContactsController::class)->only(['index', 'show']);
+    Route::resource('prices', PricesController::class)->except(['show']);
+    Route::resource('comment', CommentsController::class)->only(['index', 'destroy']);
+    Route::get('/ratings', [RatingsController::class, 'index'])->name('ratings.index');
 
-    Route::resource('permissions', PermissionsController::class);
+    Route::resource('permissions', PermissionsController::class)->only(['index']);
     Route::resource('roles', RolesController::class);
 
     Route::get('/promo', [PromoCodeController::class, 'index'])->name('promo.index');
@@ -132,7 +131,7 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     Route::post('/postCheckout/{id}', [CheckoutController::class, 'postCheckout'])->name('postCheckout');
     Route::post('/api/mpesa/callback', [CheckoutController::class, 'mpesaCallback'])->withoutMiddleware(['auth']);
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    Route::resource('ratings', RatingsController::class);
+    Route::post('/ratings', [RatingsController::class, 'store'])->middleware('auth')->name('ratings.store');
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

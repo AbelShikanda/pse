@@ -13,6 +13,10 @@ class Review extends Model
         'token', 'user_id', 'review', 'rating', 'guest_name'
     ];
 
+    protected $casts = [
+        'rating' => 'integer',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

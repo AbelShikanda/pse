@@ -571,3 +571,7 @@ notes
 =======
 .backupconfig
 .bakignore
+# PHPUnit cache
+/.phpunit.cache/
+# Generated sitemap (regenerated weekly by app:generate-sitemap)
+/public/sitemap.xml

@@ -1,21 +1,37 @@
 <?php
 
-/**
- * Laravel - A PHP Framework For Web Artisans
- *
- * @package  Laravel
- * @author   Taylor Otwell <taylor@laravel.com>
- */
+use Illuminate\Http\Request;
 
-$uri = urldecode(
-    parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
-);
+/*
+|--------------------------------------------------------------------------
+| Laravel PHP Built-in Server
+|--------------------------------------------------------------------------
+*/
 
-// This file allows us to emulate Apache's "mod_rewrite" functionality from the
-// built-in PHP web server. This provides a convenient way to test a Laravel
-// application without having installed a "real" web server software here.
-if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
-    return false;
+$uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+
+$paths = [
+    __DIR__.'/public'.$uri,
+    __DIR__.'/public'.rtrim($uri, '/').'/index.php',
+];
+
+foreach ($paths as $path) {
+    if ($uri !== '/' && file_exists($path) && ! is_dir($path)) {
+        return false;
+    }
 }
+
+chdir(__DIR__.'/public');
+
+$testFile = $uri.'/index.php';
+
+if (file_exists($testFile)) {
+    $uri = $testFile;
+} else {
+    $uri = '/index.php';
+}
+
+$_SERVER['SCRIPT_NAME'] = $uri;
+$_SERVER['SCRIPT_FILENAME'] = '.'.$uri;
 
 require_once __DIR__.'/public/index.php';

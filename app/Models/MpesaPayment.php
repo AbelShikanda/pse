@@ -21,4 +21,9 @@ class MpesaPayment extends Model
         'phone_number',
         'status',
     ];
+
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'transaction_date' => 'datetime',
+    ];
 }

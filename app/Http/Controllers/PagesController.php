@@ -124,7 +124,7 @@ class PagesController extends Controller
                 'metaTitle' => $product->meta_title,
                 'metaDescription' => $product->meta_description,
                 'metaKeywords' => $product->meta_keywords,
-                'metaImage' => $product->ProductImage[0]->thumbnail ? asset('storage/app/public/img/products/' . $product->ProductImage[0]->thumbnail) : asset('default-meta-image.jpg'),
+                'metaImage' => optional($product->ProductImage->first())->thumbnail ? asset('storage/app/public/img/products/' . $product->ProductImage->first()->thumbnail) : asset('default-meta-image.jpg'),
                 'metaUrl' => route('catalogDetail', $product->slug),
                 'averageRating' => $averageRating,
             ]),
