@@ -8,10 +8,10 @@
                 </a>
                 <p style="color:var(--text-2); font-size:.9rem; max-width:36ch">Bespoke print and embroidery in Kenya — tees, hoodies, caps, polos and uniforms, printed to order with M-Pesa checkout.</p>
                 <div style="display:flex; gap:.5rem; margin-top:.9rem">
-                    <a href="https://www.instagram.com/" class="ps-icon-btn" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                    <a href="https://www.facebook.com/" class="ps-icon-btn" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                    <a href="https://www.tiktok.com/" class="ps-icon-btn" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
-                    <a href="https://wa.me/254700000000" class="ps-icon-btn" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/printshopeld/" class="ps-icon-btn" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.facebook.com/printshopeldofficial/" class="ps-icon-btn" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.tiktok.com/" aria-disabled="true" style="pointer-events:none; opacity:.4" class="ps-icon-btn" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                    <a href="https://wa.me/message/UFM7WYYHEIMRA1" class="ps-icon-btn" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
                 </div>
             </div>
             <div class="col-6 col-md-2">
