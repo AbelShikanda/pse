@@ -16,10 +16,10 @@
     <title>{{ config('app.name', 'PrintShop Admin') }}</title>
     <!-- Simple bar CSS -->
     <link rel="stylesheet" href=" {{ asset('admin/css/simplebar.css') }} ">
-    <!-- Fonts CSS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Icons CSS -->
     <link rel="stylesheet" href=" {{ asset('admin/css/feather.css') }} ">
     <link rel="stylesheet" href=" {{ asset('admin/css/select2.css') }} ">
@@ -32,16 +32,13 @@
     <link rel="stylesheet" href=" {{ asset('admin/css/dataTables.bootstrap4.css') }}">
     <!-- Date Range Picker CSS -->
     <link rel="stylesheet" href=" {{ asset('admin/css/daterangepicker.css') }} ">
-    <!-- App CSS -->
-    <link rel="stylesheet" href=" {{ asset('admin/css/app-light.css') }} " id="lightTheme" disabled>
-    <link rel="stylesheet" href=" {{ asset('admin/css/app-dark.css') }} " id="darkTheme ">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Bundled Bootstrap 4 + base theme (layout grid/utilities) -->
+    <link rel="stylesheet" href="{{ asset('admin/css/app-light.css') }}">
+    <!-- Brand theme overrides -->
+    <link rel="stylesheet" href="{{ asset('admin/css/brand.css') }}">
 
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery.sparkline@2.1.2/dist/jquery.sparkline.min.js"></script>
+
 
 </head>
 
@@ -71,22 +68,13 @@
     <script src="{{ asset('admin/js/daterangepicker.js') }}"></script>
     <script src="{{ asset('admin/js/jquery.stickOnScroll.js') }}"></script>
     <script src="{{ asset('admin/js/tinycolor-min.js') }}"></script>
-    <script src="{{ asset('admin/js/config.js') }}"></script>
-    <script src="{{ asset('admin/js/d3.min.js') }}"></script>
-    <script src="{{ asset('admin/js/topojson.min.js') }}"></script>
-    <script src="{{ asset('admin/js/datamaps.all.min.js') }}"></script>
-    <script src="{{ asset('admin/js/datamaps-zoomto.js') }}"></script>
-    <script src="{{ asset('admin/js/datamaps.custom.js') }}"></script>
+
     <script src="{{ asset('admin/js/Chart.min.js') }}"></script>
     <script>
-        /* defind global options */
-        Chart.defaults.global.defaultFontFamily = base.defaultFontFamily;
-        Chart.defaults.global.defaultFontColor = colors.mutedColor;
+        /* Chart.js v2 defaults */
+        Chart.defaults.global.defaultFontFamily = 'Manrope, sans-serif';
+        Chart.defaults.global.defaultFontColor = '#a5a1b2';
     </script>
-    <script src="{{ asset('admin/js/gauge.min.js') }}"></script>
-    <script src="{{ asset('admin/js/jquery.sparkline.min.js') }}"></script>
-    <script src="{{ asset('admin/js/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('admin/js/apexcharts.custom.js') }}"></script>
     <script src="{{ asset('admin/js/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('admin/js/select2.min.js') }}"></script>
     <script src="{{ asset('admin/js/jquery.steps.min.js') }}"></script>

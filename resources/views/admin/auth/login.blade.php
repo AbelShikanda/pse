@@ -1,45 +1,34 @@
 @extends('admin.layouts.app')
 @section('nav')
-    {{-- Leave this section empty to exclude the sidebar --}}
 @endsection
 @section('sidebar')
-    {{-- Leave this section empty to exclude the sidebar --}}
 @endsection
 
 @section('content')
-    <div class="row align-items-center h-100">
-        <form class="col-lg-3 col-md-4 col-10 mx-auto text-center" action="{{ route('postLogin') }}" method="POST">
+    <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; background:radial-gradient(ellipse at 50% 0%, #171029 0%, var(--bg-0) 60%); padding:2rem">
+        <form action="{{ route('postLogin') }}" method="POST" style="width:100%; max-width:420px; background:var(--bg-1); border:1px solid var(--border); border-radius:var(--r-lg); padding:2rem 1.75rem; box-shadow:var(--shadow-md)">
             @csrf
+            <div style="text-align:center; margin-bottom:1.5rem">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="PrintShopEld" style="height:48px; margin-bottom:.9rem">
+                <p class="admin-section-title" style="margin:0">Admin Panel</p>
+                <h1 style="font-size:1.3rem; margin:.35rem 0 0; color:var(--text)">Sign in to continue</h1>
+            </div>
+
             @if (Session('error'))
-                <div class="text-danger text-center">
-                    <strong>{{ Session('error') }}</strong>
-                </div>
+                <div class="alert alert-danger">{{ Session('error') }}</div>
             @endif
             @if (Session('success'))
-                <div class="text-success text-center">
-                    <strong>{{ Session('success') }}</strong>
-                </div>
+                <div class="alert alert-success">{{ Session('success') }}</div>
             @endif
-            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="{{ asset('/') }}">
-                <img src="{{ asset('admin/assets/images/logo.png') }}" alt="logo" class="w-50">
-            </a>
-            <h1 class="h6 mb-3">Login in</h1>
-            <div class="form-group">
-                <label for="inputEmail" class="sr-only">Email address</label>
-                <input type="email" id="inputEmail" class="form-control form-control-lg" placeholder="Email address"
-                    required="" autofocus="" name="email">
-            </div>
-            <div class="form-group">
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" id="inputPassword" class="form-control form-control-lg" placeholder="Password"
-                    required="" name="password">
-            </div>
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"> Stay logged in </label>
-            </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Let me in</button>
-            <p class="mt-5 mb-3 text-muted">© 2024</p>
+
+            <label class="form-label" for="inputEmail">Email</label>
+            <input type="email" id="inputEmail" name="email" class="form-control" placeholder="admin@example.com" required autofocus autocomplete="username" style="margin-bottom:1rem">
+
+            <label class="form-label" for="inputPassword">Password</label>
+            <input type="password" id="inputPassword" name="password" class="form-control" placeholder="••••••••" required autocomplete="current-password" style="margin-bottom:1.1rem">
+
+            <button class="btn btn-primary btn-block" type="submit" style="width:100%; padding:.7rem; font-size:.95rem">Sign in <i class="fe fe-arrow-right"></i></button>
+            <p class="text-muted" style="text-align:center; font-size:.75rem; margin:1.1rem 0 0">Authorized personnel only.</p>
         </form>
     </div>
 @endsection
