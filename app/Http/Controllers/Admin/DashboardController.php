@@ -62,7 +62,7 @@ class DashboardController extends Controller
         // ++++++++++++++++++++++++++++++++++++++Conversions++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        $thisWeekConversions = VisitorJourney::where('page_url', 'like', '%checkout%')
+        $thisWeekConversions = VisitorJourney::whereLike('page_url', '%checkout%')
             ->whereBetween('created_at', [$startOfThisWeek, $endOfThisWeek])
             ->count();
 
@@ -70,7 +70,7 @@ class DashboardController extends Controller
         $startOfLastWeek = $startOfThisWeek->copy()->subWeek();
         $endOfLastWeek = $startOfThisWeek->copy()->subDay();
 
-        $lastWeekConversions = VisitorJourney::where('page_url', 'like', '%checkout%')
+        $lastWeekConversions = VisitorJourney::whereLike('page_url', '%checkout%')
             ->whereBetween('created_at', [$startOfLastWeek, $endOfLastWeek])
             ->count();
 
@@ -122,7 +122,7 @@ class DashboardController extends Controller
 
             $visitorTrend[] = VisitorData::whereBetween('created_at', [$dayStart, $dayEnd])->count();
             $pageViewsTrend[] = VisitorJourney::whereBetween('created_at', [$dayStart, $dayEnd])->count();
-            $ConversionTrend[] = VisitorJourney::where('page_url', 'like', '%checkout%')
+            $ConversionTrend[] = VisitorJourney::whereLike('page_url', '%checkout%')
                 ->whereBetween('created_at', [$dayStart, $dayEnd])->count();
         }
 
