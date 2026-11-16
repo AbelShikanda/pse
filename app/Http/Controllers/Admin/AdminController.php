@@ -103,7 +103,7 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        $admin = Admin::find($id);
+        $admin = Admin::findOrFail($id);
         $roleName = $admin->getRoleNames()->all();
         $roles = Role::get();
 

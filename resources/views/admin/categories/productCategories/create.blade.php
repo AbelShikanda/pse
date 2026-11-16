@@ -1,53 +1,46 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <h2 class="page-title">Product Categories Posts</h2>
-                <p class="text-muted">add more Product Categories for posting</p>
+    <div class="admin-page">
+        <p class="admin-breadcrumb"><a href="{{ route('dashboard.index') }}">Dashboard</a> / <a href="{{ route('product_categories.index') }}">Product Categories</a> / create</p>
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+            <div>
+                <h1 class="admin-title">New <em>product category</em></h1>
+                <p class="admin-subtitle">Add a new product category.</p>
+            </div>
+            <a href="{{ route('product_categories.index') }}" class="admin-back"><i class="fe fe-arrow-left fe-16"></i> Back to Product Categories</a>
+        </div>
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger col-md-8 offset-md-3">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-                <div class="row">
-                    <div class="col-md-6 offset-3">
-                        <div class="card shadow mb-4">
-                            <div class="card-header">
-                                <strong class="card-title">Product Posts</strong>
-                            </div>
-                            <div class="card-body">
-                                <form action={{ route('product_categories.store') }} method="POST" class="needs-validation"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    @method('post')
-                                    <div class="col-md-12 mb-3">
-                                        <label for="validationCustom01">Name</label>
-                                        <input type="text" name="name" class="form-control" id="validationCustom01" value="caption"
-                                            required>
-                                        <div class="valid-feedback"> Looks good! </div>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="validationCustom01">Slug</label>
-                                        <input type="text" name="slug" class="form-control" id="validationCustom01" value="tags"
-                                            required>
-                                        <div class="valid-feedback"> Looks good! </div>
-                                    </div>
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                </form>
-                            </div> <!-- /.card-body -->
-                        </div> <!-- /.card -->
-                    </div> <!-- /.col -->
-                </div> <!-- end section -->
-            </div> <!-- /.col-12 col-lg-10 col-xl-10 -->
-        </div> <!-- .row -->
-    </div> <!-- .container-fluid -->
-    @include('admin.layouts.partials.modals')
+        <div class="card admin-card">
+            <div class="admin-card__head">
+                <i class="fe fe-shopping-bag"></i>
+                <strong>Product Category details</strong>
+            </div>
+            <form action="{{ route('product_categories.store') }}" method="POST" class="admin-card__body needs-validation" novalidate>
+                @csrf
+                @method('post')
+                <div class="admin-field">
+                    <label class="admin-label" for="field-name">Name <span class="admin-required">*</span></label>
+                    <input id="field-name" type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+                </div>
+                <div class="admin-field">
+                    <label class="admin-label" for="field-slug">Slug <span class="admin-required">*</span></label>
+                    <input id="field-slug" type="text" name="slug" class="form-control" value="{{ old('slug') }}" required>
+                </div>
+                <div class="admin-card__foot" style="padding:0; border:none; margin:0">
+                    <button type="submit" class="btn btn-primary"><i class="fe fe-check fe-14"></i> Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection

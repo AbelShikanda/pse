@@ -1,54 +1,56 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <h2 class="page-title">edit prices Posts</h2>
-                <p class="text-muted">edit prices available for posting</p>
-                <div class="row">
-                    <div class="col-md-8 offset-2">
-                        <div class="card shadow mb-4">
-                            <div class="card-header">
-                                <strong class="card-title">edit prices Posts</strong>
-                            </div>
-                            <div class="card-body">
-                                <form action={{ route('prices.update', $prices->id) }} method="POST" class="needs-validation" novalidate>
-                                    @csrf
-                                    @method('patch')
+    <div class="admin-page">
+        <p class="admin-breadcrumb"><a href="{{ route('dashboard.index') }}">Dashboard</a> / <a href="{{ route('prices.index') }}">Prices</a> / create</p>
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+            <div>
+                <h1 class="admin-title">Edit <em>price</em></h1>
+                <p class="admin-subtitle">Update the price for this product type.</p>
+            </div>
+            <a href="{{ route('prices.index') }}" class="admin-back"><i class="fe fe-arrow-left fe-16"></i> Back to prices</a>
+        </div>
 
-                                    <div class="row">
-                                        <div class="col-md-8 col-sm-12">
-                                            <div class="col-md-12 mb-3">
-                                                <label for="validationCustom01">Type of edit products</label>
-                                                <select class="form-control select2" style="width: 100%;" name="types">
-                                                    @if ($type)
-                                                        <option value="{{ $type->id }}" selected>{{ $type->name }}</option>
-                                                    @endif
-                                                    @foreach($types as $t)
-                                                        <option value="{{ $t->id }}" @selected(old('t') == $t)>{{ $t->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="valid-feedback"> Looks good! </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-12">
-                                            <div class="col-md-12 mb-3">
-                                                <label for="validationCustom01">Amount</label>
-                                                <input name="price" type="text" class="form-control" id="validationCustom01" value="{{ $prices->price }}"
-                                                    required>
-                                                <div class="valid-feedback"> Looks good! </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                </form>
-                            </div> <!-- /.card-body -->
-                        </div> <!-- /.card -->
-                    </div> <!-- /.col -->
-                </div> <!-- end section -->
-            </div> <!-- /.col-12 col-lg-10 col-xl-10 -->
-        </div> <!-- .row -->
-    </div> <!-- .container-fluid -->
-    @include('admin.layouts.partials.modals')
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="card admin-card">
+            <div class="admin-card__head">
+                <i class="fe fe-tag"></i>
+                <strong>Price details</strong>
+            </div>
+            <form action="{{ route('prices.update', $prices->id) }}" method="POST" class="admin-card__body needs-validation" novalidate>
+                @csrf
+                @method('patch')
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="admin-field">
+                            <label class="admin-label" for="field-types">Product type <span class="admin-required">*</span></label>
+                            <select class="form-control select2" id="field-types" name="types" required>
+                                @foreach ($types as $typeOption)
+                                    <option value="{{ $typeOption->id }}" @selected(old('types', $prices->type_id) == $typeOption->id)>{{ $typeOption->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="admin-field">
+                            <label class="admin-label" for="field-price">Amount (KSh) <span class="admin-required">*</span></label>
+                            <input id="field-price" name="price" type="number" min="0" step="0.01" class="form-control" value="{{ old('price', $prices->price) }}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-card__foot" style="padding:0; border:none; margin:0">
+                    <button type="submit" class="btn btn-primary"><i class="fe fe-check fe-14"></i> Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection

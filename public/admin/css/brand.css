@@ -320,3 +320,55 @@ img.rounded, .rounded { border-radius: var(--r-md) !important; }
   color: var(--text-2) !important;
   border: 1px solid var(--border-strong);
 }
+
+/* ---------- Form system ---------- */
+.admin-page { padding: 1.25rem 1.4rem 2rem; max-width: 1180px; }
+
+.admin-breadcrumb { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-3); margin-bottom: .4rem; }
+.admin-breadcrumb a { color: var(--text-2); }
+
+.admin-title { font-size: 1.5rem; font-weight: 800; color: var(--text); margin: 0; letter-spacing: -0.02em; }
+.admin-title em { color: var(--brand-2); font-style: normal; }
+.admin-subtitle { color: var(--text-3); margin: .2rem 0 0; font-size: .88rem; }
+
+.admin-card {
+  background: var(--bg-2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+  max-width: 680px;
+}
+.admin-card--wide { max-width: 100%; }
+.admin-card__head {
+  padding: .85rem 1.25rem !important;
+  border-bottom: 1px solid var(--border) !important;
+  display: flex; align-items: center; gap: .6rem;
+}
+.admin-card__head .fe { color: var(--brand-2); font-size: 1.15rem; }
+.admin-card__head strong { color: var(--text); font-size: .95rem; letter-spacing: .02em; }
+.admin-card__body { padding: 1.25rem !important; }
+.admin-card__foot { padding: .8rem 1.25rem !important; border-top: 1px solid var(--border) !important; display:flex; justify-content:flex-end; gap:.6rem; }
+
+.admin-field { margin-bottom: 1.05rem; }
+.admin-label {
+  display: block;
+  font-size: .68rem !important;
+  font-weight: 800 !important;
+  letter-spacing: .14em !important;
+  text-transform: uppercase;
+  color: var(--text-2) !important;
+  margin-bottom: .35rem !important;
+}
+.admin-help { color: var(--text-3); font-size: .76rem; margin-top: .3rem; }
+.admin-required { color: var(--brand-3); }
+
+.admin-row { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .admin-row--2 { grid-template-columns: 1fr 1fr; } .admin-row--3 { grid-template-columns: 1fr 1fr 1fr; } }
+
+.admin-back {
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--text-2) !important; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 800;
+}
+.admin-back:hover { color: var(--brand-3) !important; }
+
+/* Focus ring already exists via .form-control:focus */

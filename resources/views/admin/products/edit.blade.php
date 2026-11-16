@@ -1,152 +1,127 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <h2 class="page-title">Edit Product</h2>
-                <p class="text-muted">update the products for posting</p>
+    <div class="admin-page">
+        <p class="admin-breadcrumb"><a href="{{ route('dashboard.index') }}">Dashboard</a> / <a href="{{ route('products.index') }}">Products</a> / edit</p>
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+            <div>
+                <h1 class="admin-title">Edit <em>product</em></h1>
+                <p class="admin-subtitle">Update the product catalog entry.</p>
+            </div>
+            <a href="{{ route('products.index') }}" class="admin-back"><i class="fe fe-arrow-left fe-16"></i> Back to products</a>
+        </div>
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger col-md-8 offset-md-3">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="card admin-card admin-card--wide">
+            <div class="admin-card__head">
+                <i class="fe fe-box"></i>
+                <strong>Product details</strong>
+            </div>
+            <form action="{{ route('products.update', $products->id) }}" method="POST" class="admin-card__body needs-validation" enctype="multipart/form-data" novalidate>
+                @method('patch')
+                @csrf
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="admin-field">
+                            <label class="admin-label" for="name">Name <span class="admin-required">*</span></label>
+                            <input id="name" type="text" name="name" class="form-control" value="{{ old('name', $products->name) }}" required>
+                        </div>
                     </div>
-                @endif
+                    <div class="col-md-6">
+                        <div class="admin-field">
+                            <label class="admin-label" for="meta">Meta keywords</label>
+                            <input id="meta" type="text" name="meta" class="form-control" value="{{ old('meta', $products->meta_keywords) }}" required>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
-                    <div class="col-md-6 offset-3">
-                        <div class="card shadow mb-4">
-                            <div class="card-header">
-                                <strong class="card-title">Edit Product Posts</strong>
-                            </div>
-                            <div class="card-body">
-                                <form action={{ route('products.update', $products->id) }} method="POST" class="needs-validation"
-                                    enctype="multipart/form-data">
-                                    @method('patch')
-                                    @csrf
-                                    <div class="col-md-12 mb-3">
-                                        <label for="validationCustom01">Name</label>
-                                        <input type="text" name="name" class="form-control" id="validationCustom01" value="{{ $products->name }}"
-                                            required>
-                                        <div class="valid-feedback"> Looks good! </div>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="validationCustom01">Tags</label>
-                                        <input type="text" name="meta" class="form-control" id="validationCustom01" value="{{ $products->meta_keywords }}"
-                                            required>
-                                        <div class="valid-feedback"> Looks good! </div>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="validationCustom01">category</label>
-                                        <select class="validate form-control select2" id="country" name="category" data-error="#e3"
-                                            placeholder="Pick a country..." required>
-                                            @if ($category)
-                                                <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
-                                            @endif
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}" @selected(old('category') == $category)>{{ $category->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="validationCustom01">color</label>
-                                        <select class="form-control select2" style="width: 100%;" name="color">
-                                            @if ($color)
-                                                <option value="{{ $color->id }}" selected>{{ $color->name }}</option>
-                                            @endif
-                                            @foreach ($colors as $c)
-                                                <option value="{{ $c->id }}" @selected(old('c') == $c)>{{ $c->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div class="valid-feedback"> Looks good! </div>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="validationCustom01">type</label>
-                                        <select class="form-control select2" style="width: 100%;" name="type">
-                                            @if ($product_type)
-                                                <option value="{{ $product_type->id }}" selected>{{ $product_type->name }}</option>
-                                            @endif
-                                            @foreach ($product_types as $s)
-                                                <option value="{{ $s->id }}" @selected(old('s') == $s)>{{ $s->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div class="valid-feedback"> Looks good! </div>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="validationCustom01">size</label>
-                                        <select class="form-control select2" style="width: 100%;" name="size">
-                                            @if ($size)
-                                                <option value="{{ $size->id }}" selected>{{ $size->name }}</option>
-                                            @endif
-                                            @foreach ($sizes as $s)
-                                                <option value="{{ $s->id }}" @selected(old('s') == $s)>{{ $s->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div class="valid-feedback"> Looks good! </div>
-                                    </div>  
-                                    <div class="col-md-12 mb-3">
-                                        <label for="validationCustom01">material</label>
-                                        <select class="form-control select2" style="width: 100%;" name="material">
-                                            @if ($material)
-                                                <option value="{{ $material->id }}" selected>{{ $material->name }}</option>
-                                            @endif
-                                            @foreach ($materials as $m)
-                                                <option value="{{ $m->id }}" @selected(old('m') == $m)>{{ $m->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div class="valid-feedback"> Looks good! </div>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="validationTextarea">Description</label>
-                                        <textarea class="form-control" name="description" id="validationTextarea" placeholder="" required>{{ $products->description }}</textarea>
-                                        <div class="invalid-feedback"> Please enter a message in the
-                                            textarea. </div>
-                                    </div>
+                    <div class="col-md-6">
+                        <div class="admin-field">
+                            <label class="admin-label" for="category">Category <span class="admin-required">*</span></label>
+                            <select class="form-control select2" id="category" name="category" required>
+                                @if ($category)<option value="{{ $category->id }}" selected>{{ $category->name }}</option>@endif
+                                @foreach ($categories as $c)
+                                    <option value="{{ $c->id }}" @selected(old('category') == $c->id)>{{ $c->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="admin-field">
+                            <label class="admin-label" for="type">Type <span class="admin-required">*</span></label>
+                            <select class="form-control select2" id="type" name="type" required>
+                                @if ($product_type)<option value="{{ $product_type->id }}" selected>{{ $product_type->name }}</option>@endif
+                                @foreach ($product_types as $s)
+                                    <option value="{{ $s->id }}" @selected(old('type') == $s->id)>{{ $s->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="admin-field">
+                            <label class="admin-label" for="color">Color <span class="admin-required">*</span></label>
+                            <select class="form-control select2" id="color" name="color" required>
+                                @if ($color)<option value="{{ $color->id }}" selected>{{ $color->name }}</option>@endif
+                                @foreach ($colors as $c)
+                                    <option value="{{ $c->id }}" @selected(old('color') == $c->id)>{{ $c->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="admin-field">
+                            <label class="admin-label" for="size">Size <span class="admin-required">*</span></label>
+                            <select class="form-control select2" id="size" name="size" required>
+                                @if ($size)<option value="{{ $size->id }}" selected>{{ $size->name }}</option>@endif
+                                @foreach ($sizes as $s)
+                                    <option value="{{ $s->id }}" @selected(old('size') == $s->id)>{{ $s->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="admin-field">
+                            <label class="admin-label" for="material">Material <span class="admin-required">*</span></label>
+                            <select class="form-control select2" id="material" name="material" required>
+                                @if ($material)<option value="{{ $material->id }}" selected>{{ $material->name }}</option>@endif
+                                @foreach ($materials as $m)
+                                    <option value="{{ $m->id }}" @selected(old('material') == $m->id)>{{ $m->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-                                    <div class="form-group">
-                                        <div
-                                            class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                            <input name="whatsapp" type="checkbox" class="custom-control-input" id="customSwitch1"
-                                            {{ old('whatsapp', $products->whatsapp) ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="customSwitch1">posted on whatsapp</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div
-                                            class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                            <input name="telegram" type="checkbox" class="custom-control-input" id="customSwitch2"
-                                            {{ old('whatsapp', $products->whatsapp) ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="customSwitch2">Posted on Telegram</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div
-                                            class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                            <input name="website" type="checkbox" class="custom-control-input" id="customSwitch3"
-                                            {{ old('whatsapp', $products->whatsapp) ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="customSwitch3">posted on the Site</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div
-                                            class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                            <input name="promotion" type="checkbox" class="custom-control-input" id="customSwitch4"
-                                            {{ old('whatsapp', $products->whatsapp) ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="customSwitch4">Has Promotion</label>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                </form>
-                            </div> <!-- /.card-body -->
-                        </div> <!-- /.card -->
-                    </div> <!-- /.col -->
-                </div> <!-- end section -->
-            </div> <!-- /.col-12 col-lg-10 col-xl-10 -->
-        </div> <!-- .row -->
-    </div> <!-- .container-fluid -->
-    @include('admin.layouts.partials.modals')
+                <div class="admin-field">
+                    <label class="admin-label" for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" required>{{ $products->description }}</textarea>
+                </div>
+
+                <div class="row" style="gap:.4rem 0">
+                    @foreach (['whatsapp' => 'Posted on WhatsApp', 'telegram' => 'Posted on Telegram', 'website' => 'On website', 'promotion' => 'Has promotion'] as $flag => $label)
+                        <div class="col-md-3">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" name="{{ $flag }}" id="flag-{{ $flag }}" value="1" {{ old($flag, $products->{$flag}) ? 'checked' : '' }}>
+                                <label class="custom-control-label" for="flag-{{ $flag }}">{{ $label }}</label>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="admin-card__foot" style="padding:0; border:none; margin:0">
+                    <button type="submit" class="btn btn-primary"><i class="fe fe-check fe-14"></i> Update product</button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
