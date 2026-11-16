@@ -1,179 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('layouts.hero_single')
+    <div class="ps-container" style="padding: calc(var(--header-h) + 2rem) 0 3rem; max-width: 880px">
+        @if (count($errors) > 0)
+            <div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
+        @endif
+        @if (session()->has('message'))<div class="alert alert-success">{{ session('message') }}</div>@endif
 
-    <!-- ======= Blog Single Section ======= -->
-    <section class="blog-wrapper sect-pt4" id="blog">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-10">
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger col-md-8 offset-md-3">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+        <p class="ps-breadcrumb"><a href="{{ url('/blog') }}">Stories</a> / {{ Str::limit($blog->title, 40) }}</p>
+        <div class="ps-pdp__meta" style="margin-bottom:.4rem">
+            @foreach ($blog->blogCategories as $category){{ $category->name }}@if (!$loop->last) · @endif @endforeach · {{ $blog->created_at->format('d M Y') }}
+        </div>
+        <h1 class="ps-pdp__name" style="margin-top:0">{{ $blog->title }}</h1>
 
-                    <div class="pt-3">
-                        @if (session()->has('message'))
-                            <div class="alert alert-success">
-                                {{ session()->get('message') }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="post-box">
-                        <div class="post-meta">
-                            <h1 class="article-title text-center">{{ $blog->full }}</h1><br><br>
-                            <ul>
-                                <li>
-                                    <span class="bi bi-person"></span>
-                                    <a href="#">Print Shop</a>
-                                </li>
-                                <li>
-                                    <span class="bi bi-tag"></span>
-                                    @foreach ($blog->blogCategories as $b)
-                                        <a href="#">{{ $b->name }}</a>
-                                    @endforeach
-                                </li>
-                                <li>
-                                    <span class="bi bi-chat-left-text"></span>
-                                    <a href="#">
-                                        @php
-                                            $createdDate = $blog->created_at;
-                                            $now = \Carbon\Carbon::now();
-                                            $diffInDays = $createdDate->diffInDays($now);
-                                            $diffInYears = $createdDate->diffInYears($now);
-                                        @endphp
+        @if ($blog->BlogImage->count())
+            <figure style="margin:1.5rem 0 2rem">
+                <img src="{{ asset('storage/img/blogs/' . $blog->BlogImage[0]->thumbnail) }}" alt="{{ $blog->BlogImage[0]->full }}" class="img-fluid" style="border-radius:var(--r-lg); border:1px solid var(--border); width:100%; object-fit:cover; max-height:480px">
+            </figure>
+        @endif
 
-                                        @if ($diffInDays < 7)
-                                            {{ $createdDate->diffForHumans() }}
-                                        @elseif ($diffInYears < 1)
-                                            {{ $createdDate->format('d M, H:i') }}
-                                        @else
-                                            {{ $createdDate->format('d M Y, H:i') }}
-                                        @endif
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="post-thumb">
-                            <img src="{{ asset('storage/img/blogs/' . $blog->BlogImage[0]->thumbnail) }}" class="img-fluid"
-                                alt="{{ $blog->BlogImage[0]->full }}">
-                        </div><br><br>
-                        <div class="article-content">
-                            @php
-                                // Define the total length of the content
-                                $totalLength = mb_strlen($blog->body, 'UTF-8');
+        <div class="article-content" style="color:var(--text-2); font-size:1.02rem; line-height:1.8">
+            {!! $blog->body !!}
+            <blockquote style="border-left:3px solid var(--brand); padding-left:1.2rem; font-family:var(--font-serif); font-style:italic; color:var(--text); margin:1.5rem 0">{{ $blog->sub_title }}</blockquote>
+        </div>
 
-                                // Define percentage portions (e.g., 25%, 25%, 10%, 40%)
-                                $firstPortionLength = intval($totalLength * 0.25); // 25%
-                                $secondPortionLength = intval($totalLength * 0.25); // 25%
-                                $thirdPortionLength = intval($totalLength * 0.1); // 10%
-                                $fourthPortionLength = intval($totalLength * 0.4); // 40%
-
-                                // Extract each portion
-                                $firstPortion = mb_substr($blog->body, 0, $firstPortionLength, 'UTF-8');
-                                $secondPortion = mb_substr(
-                                    $blog->body,
-                                    $firstPortionLength,
-                                    $secondPortionLength,
-                                    'UTF-8',
-                                );
-                                $thirdPortion = mb_substr(
-                                    $blog->body,
-                                    $firstPortionLength + $secondPortionLength,
-                                    $thirdPortionLength,
-                                    'UTF-8',
-                                );
-                                $fourthPortion = mb_substr(
-                                    $blog->body,
-                                    $firstPortionLength + $secondPortionLength + $thirdPortionLength,
-                                    $fourthPortionLength,
-                                    'UTF-8',
-                                );
-                            @endphp
-
-                            <section>
-                                <p>{{ $firstPortion }}</p>
-                            </section>
-                            <section>
-                                <p>{{ $secondPortion }}</p>
-                            </section>
-                            <section>
-                                <p>{{ $thirdPortion }}</p>
-                            </section>
-                            <section>
-                                <blockquote class="blockquote">
-                                    <p>{{ $blog->sub_title }}</p>
-                                </blockquote>
-                            </section>
-                            <section>
-                                <p>{{ $fourthPortion }}</p>
-                            </section>
-                        </div>
-                    </div>
-                    <div class="box-comments">
-                        <hr>
-                        <div class="title-box-2">
-                            <h4 class="title-comments title-left">comments ({{ $blog->comments->count() }})</h4>
-                        </div>
-                        <ul class="list-comments">
-                            @foreach ($blog->comments as $comment)
-                                <li>
-                                    <div class="comment-avatar">
-                                        <img src="{{ asset('assets/img/testimonial-4.jpg') }}" alt="image">
-                                    </div>
-                                    <div class="comment-details">
-                                        <h4 class="comment-author">{{ $comment->user->first_name }}</h4>
-                                        <span>{{ $comment->created_at }}</span>
-                                        <p>
-                                            {{ $comment->content }}
-                                        </p>
-                                        {{-- <a href="3">Reply</a> --}}
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @auth
-                        <div class="form-comments">
-                            <div class="title-box-2">
-                                <h3 class="title-left">
-                                    Leave a Comment
-                                </h3>
-                            </div>
-                            <form class="form-mf" action="#" method="POST" role="form">
-                                @csrf
-                                @method('post')
-                                <div class="row">
-                                    <input type="text" name="user_id" class="form-control input-mf"
-                                        value="{{ Auth::user()->id }}" required hidden readonly>
-                                    <input type="text" name="blog_id" class="form-control input-mf"
-                                        value="{{ $blog->id }}" required hidden readonly>
-                                    <div class="col-md-12 mb-3">
-                                        <div class="form-group">
-                                            <textarea id="textMessage" class="form-control input-mf" placeholder="Comment *" name="message" cols="45"
-                                                rows="8" required></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        {{-- <button type="submit" class="button button-a button-big button-rouded">Send
-                                            Message</button> --}}
-
-                                        <a class="button button-a button-big button-rouded"
-                                            href="{{ route('underConstruction') }}"></a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    @endauth
+        <hr style="border-color:var(--border); margin:2.5rem 0 1.5rem">
+        <div class="d-flex align-items-center justify-content-between" style="margin-bottom:1.2rem">
+            <h2 style="font-size:1.3rem">Comments ({{ $blog->comments->count() }})</h2>
+        </div>
+        @forelse ($blog->comments as $comment)
+            <div style="display:flex; gap:.8rem; padding:1rem 0; border-bottom:1px solid var(--border)">
+                <i class="bi bi-person-circle" style="font-size:2rem; color:var(--brand-2)"></i>
+                <div>
+                    <p style="margin:0; font-weight:700">{{ $comment->user->first_name ?? 'Customer' }} <span style="color:var(--text-3); font-weight:400; font-size:.8rem">· {{ $comment->created_at->diffForHumans() }}</span></p>
+                    <p style="margin:.2rem 0 0; color:var(--text-2)">{{ $comment->content }}</p>
                 </div>
             </div>
-        </div>
-    </section><!-- End Blog Single Section -->
+        @empty
+            <p style="color:var(--text-3)">Be the first to comment.</p>
+        @endforelse
+
+        @auth
+            <form action="{{ route('comments') }}" method="POST" style="margin-top:1.5rem">
+                @csrf
+                <input type="hidden" name="blog_id" value="{{ $blog->id }}">
+                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                <label class="form-label" for="commentBody">Leave a comment</label>
+                <textarea id="commentBody" name="message" class="form-control" rows="3" required placeholder="Share your thoughts..."></textarea>
+                <button type="submit" class="ps-btn" style="margin-top:.7rem">Post comment <i class="bi bi-send"></i></button>
+            </form>
+        @else
+            <p style="color:var(--text-2); margin-top:1.2rem"><a href="{{ route('login') }}">Sign in</a> to join the conversation.</p>
+        @endauth
+    </div>
 @endsection

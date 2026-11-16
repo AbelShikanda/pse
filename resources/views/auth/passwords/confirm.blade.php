@@ -1,55 +1,20 @@
 @extends('layouts.app')
-@section('header')
-    {{-- Leave this section empty to exclude the sidebar --}}
-@endsection
-@section('footer')
-    {{-- Leave this section empty to exclude the sidebar --}}
-@endsection
 
 @section('content')
-<div class="container pt-5 mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Confirm Password') }}</div>
-
-                <div class="card-body">
-                    {{ __('Please confirm your password before continuing.') }}
-
-                    <form method="POST" action="{{ route('password.confirm') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Confirm Password') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    <section class="ps-section" style="min-height:70vh; display:flex; align-items:center; padding-top:calc(var(--header-h) + 2rem)">
+        <div class="ps-container" style="max-width:640px">
+            <div class="ps-summary">
+                <span class="ps-eyebrow">Security check</span>
+                <h1 style="font-size:1.4rem; margin:.6rem 0 .4rem">Please confirm your password</h1>
+                <p style="color:var(--text-2); font-size:.92rem; margin-bottom:1.2rem">This area is sensitive. Confirm your password before continuing.</p>
+                <form method="POST" action="{{ route('password.confirm') }}">
+                    @csrf
+                    <label class="form-label" for="passwordConfirm">Password</label>
+                    <input id="passwordConfirm" type="password" name="password" class="form-control mb-3 @error('password') is-invalid @enderror" required autocomplete="current-password" autofocus>
+                    @error('password')<small class="text-danger d-block mb-2">{{ $message }}</small>@enderror
+                    <button type="submit" class="ps-btn" style="width:100%; justify-content:center">Confirm password</button>
+                </form>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 @endsection

@@ -1,125 +1,53 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('layouts.hero_single')
+    <section class="ps-page-band">
+        <div class="ps-container">
+            <p class="ps-breadcrumb"><a href="{{ url('/') }}">Home</a> / Contact</p>
+            <h1>Talk to the <em style="font-style:italic;color:var(--brand-3)">studio</em></h1>
+            <p class="ps-lead">Quotes, bulk orders, custom embroidery — we reply within a working day.</p>
+        </div>
+    </section>
 
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="paralax-mf footer-paralax bg-image route"
-        style="background-image: url(assets/img/header.jpg)">
-        <div class="overlay-mf"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="contact-mf">
-                        <div id="contact" class="box-shadow-full">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="title-box-2">
-                                        <h5 class="title-left">
-                                            Send Message
-                                        </h5>
-                                        @if (count($errors) > 0)
-                                            <div class="alert alert-danger col-md-8 offset-md-3">
-                                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
-                    
-                                        <div class="pt-3">
-                                            @if (session()->has('message'))
-                                                <div class="alert alert-success">
-                                                    {{ session()->get('message') }}
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <form class="php-email-form" action="{{ route('contactStore') }}" method="POST" role="form">
-                                            @csrf
-                                            @method('post')
-                                            <div class="row">
-                                                <div class="col-md-12 mb-3">
-                                                    <div class="form-group">
-                                                        <input type="text" name="name" class="form-control"
-                                                            placeholder="Your Name" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mb-3">
-                                                    <div class="form-group">
-                                                        <input type="email" class="form-control" name="email"
-                                                            placeholder="Your Email" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mb-3">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" name="subject"
-                                                            placeholder="Subject" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 text-center my-3">
-                                                    <div class="loading">Loading</div>
-                                                    <div class="error-message"></div>
-                                                    <div class="sent-message">Your message has been sent. Thank you!
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 text-center">
-                                                    <button type="submit"
-                                                        class="button button-a button-big button-rouded">Send
-                                                        Message</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="title-box-2 pt-4 pt-md-0">
-                                        <h5 class="title-left">
-                                            Get in Touch
-                                        </h5>
-                                    </div>
-                                    <div class="more-info">
-                                        <p class="lead">
-                                            To get in touch <br>
-                                            Fill out the form <br>
-                                            send us an email. <br>
-                                            We are passionate about our customers and are always 
-                                            ready to help with all your needs!
-                                        </p>
-                                        <ul class="list-ico">
-                                            <li><span class="bi bi-geo-alt"></span> Nairobi Kenya
-                                            </li>
-                                            <li><span class="bi bi-phone"></span> +254 728 157 164</li>
-                                            <li><span class="bi bi-envelope"></span> info@printshopeld.com</li>
-                                        </ul>
-                                    </div>
-                                    <div class="socials">
-                                        <ul>
-                                            <li><a href="https://www.facebook.com/printshopeldofficial/"><span class="ico-circle"><i
-                                                            class="bi bi-facebook"></i></span></a></li>
-                                            <li><a href="https://www.instagram.com/printshopeld/"><span class="ico-circle"><i
-                                                            class="bi bi-instagram"></i></span></a></li>
-                                            {{-- <li><a href=""><span class="ico-circle"><i
-                                                            class="bi bi-twitter"></i></span></a></li> --}}
-                                            <li><a href="https://www.linkedin.com/in/abel-shikanda-4a68a582/"><span class="ico-circle"><i
-                                                            class="bi bi-linkedin"></i></span></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+    <section class="ps-section" style="padding-top:2rem">
+        <div class="ps-container">
+            @if (count($errors) > 0)
+                <div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
+            @endif
+            @if (session()->has('message'))<div class="alert alert-success">{{ session('message') }}</div>@endif
+
+            <div class="row gy-4">
+                <div class="col-lg-7">
+                    <form action="{{ route('contactStore') }}" method="POST">
+                        @csrf
+                        <div class="row gy-3">
+                            <div class="col-md-6"><label class="form-label" for="name">Name</label><input id="name" type="text" name="name" class="form-control" required></div>
+                            <div class="col-md-6"><label class="form-label" for="email">Email</label><input id="email" type="email" name="email" class="form-control" required></div>
+                            <div class="col-12"><label class="form-label" for="subject">Subject</label><input id="subject" type="text" name="subject" class="form-control" required></div>
+                            <div class="col-12"><label class="form-label" for="message">Message</label><textarea id="message" name="message" class="form-control" rows="6" required></textarea></div>
                         </div>
+                        <button type="submit" class="ps-btn" style="margin-top:1.2rem"><i class="bi bi-send"></i> Send message</button>
+                    </form>
+                </div>
+                <div class="col-lg-5">
+                    <div class="ps-summary" style="height:100%">
+                        <h2 style="font-size:1.2rem; margin-bottom:1rem">Reach us</h2>
+                        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:1rem">
+                            <li style="display:flex; gap:.7rem; align-items:center"><i class="bi bi-geo-alt" style="color:var(--brand-2); font-size:1.2rem"></i><span style="color:var(--text-2)">Nairobi, Kenya</span></li>
+                            <li style="display:flex; gap:.7rem; align-items:center"><i class="bi bi-telephone" style="color:var(--brand-2); font-size:1.2rem"></i><a href="tel:+254728157164" style="color:var(--text-2)">+254 728 157 164</a></li>
+                            <li style="display:flex; gap:.7rem; align-items:center"><i class="bi bi-envelope" style="color:var(--brand-2); font-size:1.2rem"></i><a href="mailto:info@printshopeld.com" style="color:var(--text-2)">info@printshopeld.com</a></li>
+                        </ul>
+                        <hr style="border-color:var(--border); margin:1.5rem 0">
+                        <h3 style="font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; color:var(--text-3); margin-bottom:.8rem">Elsewhere</h3>
+                        <div style="display:flex; gap:.5rem">
+                            <a href="https://www.instagram.com/printshopeld/" class="ps-icon-btn" style="border:1px solid var(--border)" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="https://www.facebook.com/printshopeldofficial/" class="ps-icon-btn" style="border:1px solid var(--border)" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                            <a href="https://www.linkedin.com/in/abel-shikanda-4a68a582/" class="ps-icon-btn" style="border:1px solid var(--border)" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                        <a href="https://wa.me/254728157164" class="ps-btn" style="margin-top:1.5rem; width:100%; justify-content:center"><i class="bi bi-whatsapp"></i> Chat on WhatsApp</a>
                     </div>
                 </div>
             </div>
         </div>
-    </section><!-- End Contact Section -->
-    
+    </section>
 @endsection

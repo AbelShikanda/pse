@@ -135,7 +135,6 @@ Route::group(['middleware' => 'TrackVisitorJourney'], function () {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-        Route::get('/profile/show/{id}', [ProfileController::class, 'show'])->name('profile.show');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     });

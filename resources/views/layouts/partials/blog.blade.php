@@ -1,40 +1,13 @@
-<div class="blog-card rupauls13"
-    style="background: url('{{ asset('storage/img/blogs/' . $blog->thumbnail) }}'); background-size: cover; background-position: center; height: 100hv;">
-    <div class="title-blog">
-        <h3>{{ $blog->full }}</h3>
-        <hr />
-        {{-- <div class="intro">STRAIGHT OUTTA OZ: THE MUSICAL</div> --}}
-    </div><!--/.title-content-->
-    <div class="card-info">
-        @foreach ($blog->blogs as $item)
-            {{ Str::words($item->body, 7, '...') }}
-        @endforeach
-    </div><!--/.card-info-->
-    <div class="utility-info">
-        <ul class="utility-list">
-            @foreach ($blog->blogs as $item)
-                <li class="date">
-                    @php
-                        $createdDate = $item->created_at;
-                        $now = \Carbon\Carbon::now();
-                        $diffInDays = $createdDate->diffInDays($now);
-                        $diffInYears = $createdDate->diffInYears($now);
-                    @endphp
-
-                    @if ($diffInDays < 7)
-                        {{ $createdDate->diffForHumans() }}
-                    @elseif ($diffInYears < 1)
-                        {{ $createdDate->format('d M, H:i') }}
-                    @else
-                        {{ $createdDate->format('d M Y, H:i') }}
-                    @endif
-                </li>
-            @endforeach
-            <li><a href="{{ route('blogSingle', $blog->blogs[0]->slug) }}"><i
-                        class="bi bi-arrow-right-circle-fill px-2"></i>More</a></li>
-        </ul>
-    </div><!--/.utility-info-->
-    <!--overlays-->
-    <div class="gradient-overlay"></div>
-    <div class="color-overlay"></div>
-</div><!--/.blog-card closure-->
+@php $post = $blog->blogs[0] ?? null; @endphp
+@if ($post)
+<a href="{{ route('blogSingle', $post->slug) }}" style="text-decoration:none">
+    <article class="ps-blog-card" data-reveal>
+        <div class="ps-blog-card__media" style="background-image:url('{{ asset('storage/img/blogs/' . $blog->thumbnail) }}')"><span class="ps-blog-card__tag">Studio notes</span></div>
+        <div class="ps-blog-card__body">
+            <h3 class="ps-blog-card__title">{{ $post->title }}</h3>
+            <p class="ps-blog-card__excerpt">{{ Str::limit(strip_tags($post->body), 120) }}</p>
+            <span style="color:var(--text-3); font-size:.78rem">{{ $post->created_at->diffForHumans() }}</span>
+        </div>
+    </article>
+</a>
+@endif

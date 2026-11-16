@@ -1,67 +1,60 @@
-<!-- ======= Header ======= -->
-<header id="header" class="fixed-top">
-    <div class="container d-flex align-items-center justify-content-between">
+<header id="psHeader" class="ps-header">
+    <div class="ps-header__inner">
+        <a href="{{ url('/') }}" class="ps-brand" aria-label="PrintShopEld home">
+            <img src="{{ asset('assets/img/logo.png') }}" alt="PrintShopEld logo">
+            <span>PrintShop<small>Bespoke Print &amp; Embroidery</small></span>
+        </a>
 
-        <a href="{{ url('/') }}" class="logo"><img src="{{ asset('assets/img/logo.png') }}" alt="logo"
-                class="img-fluid"></a>
-        <h1 class="logo"><a href="{{ url('/') }}">PrintShop</a></h1>
-
-        <nav id="navbar" class="navbar">
-            <ul>
-                <li><a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
-                </li>
-                <li><a class="nav-link {{ request()->is('catalog') ? 'active' : '' }}"
-                        href="{{ url('/catalog') }}">Catalog</a></li>
-                <li><a class="nav-link {{ request()->is('blog') ? 'active' : '' }}" href="{{ url('/blog') }}">Stories</a>
-                </li>
-                <li><a class="nav-link {{ request()->is('contacts') ? 'active' : '' }}"
-                        href="{{ url('/contacts') }}">Contact</a></li>
-                <!-- Authentication Links -->
-                @guest
-                    @if (Route::has('login'))
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('login') ? 'active' : '' }}"
-                                href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                    @endif
-
-                    @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('register') ? 'active' : '' }}"
-                                href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                    @endif
-                @else
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->first_name }}
-                        </a>
-                        <ul>
-                            <li><a href="{{ route('profile.index') }}">Profile</a></li>
-                            <li class="">
-                                <a href="{{ route('cart') }}">
-                                        {{ Session::has('cart') ? Session::get('cart')->totalQty : '0' }}
-                                    Cart
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                @endguest
+        <nav aria-label="Primary">
+            <ul class="ps-nav">
+                <li><a class="ps-nav__link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a></li>
+                <li><a class="ps-nav__link {{ request()->is('catalog*') ? 'active' : '' }}" href="{{ route('catalog') }}">Catalog</a></li>
+                <li><a class="ps-nav__link {{ request()->is('blog*') ? 'active' : '' }}" href="{{ url('/blog') }}">Stories</a></li>
+                <li><a class="ps-nav__link {{ request()->is('contacts') ? 'active' : '' }}" href="{{ url('/contacts') }}">Contact</a></li>
             </ul>
-            <i class="bi bi-list mobile-nav-toggle"></i>
-        </nav><!-- .navbar -->
+        </nav>
 
+        <div class="ps-header__actions">
+            <a href="{{ route('cart') }}" class="ps-icon-btn" aria-label="Cart ({{ Session::has('cart') ? Session::get('cart')->totalQty : 0 }} items)">
+                <i class="bi bi-bag"></i>
+                @if (Session::has('cart') && Session::get('cart')->totalQty > 0)
+                    <span class="ps-cart-count">{{ Session::get('cart')->totalQty }}</span>
+                @endif
+            </a>
+
+            @guest
+                <a href="{{ route('login') }}" class="ps-btn ps-btn--ghost d-none d-md-inline-flex" style="padding:.55rem 1.1rem">Sign in</a>
+            @else
+                <div class="ps-account-menu" id="psAccountMenu">
+                    <button type="button" class="ps-icon-btn" id="psAccountToggle" aria-expanded="false" aria-controls="psAccountPanel" aria-haspopup="true">
+                        <i class="bi bi-person"></i>
+                    </button>
+                    <div class="ps-account-menu__panel" id="psAccountPanel" role="menu">
+                        <div class="ps-account-menu__header">Signed in as<strong>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</strong><span style="font-size:.75rem">{{ Auth::user()->email }}</span></div>
+                        <div class="ps-account-menu__divider"></div>
+                        <a class="ps-account-menu__item" role="menuitem" href="{{ route('profile.index') }}"><i class="bi bi-grid"></i> Account &amp; orders</a>
+                        <a class="ps-account-menu__item" role="menuitem" href="{{ route('profile.edit') }}"><i class="bi bi-person-gear"></i> Edit profile</a>
+                        <a class="ps-account-menu__item" role="menuitem" href="{{ route('cart') }}"><i class="bi bi-bag"></i> View cart</a>
+                        <div class="ps-account-menu__divider"></div>
+                        <a class="ps-account-menu__item" role="menuitem" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('psLogoutForm').submit();"><i class="bi bi-box-arrow-right"></i> Sign out</a>
+                        <form id="psLogoutForm" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+                    </div>
+                </div>
+            @endguest
+
+            <button class="ps-burger" id="psBurger" aria-label="Toggle menu" aria-expanded="false" aria-controls="psMobileNav"><i class="bi bi-list"></i></button>
+        </div>
     </div>
-</header><!-- End Header -->
+
+    <div class="ps-mobile-nav" id="psMobileNav">
+        <a href="{{ url('/') }}">Home</a>
+        <a href="{{ route('catalog') }}">Catalog</a>
+        <a href="{{ url('/blog') }}">Stories</a>
+        <a href="{{ url('/contacts') }}">Contact</a>
+        @guest
+            <a href="{{ route('login') }}" class="ps-mobile-nav__cta">Sign in</a>
+        @else
+            <a href="{{ route('profile.index') }}">My account</a>
+        @endguest
+    </div>
+</header>

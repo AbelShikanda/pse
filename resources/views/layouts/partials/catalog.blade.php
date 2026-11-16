@@ -1,21 +1,22 @@
-<div class="box"
-    style="background: url('{{ asset('storage/img/products/' . $item->thumbnail) }}'); background-size: cover; background-position: center;">
-    <div class="overlay">
-        <div class = "items"></div>
-        <div class = "items head">
-            <p>{{ $item->products[0]->name }}</p>
-            <hr>
+@php $product = $item->products[0] ?? null; @endphp
+@if ($product)
+<article class="ps-card catalog-item" data-reveal data-price="{{ $product->price }}">
+    <a href="{{ route('catalogDetail', $product->slug) }}" class="text-decoration-none" aria-label="{{ $product->name }}">
+        <div class="ps-card__media" style="background-image:url('{{ asset('storage/img/products/' . $item->thumbnail) }}')">
+            @if ($product->promotion)<span class="ps-card__badge">Promo</span>@endif
         </div>
-        <div class = "items price">
-            <p class="old">Ksh {{ $item->products[0]->price * 1.1 }}</p>
-            <p class="new">Ksh {{ $item->products[0]->price }}</p>
-        </div>
-        <div class="items cart">
-            <i class="bi bi-view-list"></i>
-            <a href="{{ route('catalogDetail', $item->products[0]->slug) }}"><span>VIEW</span></a>
-            <br><br>
-            <i class="bi bi-cart"></i>
-            <a href="{{ route('addToCart', $item->id) }}"><span>ADD TO CART</span></a>
+    </a>
+    <button type="button" class="ps-card__wishlist" data-wishlist="{{ $product->id }}" aria-label="Save {{ $product->name }} to wishlist"><i class="bi bi-heart"></i></button>
+    <div class="ps-card__body">
+        <p class="ps-card__name">{{ $product->name }}</p>
+        <p class="ps-card__meta">{{ $product->slug }}</p>
+        <div class="ps-card__foot">
+            <span>
+                @if ($product->promotion)<span class="ps-price ps-price--old">KSh {{ number_format($product->price * 1.1) }}</span>@endif
+                <span class="ps-price">KSh {{ number_format($product->price) }}</span>
+            </span>
+            <a href="{{ route('addToCart', $item->id) }}" class="ps-add" aria-label="Add to cart"><i class="bi bi-bag-plus"></i></a>
         </div>
     </div>
-</div>
+</article>
+@endif
