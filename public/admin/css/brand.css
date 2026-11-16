@@ -199,3 +199,124 @@ img.rounded, .rounded { border-radius: var(--r-md) !important; }
 
 /* Divider heading used on index pages */
 .admin-section-title { color: var(--text-3) !important; font-size: .68rem !important; letter-spacing: .22em; text-transform: uppercase; font-weight: 800; }
+
+/* ---------- Contrast rescue: no white-on-light accidents ---------- */
+.bg-white {
+  background-color: var(--bg-2) !important;
+  color: var(--text-2) !important;
+}
+
+.bg-light,
+.bg-light:hover,
+.bg-light:focus {
+  background-color: var(--bg-3) !important;
+  color: var(--text-2) !important;
+}
+
+.bg-white .text-dark { color: var(--text) !important; }
+
+/* Table hovers stay dark with light text */
+.table-hover tbody tr:hover,
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+  background-color: var(--bg-3) !important;
+  color: var(--text) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd),
+.table-striped tbody tr:nth-of-type(odd) td {
+  background-color: var(--bg-2) !important;
+  color: var(--text-2) !important;
+}
+
+.table thead th {
+  color: var(--text-3) !important;
+  border-bottom-color: var(--border-strong) !important;
+}
+
+/* Inputs: dark surface, strong text, visible placeholder, clear hover/focus */
+.form-control,
+.custom-select,
+.form-select {
+  background-color: var(--bg-3) !important;
+  border-color: var(--border-strong) !important;
+  color: var(--text) !important;
+}
+
+.form-control:hover,
+.custom-select:hover,
+.form-select:hover {
+  background-color: var(--bg-3) !important;
+  border-color: var(--brand-2) !important;
+  color: var(--text) !important;
+}
+
+.form-control:focus,
+.custom-select:focus,
+.form-select:focus {
+  background-color: var(--bg-3) !important;
+  border-color: var(--brand-2) !important;
+  color: var(--text) !important;
+  box-shadow: 0 0 0 3px var(--brand-tint) !important;
+}
+
+.form-control::placeholder,
+.form-control:-moz-placeholder { color: var(--text-3) !important; opacity: 1; }
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: var(--bg-2) !important;
+  color: var(--text-3) !important;
+}
+
+.input-group-text {
+  background-color: var(--bg-3) !important;
+  border-color: var(--border-strong) !important;
+  color: var(--text-3) !important;
+}
+
+/* Card header / bordered surfaces stay dark */
+.card-header {
+  background-color: var(--bg-2) !important;
+  border-bottom-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+.border,
+.border-top,
+.border-bottom,
+.border-left,
+.border-right { border-color: var(--border) !important; }
+
+/* Dropdowns and menus on dark */
+.dropdown-menu,
+.dropdown-menu-right { background-color: var(--bg-2) !important; }
+
+.dropdown-item { color: var(--text-2) !important; }
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: var(--brand-tint) !important;
+  color: var(--brand-3) !important;
+}
+
+/* Buttons: outline hover keeps the surface dark and text legible */
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+  background-color: var(--bg-3) !important;
+  border-color: var(--brand-2) !important;
+  color: var(--brand-3) !important;
+}
+
+.btn-outline-light:hover,
+.btn-outline-light:focus {
+  background-color: var(--bg-3) !important;
+  border-color: var(--brand-2) !important;
+  color: var(--brand-3) !important;
+}
+
+/* Chips / badges on light pills */
+.badge.badge-light {
+  background-color: var(--bg-3) !important;
+  color: var(--text-2) !important;
+  border: 1px solid var(--border-strong);
+}
