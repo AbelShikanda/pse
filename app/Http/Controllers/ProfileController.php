@@ -48,10 +48,6 @@ class ProfileController extends Controller
         // dd($related);
 
         $orders = Orders::with('orderItems', 'orderItems.products')->where('user_id', $user->id)->latest()->get();
-        $orders->transform(function ($order, $key) {
-            $order->cart = unserialize($order->tracking_No);
-            return $order;
-        });
         // dd($orders);
 
         $ratings = Ratings::where('user_id', $user->id)->first();
